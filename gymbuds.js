@@ -4,6 +4,11 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
 
+const UserDB = require('./userDB');
+const db = new UserDB('./gymbuds.db');
+db.initialize();
+db.makeUserTable();
+
 //Declare the express app
 const app = express();
 //This makes it so the HTML is in a human-readable format when rendered
