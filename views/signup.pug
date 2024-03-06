@@ -1,0 +1,34 @@
+html
+  head
+    title Gymbuds Signup
+
+  body
+    h1 Create an Account for Gymbuds
+
+    form(action='/signup', method='post')
+    
+        label(for='first') First Name:
+        input(type='text', id='first', name='first_name', required)
+
+        label(for='last') Last Name:
+        input(type='text', id='last', name='last_name', required)
+
+        label(for='username') Username:
+        input(type='text', id='username', name='username', required)
+
+        label(for='password') Password:
+        input(type='password', id='password', name='password', required)
+
+        label(for='password2') Re-enter Password:
+        input(type='password', id='password2', name='password2', required)
+
+        button(type='submit') Create Account
+
+    if message 
+        .alet.alert-danger(class='text-center')
+            i(class="bi bi-exclamation-triangle-fill me-3 justify-content-center")  #{message} 
+    p
+    | Already have an account? 
+    a(class="button", href='/login', role="button") Sign in here!
+    p 
+    a(href="/", role="button") Return Home 
