@@ -1,0 +1,16 @@
+/* Background gradient color */
+body {
+    background: linear-gradient(to top, #1a1353, #3a3939) !important; /* Gradient colors */
+  min-height: 100vh !important; /* Ensure gradient covers the whole viewport height */
+}
+
+/* Custom navbar css */
+.navbar {
+    background-image: linear-gradient(55deg, rgb(81, 6, 104), black);
+}
+
+/* This is the custom css for the login container */
+.login-card{
+    background-color: lightblue;
+    color: black;
+}

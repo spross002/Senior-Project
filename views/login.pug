@@ -1,20 +1,37 @@
-html
-  head
-    title Gymbuds Login
+extends layout.pug
+
+block content 
+  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.bg-gradiant
+      .container-fluid
+          a.navbar-brand(href='/')
+              img.img-fluid(src='logo.png', alt='Logo', width='50')
+              |   Gymbuds
+          button.navbar-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+              span.navbar-toggler-icon
 
   body
-    h1 Login to Gymbuds
+      .container
+        .row.justify-content-center.mt-5
+          .col-md-6
+            .card.login-card
+              .card-header
+                h5.card-title.text-center Login
+              .card-body
+                form(action='/login' method='post').form
+                  .mb-3
+                    label.form-label(for='username') Username
+                    input.form-control(type='text', placeholder='Enter username', required)
+                  .mb-3
+                    label.form-label(for='password') Password
+                    input.form-control(type='password', placeholder='Enter password', required)
+                  .row
+                    .col 
+                      button(type="submit", class="btn btn-success btn-block", href="/") Login
+                    .col-auto
+                      a(href='/signup', class="btn btn-info btn-block") Sign up
+        if message
+          .alert.alert-danger(class="text-center")
+              i(class="bi bi-exclamation-triangle-fill me-3 justify-content-center")  #{message} 
 
-    form(action='/login', method='post')
-        label(for='username') Username:
-        input(type='text', id='username', name='username', required)
-
-        label(for='password') Password:
-        input(type='password', id='password', name='password', required)
-
-        button(type='submit') Login
-    p
-    | Don't have an account? 
-    a(class="button", href='/signup', role="button") Sign up here!
 
 

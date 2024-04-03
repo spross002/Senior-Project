@@ -1,34 +1,43 @@
-html
-  head
-    title Gymbuds Signup
+extends layout.pug
+
+block content 
+  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+      .container-fluid
+          a.navbar-brand(href='/')
+              img.img-fluid(src='logo.png', alt='Logo', width='50')
+              |   Gymbuds
+          button.navbar-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+              span.navbar-toggler-icon
 
   body
-    h1 Create an Account for Gymbuds
-
-    form(action='/signup', method='post')
-    
-        label(for='first') First Name:
-        input(type='text', id='first', name='first_name', required)
-
-        label(for='last') Last Name:
-        input(type='text', id='last', name='last_name', required)
-
-        label(for='username') Username:
-        input(type='text', id='username', name='username', required)
-
-        label(for='password') Password:
-        input(type='password', id='password', name='password', required)
-
-        label(for='password2') Re-enter Password:
-        input(type='password', id='password2', name='password2', required)
-
-        button(type='submit') Create Account
-
-    if message 
-        .alet.alert-danger(class='text-center')
-            i(class="bi bi-exclamation-triangle-fill me-3 justify-content-center")  #{message} 
-    p
-    | Already have an account? 
-    a(class="button", href='/login', role="button") Sign in here!
-    p 
-    a(href="/", role="button") Return Home 
+    .container
+      .row.justify-content-center.mt-5
+        .col-md-6
+          .card.login-card
+            .card-header
+              h5.card-title.text-center Create an Account for Gymbuds
+            .card-body
+              form
+                .mb-3
+                  label.form-label(for='username') First Name:
+                  input.form-control(type='text', id='first', placeholder='Enter first name', name='first_name', required)
+                .mb-3
+                  label.form-label(for='username') Last Name:
+                  input.form-control(type='text', id='last', placeholder='Enter last name', name='last_name', required)
+                .mb-3
+                  label.form-label(for='username') Username:
+                  input.form-control(type='text', id='username', placeholder='Enter username', name='password', required)
+                .mb-3
+                  label.form-label(for='password') Password:
+                  input.form-control(type='password', id='password', placeholder='Enter password', name='password2', required)
+                .mb-3
+                  label.form-label(for='username') Re-enter Password:
+                  input.form-control(type='text', id='password2', placeholder='Re-enter password', required)
+                .row
+                  .col 
+                    button(type="submit", class="btn btn-success btn-block", href="/") Sign Up
+                  .col-auto
+                    a(href='/login', class="btn btn-info btn-block") Go to Login
+      if message 
+        .alert.alert-danger(class="text-center")
+          i(class="bi bi-exclamation-triangle-fill me-3 justify-content-center")  #{message}  

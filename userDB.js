@@ -31,7 +31,7 @@ class UserDB {
     }
 
     //Creates a user
-    async createUser(){
+    async createUser(first, last, username, password){
         try{
             const id = await this.db.create('Users', [
                 { column: 'first_name', value: first },
@@ -53,6 +53,15 @@ class UserDB {
             console.error('Error finding by user:', error.message);
         }
         if (us.length > 0) return us[0];
+        else {
+            return undefined;
+        }
+    }
+
+    //Find user by ID
+    async findUserById(id) {
+        const us = this.db.read('Users', [{ column: 'id', value: id }]);
+        if (us.size > 0) return us[0];
         else {
             return undefined;
         }

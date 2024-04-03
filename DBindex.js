@@ -1,6 +1,8 @@
 const assert = require('assert');
 const sqlite3 = require('sqlite3').verbose();
 
+//DataStore Class
+//All of the basic functions for interacting with the database, all specific functions will call one of these in order to generate a sql query.
 class DataStore {
     constructor() {
         // Read Configuration
@@ -60,17 +62,17 @@ class DataStore {
             });
         });
     }
-    
 
-    // async create(table, data) {
-    //     const params = Array(data.length).fill('?')
-    //     const sql = `INSERT into ${table} (${data.map(d => d.column).join(',')}) values (${params.join(',')})`;
-    //     console.log(sql, data.map(d => d.value));
-    //     const result = await this.db.run(
-    //         sql,
-    //         data.map(d => d.value));
-    //     return result.lastID;
-    // }
+
+    create(table, data) {
+        const params = Array(data.length).fill('?')
+        const sql = `INSERT into ${table} (${data.map(d => d.column).join(',')}) values (${params.join(',')})`;
+        console.log(sql, data.map(d => d.value));
+        const result = this.db.run(
+            sql,
+            data.map(d => d.value));
+        return result.lastID;
+    }
 
     // /** This is limited to supporting direct match query parameters.
     //  *  Query is an array of column/value pairs
