@@ -20,18 +20,19 @@ block content
                 form(action='/login' method='post').form
                   .mb-3
                     label.form-label(for='username') Username
-                    input.form-control(type='text', placeholder='Enter username', required)
+                    input.form-control(name='username', type='text', placeholder='Enter username', required)
                   .mb-3
                     label.form-label(for='password') Password
-                    input.form-control(type='password', placeholder='Enter password', required)
+                    input.form-control(name='password', type='password', placeholder='Enter password', required)
                   .row
                     .col 
                       button(type="submit", class="btn btn-success btn-block", href="/") Login
                     .col-auto
                       a(href='/signup', class="btn btn-info btn-block") Sign up
-        if message
-          .alert.alert-danger(class="text-center")
-              i(class="bi bi-exclamation-triangle-fill me-3 justify-content-center")  #{message} 
+                p
+                if message
+                  .alert.alert-danger(class="text-center")
+                      i(class="bi bi-exclamation-triangle-fill me-3 justify-content-center")  #{message} 
 
 
 

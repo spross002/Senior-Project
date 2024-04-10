@@ -1,4 +1,5 @@
 const assert = require('assert');
+//require('dotenv').config();
 const sqlite3 = require('sqlite3').verbose();
 
 //DataStore Class
@@ -13,7 +14,7 @@ class DataStore {
     connect() {
         return new Promise((resolve, reject) => {
             this.db.serialize(() => {
-                console.log('Connected to database');
+                console.log('Connected to database ');
                 resolve;
             });
 
@@ -47,21 +48,32 @@ class DataStore {
     read(table, query){
         let sql = `SELECT * from ${table}`;
         if (query.length > 0) {
-            sql += ` WHERE ${query.map(d => `${d.column} = ?`).join(' and ')}`
+            sql += ` WHERE ${query.map(d => `${d.column} = '${d.value}'`).join(' and ')}`
         }
 
+        // let result = this.db.get(sql, function(err, rows) {
+        //     if(err || rows == undefined){
+        //         console.log("Error:", err.message);
+        //     }else{
+        //         console.log(rows);
+        //         return callback(rows);
+        //     }
+        // });
+        // console.log("result: " + result);
+
         return new Promise((resolve, reject) => {
-            this.db.run(sql, (err) => {
+            this.db.get(sql, (err, rows) => {
                 if (err) {
-                    console.error('Eroor reading from table:', err.message);
+                    console.error('Error:', err.message);
                     reject(err);
                 } else {
-                    console.log('Read from table successfully');
-                    resolve();
+                    console.log('Successful lookup');
+                    resolve(rows);
                 }
             });
         });
     }
+
 
 
     create(table, data) {

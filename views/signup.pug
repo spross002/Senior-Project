@@ -19,20 +19,20 @@ block content
             .card-body
               form
                 .mb-3
-                  label.form-label(for='username') First Name:
-                  input.form-control(type='text', id='first', placeholder='Enter first name', name='first_name', required)
+                  label.form-label(for='first_name') First Name:
+                  input.form-control(type='text', id='first', placeholder='Enter first name', name='first', required)
                 .mb-3
-                  label.form-label(for='username') Last Name:
-                  input.form-control(type='text', id='last', placeholder='Enter last name', name='last_name', required)
+                  label.form-label(for='last_name') Last Name:
+                  input.form-control(type='text', id='last', placeholder='Enter last name', name='last', required)
                 .mb-3
                   label.form-label(for='username') Username:
-                  input.form-control(type='text', id='username', placeholder='Enter username', name='password', required)
+                  input.form-control(type='text', id='username', placeholder='Enter username', name='username', required)
                 .mb-3
                   label.form-label(for='password') Password:
-                  input.form-control(type='password', id='password', placeholder='Enter password', name='password2', required)
+                  input.form-control(type='password', id='password', placeholder='Enter password', name='password', required)
                 .mb-3
-                  label.form-label(for='username') Re-enter Password:
-                  input.form-control(type='text', id='password2', placeholder='Re-enter password', required)
+                  label.form-label(for='password2') Re-enter Password:
+                  input.form-control(type='password', id='password2', placeholder='Re-enter password', name='password2', required)
                 .row
                   .col 
                     button(type="submit", class="btn btn-success btn-block", href="/") Sign Up

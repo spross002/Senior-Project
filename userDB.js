@@ -1,5 +1,7 @@
 require('dotenv').config();
+const DataStore = require('./DBindex');
 const Database = require('./DBindex');
+const sqlite3 = require('sqlite3').verbose();
 
 class UserDB {
     constructor(databasePath) {
@@ -48,23 +50,24 @@ class UserDB {
     //Find a user by their username
     async findUserByUsername(username) {
         try {
-            const us = await this.db.read('Users', [{ column: 'username', value: username }]);
+            const user = await this.db.read('Users', [{ column: 'username', value: username }]);
+            console.log(user);
+            return user;
         } catch (error) {
-            console.error('Error finding by user:', error.message);
-        }
-        if (us.length > 0) return us[0];
-        else {
-            return undefined;
+            console.error('Error finding user by username: ', error.message);
         }
     }
 
-    //Find user by ID
+    // //Find user by ID
     async findUserById(id) {
-        const us = this.db.read('Users', [{ column: 'id', value: id }]);
-        if (us.size > 0) return us[0];
-        else {
-            return undefined;
+        try {
+            const user = await this.db.read('Users', [{ column: 'id', value: id }]);
+            console.log(user);
+            return user;
+        } catch (error) {
+            console.error('Error finding user by id: ', error.message);
         }
+        
     }
   
     close() {

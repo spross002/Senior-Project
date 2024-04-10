@@ -17,7 +17,8 @@ router.get('/login', async (req, res) => {
 router.post('/login', async (req, res) => {
     const username = req.body.username.trim();
     const p1 = req.body.password.trim();
-    const user = await req.body.findUserByUsername(username);
+    const user = await req.db.findUserByUsername(username);
+    console.log("User: ", user)
 
     if (user && bcrypt.compareSync(p1, user.password)){
         req.session.user = user;

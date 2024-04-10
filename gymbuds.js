@@ -3,6 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 
 const UserDB = require('./userDB');
 const db = new UserDB('./gymbuds.db');
@@ -19,7 +20,7 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 
 //Generate a secure random secret key
-const secret = crypto.randomBytes(64).toString('hex')
+const secret = crypto.randomBytes(64).toString('hex');
 
 // Gets call on every request, before the routes.
 // We can inject dependencies into the req (or res)
@@ -57,4 +58,6 @@ app.listen(8080, () => {
     console.log('Server is running on port 8080')
 });
 
-db.createUser('Sebastian', 'Pross', 'spross', 1234);
+// const salt = bcrypt.genSaltSync(10);
+// const hash = bcrypt.hashSync("1234", salt);
+// db.createUser('Sebastian', 'Pross', 'spross', hash);

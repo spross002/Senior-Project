@@ -13,8 +13,12 @@ block content
                     li.nav-item
                         a.nav-link(href='/dashboard') Dashboard
                 ul.navbar-nav(style='display: flex; align-items: center;')
-                    li.nav-item
-                        a.nav-link(href='/login') Login
+                    if user
+                        li.nav-item 
+                            a.nav-link(href='/home') Profile
+                    else
+                        li.nav-item
+                            a.nav-link(href='/login') Login
 
 
 
