@@ -17,6 +17,8 @@ block content
               .card-header
                 h5.card-title.text-center Login
               .card-body
+                if fromSignup == true
+                  p Thank you for creating an account with Gymbuds! Please log in.
                 form(action='/login' method='post').form
                   .mb-3
                     label.form-label(for='username') Username

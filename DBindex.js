@@ -51,16 +51,6 @@ class DataStore {
             sql += ` WHERE ${query.map(d => `${d.column} = '${d.value}'`).join(' and ')}`
         }
 
-        // let result = this.db.get(sql, function(err, rows) {
-        //     if(err || rows == undefined){
-        //         console.log("Error:", err.message);
-        //     }else{
-        //         console.log(rows);
-        //         return callback(rows);
-        //     }
-        // });
-        // console.log("result: " + result);
-
         return new Promise((resolve, reject) => {
             this.db.get(sql, (err, rows) => {
                 if (err) {
@@ -75,15 +65,18 @@ class DataStore {
     }
 
 
-
+    //Create an entry and enter into a specific table
     create(table, data) {
         const params = Array(data.length).fill('?')
         const sql = `INSERT into ${table} (${data.map(d => d.column).join(',')}) values (${params.join(',')})`;
         console.log(sql, data.map(d => d.value));
+
+        //Insert the item into the specified table
         const result = this.db.run(
             sql,
             data.map(d => d.value));
-        return result.lastID;
+
+        return;
     }
 
     // /** This is limited to supporting direct match query parameters.

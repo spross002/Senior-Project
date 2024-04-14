@@ -18,7 +18,6 @@ router.post('/login', async (req, res) => {
     const username = req.body.username.trim();
     const p1 = req.body.password.trim();
     const user = await req.db.findUserByUsername(username);
-    console.log("User: ", user)
 
     if (user && bcrypt.compareSync(p1, user.password)){
         req.session.user = user;
@@ -61,15 +60,16 @@ router.post('/signup', async (req, res) => {
 
     //Generate a salt hash for the password for a base level of password security
     const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(p1, salt);
+    const hash = bcrypt.hashSync(password1, salt);
 
     //Create the user with the input information
-    const id = await req.db.createUser(first, last, username, hash);
-    //Set the session user as the one just created
-    req.session.user = await req.db.findUserById(id);
+    await req.db.createUser(first, last, username, hash);
 
-    //Note this will redirect to a dashboard in the future
-    res.redirect('/');
+    //This will be passed to the login page for it to know that the user just created an account and show the correct text
+    const fromSignup = true;
+
+    //Redirect the user to the login page in order for them to login
+    res.render('login', { fromSignup });
 });
 
 module.exports = router;

@@ -1,0 +1,17 @@
+extends layout.pug
+
+block content 
+    .container
+        h1 Unauthorized!
+        .row 
+            .col
+                .card(class="text-white bg-dark mb-3")
+                    .card-body
+                        .row 
+                            .col 
+                                h2 Please log in to access this page. 
+                                p
+                                    .form-group
+                                        div(class="d-grid gap-2 d-md-flex justify-content-md-start")
+                                            a(class="btn btn-success", href='/login', role='button') Log In 
+                                            a(class="btn btn-info", href='/', role="button") Return Home  

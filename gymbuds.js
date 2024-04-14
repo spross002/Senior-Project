@@ -53,11 +53,10 @@ app.set('view engine', 'pug');
 
 app.use('/', require('./routes/accounts'))
 app.use('/', require('./routes/home'))
+app.use('/', require('./routes/dashboard'))
 
 app.listen(8080, () => {
     console.log('Server is running on port 8080')
 });
 
-// const salt = bcrypt.genSaltSync(10);
-// const hash = bcrypt.hashSync("1234", salt);
-// db.createUser('Sebastian', 'Pross', 'spross', hash);
+

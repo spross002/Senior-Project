@@ -11,11 +11,17 @@ block content
             #navbarSupportedContent.collapse.navbar-collapse
                 ul.navbar-nav.me-auto.mb-2.mb-lg-0
                     li.nav-item
-                        a.nav-link(href='/dashboard') Dashboard
+                        a.nav-link(href='/dashboard') Dashboard 
                 ul.navbar-nav(style='display: flex; align-items: center;')
                     if user
-                        li.nav-item 
-                            a.nav-link(href='/home') Profile
+                        li.nav-item.dropdown
+                            a.nav-link(class="btn dropdown-toggle", data-bs-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
+                                i(class="bi bi-person-circle profile-icon")
+                            ul.dropdown-menu.dropdown-menu-end(aria-labelledby="dropdownMenuButton")
+                                li 
+                                    a.dropdown-item(href="/profile") Profile Settings
+                                li 
+                                    a.dropdown-item(href="/logout") Logout
                     else
                         li.nav-item
                             a.nav-link(href='/login') Login

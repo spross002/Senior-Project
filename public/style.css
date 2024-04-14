@@ -14,3 +14,9 @@ body {
     background-color: lightblue;
     color: black;
 }
+
+/* This is the custom css for the profile icon in the rop right of the navbar */
+.profile-icon{
+    font-size: 20px;
+    color: white;
+}
