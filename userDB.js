@@ -47,6 +47,29 @@ class UserDB {
         }
     }
 
+    //Updates a user
+    async updateUser(id, first, last, username){
+        try{
+            await this.db.update('Users', [
+                { column: 'first_name', value: first },
+                { column: 'last_name', value: last },
+                { column: 'username', value: username }
+            ], [{ column: 'id', value: id }]);
+        } catch (error) {
+            console.error("Error updating user: ", error.message);
+        }
+    }
+
+    async updateUserPassword(id, password){
+        try{
+            await this.db.update('Users', [
+                { column: 'password', value: password }
+            ], [{ column: 'id', value: id }]);
+        } catch (error) {
+            console.error("Error updating user password: ", error.message);
+        }
+    }
+
     //Find a user by their username
     async findUserByUsername(username) {
         try {
@@ -58,7 +81,7 @@ class UserDB {
         }
     }
 
-    // //Find user by ID
+    //Find user by ID
     async findUserById(id) {
         try {
             const user = await this.db.read('Users', [{ column: 'id', value: id }]);
@@ -68,6 +91,11 @@ class UserDB {
             console.error('Error finding user by id: ', error.message);
         }
         
+    }
+
+    async getUserFirstLast(id){
+        user = this.findUserById(id);
+        return user.first + user.last;
     }
   
     close() {

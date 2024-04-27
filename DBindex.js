@@ -64,6 +64,25 @@ class DataStore {
         });
     }
 
+    //Update an entry in a table
+    update(table, data, query){
+        const params = Array(data.length).fill('?')
+        let sql = `UPDATE ${table} set ${data.map(d => `${d.column}=?`)} where ${query.map(d => `${d.column} = ?`).join(' and ')}`;
+        const _data = data.map(d => d.value).concat(query.map(q => q.value));
+
+        return new Promise((resolve, reject) => {
+            this.db.run(sql, _data, (err) => {
+              if (err) {
+                console.error('Error updating table:', err.message);
+                reject(err);
+              } else {
+                console.log('Table successfully updated');
+                resolve();
+              }
+            });
+          });
+    }
+
 
     //Create an entry and enter into a specific table
     create(table, data) {

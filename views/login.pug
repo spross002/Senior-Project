@@ -8,6 +8,7 @@ block content
               |   Gymbuds
           button.navbar-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
               span.navbar-toggler-icon
+          
 
   body
       .container
@@ -34,7 +35,9 @@ block content
                 p
                 if message
                   .alert.alert-danger(class="text-center")
-                      i(class="bi bi-exclamation-triangle-fill me-3 justify-content-center")  #{message} 
+                      i(class="bi bi-exclamation-triangle-fill me-2 justify-content-center", style="font-style: normal")
+                      |#{message}    
+                      i(class="bi bi-exclamation-triangle-fill me-md-2 justify-content-center", style="font-style: normal")  
 
 
 

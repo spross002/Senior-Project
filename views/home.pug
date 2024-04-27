@@ -10,21 +10,45 @@ block content
                 span.navbar-toggler-icon
             #navbarSupportedContent.collapse.navbar-collapse
                 ul.navbar-nav.me-auto.mb-2.mb-lg-0
-                    li.nav-item
-                        a.nav-link(href='/dashboard') Dashboard 
-                ul.navbar-nav(style='display: flex; align-items: center;')
+                    if user
+                        li.nav-item
+                            a.nav-link(href='/dashboard') Dashboard 
+                ul.navbar-nav
                     if user
                         li.nav-item.dropdown
                             a.nav-link(class="btn dropdown-toggle", data-bs-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
                                 i(class="bi bi-person-circle profile-icon")
                             ul.dropdown-menu.dropdown-menu-end(aria-labelledby="dropdownMenuButton")
                                 li 
-                                    a.dropdown-item(href="/profile") Profile Settings
+                                    .dropdown-item.dropdown-header(style="text-align: center; color: #000;") #{user.first_name} #{user.last_name}
+                                div.dropdown-divider
                                 li 
-                                    a.dropdown-item(href="/logout") Logout
+                                    a.dropdown-item(href="/profile")
+                                        i(class="bi bi-gear-fill" style="font-style: normal")  Profile Settings
+                                li 
+                                    a.dropdown-item(href="/logout") 
+                                        i(class="bi bi-box-arrow-right" style="font-style: normal")  Logout
                     else
                         li.nav-item
                             a.nav-link(href='/login') Login
+
+    body
+    .container
+        .row.justify-content-center.align-items-center.py-5
+            .col-md-6.text-center
+                h1.display-4.mb-4.text-white Welcome to Gymbuds!
+                img.img-fluid.mb-4(src="welcome-image.jpg", alt="Welcome Image")
+                p.lead.mb-4.text-white 
+                    | Gymbuds is a web application used to log your gym workouts! Our main feature is logging what workouts you do in each session, along with the rep schemes and the weights that you 
+                    | used. 
+                    | 
+                    | But that's not all! Once a week, the app will break down what you did and supply a weekly recap consisting of the amount of time you spent working out, and what muscle groups 
+                    | you hit!
+                if !user
+                    a(class="btn btn-outline-info btn-block btn-lg", href="/login") Get Started!
+                else 
+                    a(class="btn btn-outline-info btn-block btn-lg", href="/dashboard") Go To Dashboard
+
 
 
 

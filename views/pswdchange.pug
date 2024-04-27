@@ -1,0 +1,41 @@
+extends layout.pug
+
+block content 
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+        .container-fluid
+            a.navbar-brand(href='/')
+                img.img-fluid(src='logo.png', alt='Logo', width='50')
+                |   Gymbuds
+            button.navbar-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+                span.navbar-toggler-icon
+
+    body
+        .container 
+            .row-justify-content-center.mt-5
+                .col-justify-content-center.md-6
+                    .card.profile-card 
+                        .card-header 
+                            h2.card-title.text-center Change Password
+                        .card-body 
+                            .row
+                                form(action='/pswdchange', method='post').form
+                                    .row
+                                        .col 
+                                            label.form-label(for='password') New Password
+                                            input.form-control(type='password', placeholder='Enter new password', name='password')
+                                        .col
+                                            label.form-label(for='password2') Re-enter New Password
+                                            input.form-control(type='password', placeholder='Re-enter new password', name='password2')
+                                    p
+                                    .row 
+                                        .col 
+                                            button(type="submit", class="btn btn-success btn-block", href="/pswdchange") Update 
+                                        .col-auto 
+                                            a(href='/profile', class="btn btn-danger btn-block") Cancel
+                            p 
+                            if success == false 
+                                .alert.alert-danger(class="text-center")
+                                    i(class="bi bi-exclamation-triangle-fill me-3 justify-content-center", style="font-style: normal") #{message}
+                            if success == true
+                                .alert.alert-success(class="text-center")
+                                    i(class="bi bi-check-circle-fill me-3 justify-content-center", style="font-style: normal")  #{message}

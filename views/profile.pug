@@ -1,0 +1,74 @@
+extends layout.pug
+
+block content 
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+        .container-fluid
+            a.navbar-brand(href='/')
+                img.img-fluid(src='logo.png', alt='Logo', width='50')
+                |   Gymbuds
+            button.navbar-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+                span.navbar-toggler-icon
+            #navbarSupportedContent.collapse.navbar-collapse
+                ul.navbar-nav.me-auto.mb-2.mb-lg-0
+                ul.navbar-nav
+                    if user
+                        li.nav-item.dropdown
+                            a.nav-link(class="btn dropdown-toggle", data-bs-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
+                                i(class="bi bi-person-circle profile-icon")
+                            ul.dropdown-menu.dropdown-menu-end(aria-labelledby="dropdownMenuButton")
+                                li 
+                                    .dropdown-item.dropdown-header(style="text-align: center; color: #000;") #{user.first_name} #{user.last_name}
+                                div.dropdown-divider
+                                li 
+                                    a.dropdown-item(href="/logout") 
+                                        i(class="bi bi-box-arrow-right" style="font-style: normal")  Logout
+                    else
+                        li.nav-item
+                            a.nav-link(href='/login') Login
+
+    body
+        .container 
+            .row-justify-content-center.mt-5
+                .col-justify-content-center.md-6
+                    .card.profile-card 
+                        .card-header 
+                            h2.card-title.text-center Account Settings
+                        .card-body
+                            .row 
+                                h5.card-title User Information 
+                            .row 
+                                .col 
+                                    section Name: #{user.first_name} #{user.last_name} 
+                                .col
+                                    section Username: #{user.username}
+                            hr
+                            .row 
+                                h5.card-title Edit User Information 
+                            .row
+                                form(action='/profile', method='post').form
+                                    .row
+                                        .col 
+                                            label.form-label(for='first') New First Name
+                                            input.form-control(type='text', placeholder='Enter new first name', name='first')
+                                        .col
+                                            label.form-label(for='last') New Last Name
+                                            input.form-control(type='text', placeholder='Enter new last name', name='last')
+                                    p
+                                    .row
+                                        .col
+                                            label.form-label(for='username') New Username
+                                            input.form-control(type='text', placeholder='Enter new username', name='username')
+                                    p
+                                    .row 
+                                        .col 
+                                            button(type="submit", class="btn btn-success btn-block", href="/profile") Update 
+                                        .col-auto 
+                                            a(href='/pswdchange', class="btn btn-warning btn-block") Change Password 
+                            p 
+                            if message 
+                                .alert.alert-danger(class="text-center")
+                                    i(class="bi bi-excalamation-triangle-fill me-3 justify-content-center") #{message}
+
+                                    
+
+
