@@ -1,0 +1,140 @@
+[
+    {
+        "name": "Squat",
+        "classification": "Main",
+        "muscleGroups": ["Quadriceps", "Glutes", "Hamstrings"],
+        "bodyPart": "Lower Body"
+    },
+    {
+        "name": "Bench Press",
+        "classification": "Main",
+        "muscleGroups": ["Chest", "Shoulders", "Triceps"],
+        "bodyPart": "Upper Body"
+    },
+    {
+        "name": "Deadlift",
+        "classification": "Main",
+        "muscleGroups": ["Lower Back", "Glutes", "Hamstrings"],
+        "bodyPart": "Lower Body"
+    },
+    {
+        "name": "Pull-Up",
+        "classification": "Accessory",
+        "muscleGroups": ["Back", "Biceps"],
+        "bodyPart": "Upper Body"
+    },
+    {
+        "name": "Leg Press",
+        "classification": "Accessory",
+        "muscleGroups": ["Quadriceps", "Hamstrings", "Glutes"],
+        "bodyPart": "Lower Body"
+    },
+    {
+        "name": "Shoulder Press",
+        "classification": "Accessory",
+        "muscleGroups": ["Shoulders", "Triceps"],
+        "bodyPart": "Upper Body"
+    }, 
+    {
+        "name": "Snatch",
+        "classification": "Main",
+        "muscleGroups": ["Quadriceps", "Hamstrings", "Glutes", "Back", "Shoulders", "Traps"],
+        "bodyPart": "Total Body"
+    },
+    {
+        "name": "Clean and Jerk",
+        "classification": "Main",
+        "muscleGroups": ["Quadriceps", "Hamstrings", "Glutes", "Back", "Shoulders", "Traps", "Triceps"],
+        "bodyPart": "Total Body"
+    },
+    {
+        "name": "Overhead Squat",
+        "classification": "Main",
+        "muscleGroups": ["Quadriceps", "Glutes", "Hamstrings", "Shoulders", "Triceps", "Core"],
+        "bodyPart": "Total Body"
+    },
+    {
+        "name": "Clean",
+        "classification": "Main",
+        "muscleGroups": ["Quadriceps", "Hamstrings", "Glutes", "Back", "Shoulders", "Traps", "Triceps"],
+        "bodyPart": "Total Body"
+    },
+    {
+        "name": "Barbell RDL",
+        "classification": "Accessory",
+        "muscleGroups": ["Hamstrings", "Glutes", "Lower Back"],
+        "bodyPart": "Lower Body"
+    },
+    {
+        "name": "Dumbbell RDL",
+        "classification": "Accessory",
+        "muscleGroups": ["Hamstrings", "Glutes", "Lower Back"],
+        "bodyPart": "Lower Body"
+    },
+    {
+        "name": "Incline Barbell Bench",
+        "classification": "Accessory",
+        "muscleGroups": ["Chest", "Shoulders", "Triceps"],
+        "bodyPart": "Upper Body"
+    },
+    {
+        "name": "Incline DB Bench",
+        "classification": "Accessory",
+        "muscleGroups": ["Chest", "Shoulders", "Triceps"],
+        "bodyPart": "Upper Body"
+    },
+    {
+        "name": "Tricep Pushdown",
+        "classification": "Accessory",
+        "muscleGroups": ["Triceps"],
+        "bodyPart": "Upper Body"
+    },
+    {
+        "name": "Bicep Curls",
+        "classification": "Accessory",
+        "muscleGroups": ["Biceps"],
+        "bodyPart": "Upper Body"
+    },
+    {
+        "name": "Lat Pulldowns",
+        "classification": "Accessory",
+        "muscleGroups": ["Back", "Biceps"],
+        "bodyPart": "Upper Body"
+    },
+    {
+        "name": "Hang Cleans",
+        "classification": "Main",
+        "muscleGroups": ["Quadriceps", "Hamstrings", "Glutes", "Back", "Shoulders", "Traps"],
+        "bodyPart": "Total Body"
+    },
+    {
+        "name": "Front Squats",
+        "classification": "Main",
+        "muscleGroups": ["Quadriceps", "Glutes", "Hamstrings", "Core"],
+        "bodyPart": "Total Body"
+    },
+    {
+        "name": "Safety Bar Squats",
+        "classification": "Main",
+        "muscleGroups": ["Quadriceps", "Glutes", "Hamstrings", "Lower Back", "Core"],
+        "bodyPart": "Total Body"
+    },
+    {
+        "name": "Hang Snatch Pull",
+        "classification": "Main",
+        "muscleGroups": ["Quadriceps", "Hamstrings", "Glutes", "Back", "Shoulders", "Traps"],
+        "bodyPart": "Total Body"
+    },
+    {
+        "name": "Hang Clean Pull",
+        "classification": "Main",
+        "muscleGroups": ["Quadriceps", "Hamstrings", "Glutes", "Back", "Shoulders", "Traps"],
+        "bodyPart": "Total Body"
+    },
+    {
+        "name": "Rows",
+        "classification": "Accessory",
+        "muscleGroups": ["Back", "Biceps"],
+        "bodyPart": "Upper Body"
+    }
+]

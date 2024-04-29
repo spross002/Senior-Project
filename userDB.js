@@ -1,4 +1,5 @@
 require('dotenv').config();
+const fs = require('fs');
 const DataStore = require('./DBindex');
 const Database = require('./DBindex');
 const sqlite3 = require('sqlite3').verbose();
@@ -28,7 +29,63 @@ class UserDB {
                 { name: 'password', type: 'TEXT' }
             ], 'id');
         } catch (error) {
-            console.error('Error creating table', error.message);
+            console.error('Error creating user table', error.message);
+        }
+    }
+
+    //Makes the workout table (upon very first run)
+    async makeWorkoutTable(){
+        try{
+            await this.db.schema('Workouts', [
+                { name: 'id', type: 'INTEGER' },
+                { name: 'user_id', type: 'INTEGER' },
+                { name: 'date', type: 'DATE' },
+                { name: 'duration_minutes', type: 'INTEGER' },
+            ], 'id', ', FOREIGN KEY ("user_id") REFERENCES Users ("id") )');
+        } catch (error) {
+            console.error('Error creating workout table', error.message);
+        }
+    }
+
+    //Makes the table for exercises (upon very first run)
+    async makeExercisesTable(){
+        try{
+            await this.db.schema('Exercises', [
+                { name: 'id', type: 'INTEGER' },
+                { name: 'name', type: 'TEXT'},
+                { name: 'classification', type: 'TEXT'},
+                { name: 'muscleGroups', type: 'TEXT'},
+                { name: 'bodyPart', type: 'TEXT'}
+            ], 'id');
+        } catch (error) {
+            console.error('Error creating workout table', error.message);
+        }
+    }
+
+    //Fills exercise Table from JSON
+    async fillExercisesTable(){
+        //Checks if Exercises is empty, because if it is not empty then we are just re-entering data again unecessarily
+        const empty = await this.db.isTableEmpty('Exercises');
+
+        //If Exercises is empty, we fill the table from the JSON file.
+        if(empty){
+            try{
+                const jsonData = fs.readFileSync('exercises.json', 'utf-8');
+    
+                const parsedData = JSON.parse(jsonData);
+        
+                //Loop through the parsed data from the JSON (the exercises) and add them to the table by calling create
+                parsedData.forEach(exercise => {
+                    this.db.create('Exercises', [
+                        { column: 'name', value: exercise.name },
+                        { column: 'classification', value: exercise.classification },
+                        { column: 'muscleGroups', value: exercise.muscleGroups.join(', ')},
+                        { column: 'bodyPart', value: exercise.bodyPart }
+                    ])
+                });
+            } catch (error) {
+                console.error('Error reading or parsing JSON file: ', error);
+            }
         }
     }
 
@@ -60,6 +117,7 @@ class UserDB {
         }
     }
 
+    //Updates a user's password
     async updateUserPassword(id, password){
         try{
             await this.db.update('Users', [
@@ -93,9 +151,20 @@ class UserDB {
         
     }
 
+    //Returns the user's first and last name (searched by their ID)
     async getUserFirstLast(id){
         user = this.findUserById(id);
         return user.first + user.last;
+    }
+
+    //Returns all of the exercises from the exercises table
+    async getExercises(){
+        try{
+            let exercises = await this.db.getAll('Exercises');
+            return exercises;
+        } catch (error) {
+            console.error('Error retrieving exercises:', error.message);
+        }
     }
   
     close() {

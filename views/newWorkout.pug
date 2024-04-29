@@ -1,0 +1,95 @@
+extends layout.pug
+
+block content 
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+        .container-fluid
+            a.navbar-brand(href='/')
+                img.img-fluid(src='logo.png', alt='Logo', width='50')
+                |   Gymbuds
+            button.navbar-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+                span.navbar-toggler-icon
+            #navbarSupportedContent.collapse.navbar-collapse
+                ul.navbar-nav.me-auto.mb-2.mb-lg-0
+                    if user
+                        li.nav-item
+                            a.nav-link(href='/dashboard') Dashboard 
+                ul.navbar-nav
+                    if user
+                        li.nav-item.dropdown
+                            a.nav-link(class="btn dropdown-toggle", data-bs-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
+                                i(class="bi bi-person-circle profile-icon")
+                            ul.dropdown-menu.dropdown-menu-end(aria-labelledby="dropdownMenuButton")
+                                li 
+                                    .dropdown-item.dropdown-header(style="text-align: center; color: #000;") #{user.first_name} #{user.last_name}
+                                div.dropdown-divider
+                                li 
+                                    a.dropdown-item(href="/logout") 
+                                        i(class="bi bi-box-arrow-right" style="font-style: normal")  Logout
+                    else
+                        li.nav-item
+                            a.nav-link(href='/login') Login
+
+    body
+        //- for exercise in exercises
+        //-     .row
+        //-         .col
+        //-             section(style="color: white") Exercise: #{exercise.name}
+        //-         .col
+        //-             section(style="color: white") Exercise Type: #{exercise.classification}
+
+        .container 
+            form(id='postForm', action='/submitNewWorkout', method='post').form
+                .row-justify-content-center.mt-5 
+                    .col-justfiy-content-center.md-6 
+                        .card.mains-card 
+                            .card-header 
+                                h4.card-title Main Lifts 
+                            .card-body 
+                                .row
+                                    .col
+                                        label(for='exercise') Select Exercise: 
+                                        select(name='exercise', id='exercise', class='scrollable-dropdown')
+                                            each exercise in exercises
+                                                if exercise.classification == 'Main' 
+                                                    option(value=exercise.id)= exercise.name
+                                    .col
+                                        label(for='sets') Set Count:
+                                        input.form-control(type='text', placeholder="Ex. 2", name='sets')
+                                    .col
+                                        label(for='reps') Rep Count:
+                                        input.form-control(type='text', placeholder="Ex. 5", name='reps')
+                                    .col
+                                        label(for='weight') Weight (lbs):
+                                        input.form-control(type='text', placeholder="Ex. 225", name='weight')
+                                    p
+                                    hr
+                                .row
+                                    .col
+                                        button(type="button", class="btn btn-success btn-block") Add Another Main
+                .row-justify-content-center.mt-5 
+                    .col-justfiy-content-center.md-6 
+                        .card.mains-card 
+                            .card-header 
+                                h4.card-title Accessories 
+                            .card-body 
+                                .row
+                                    .col
+                                        label(for='exercise') Select Exercise: 
+                                        select(name='exercise', id='exercise', class='scrollable-dropdown')
+                                            each exercise in exercises
+                                                if exercise.classification == 'Accessory' 
+                                                    option(value=exercise.id)= exercise.name
+                                    .col
+                                        label(for='sets') Set Count:
+                                        input.form-control(type='text', placeholder="Ex. 3", name='sets')
+                                    .col
+                                        label(for='reps') Rep Count:
+                                        input.form-control(type='text', placeholder="Ex. 10", name='reps')
+                                    .col
+                                        label(for='weight') Weight (lbs):
+                                        input.form-control(type='text', placeholder="Ex. 85", name='weight')
+                                    p
+                                    hr
+                                .row
+                                    .col
+                                        button(type="button", class="btn btn-success btn-block") Add Another Accessory

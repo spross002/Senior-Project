@@ -27,5 +27,12 @@ body {
     color: black;
 }
 
+/* Custom css for the dropdown of exercises */
+.scrollable-dropdown {
+    max-width: 8rem;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
 
 

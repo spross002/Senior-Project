@@ -25,11 +25,18 @@ class DataStore {
         });
     }
 
+
     //Creates table if it doesn't exist
-    schema(table, schema, pkey) {
-        const sql = `CREATE TABLE IF NOT EXISTS "${table}" 
+    schema(table, schema, pkey, fkey) {
+        let sql = `CREATE TABLE IF NOT EXISTS "${table}" 
             (${schema.map(c => `"${c.name}" ${c.type}`).join(", ")}, 
-            PRIMARY KEY ("${pkey}"))`;
+            PRIMARY KEY ("${pkey}")`;
+
+        if(fkey){
+            sql += fkey;
+        } else{
+            sql += ')';
+        }
     
         return new Promise((resolve, reject) => {
           this.db.run(sql, (err) => {
@@ -96,6 +103,33 @@ class DataStore {
             data.map(d => d.value));
 
         return;
+    }
+
+    //Checks whether or not a table is empty
+    isTableEmpty(table){
+        return new Promise((resolve, reject) => {
+            this.db.get(`SELECT COUNT(*) AS count FROM ${table}`, (err, row) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    const rowCount = row.count;
+                    resolve(rowCount === 0);
+                }
+            });
+        });
+    }
+
+    //Returns all items in a specific table
+    getAll(table){
+        return new Promise((resolve, reject) => {
+            this.db.all(`SELECT * FROM ${table}`, (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
     }
 
     // /** This is limited to supporting direct match query parameters.

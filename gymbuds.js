@@ -9,6 +9,11 @@ const UserDB = require('./userDB');
 const db = new UserDB('./gymbuds.db');
 db.initialize();
 db.makeUserTable();
+db.makeWorkoutTable();
+db.makeExercisesTable();
+
+//Only happens on creation
+db.fillExercisesTable();
 
 //Declare the express app
 const app = express();
@@ -51,9 +56,12 @@ app.use((req, res, next) => {
 
 app.set('view engine', 'pug');
 
+
+//This tells express to read all of the javascript files
 app.use('/', require('./routes/accounts'))
 app.use('/', require('./routes/home'))
 app.use('/', require('./routes/dashboard'))
+app.use('/', require('./routes/workoutLog'))
 
 app.listen(8080, () => {
     console.log('Server is running on port 8080')
