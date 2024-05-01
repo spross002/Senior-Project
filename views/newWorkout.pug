@@ -4,7 +4,7 @@ block content
     nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
         .container-fluid
             a.navbar-brand(href='/')
-                img.img-fluid(src='logo.png', alt='Logo', width='50')
+                img.img-fluid(src="/logo.png", alt='Logo', width='50')
                 |   Gymbuds
             button.navbar-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
                 span.navbar-toggler-icon
@@ -23,6 +23,9 @@ block content
                                     .dropdown-item.dropdown-header(style="text-align: center; color: #000;") #{user.first_name} #{user.last_name}
                                 div.dropdown-divider
                                 li 
+                                    a.dropdown-item(href="/profile")
+                                        i(class="bi bi-gear-fill" style="font-style: normal")  Profile Settings
+                                li 
                                     a.dropdown-item(href="/logout") 
                                         i(class="bi bi-box-arrow-right" style="font-style: normal")  Logout
                     else
@@ -36,8 +39,17 @@ block content
         //- Main lift rows addition
         $(document).ready(function() {
             $("#addMainRowButton").click(function() {
+                
                 //Clones the target row
                 var $row = $('#mainRow').clone();
+
+                var $rowCount = $('#mainRowContainer .row').length; 
+
+                //This function makes sure the form input ids maintain uniqueness
+                $row.find('input').each(function() {
+                    var currentName = $(this).attr('name');
+                    $(this).attr('id', (currentName + $rowCount))
+                })
 
                 //Clears the text boxes on the cloned row
                 $row.find(":text").val("");
@@ -52,6 +64,14 @@ block content
             $("#addAccesoryRowButton").click(function() {
                 //Clones the target row
                 var $row = $('#accesoryRow').clone();
+
+                var $rowCount = $('#accesoryRowContainer .row').length; 
+
+                //This function makes sure the form input ids maintain uniqueness
+                $row.find('input').each(function() {
+                    var currentName = $(this).attr('name');
+                    $(this).attr('id', (currentName + $rowCount))
+                })
 
                 //Clears the text boxes on the cloned row
                 $row.find(":text").val("");
@@ -92,8 +112,8 @@ block content
 
     body
         .container 
-            form(id='postForm', action='/submitNewWorkout', method='post').form
-                .row-justify-content-center.mt-5 
+            form(id='postForm', action=`/${user.id}/newWorkout`, method='post').form
+                .row-justify-content-center.mt-4 
                     .col-justfiy-content-center.md-6 
                         .card.mains-card 
                             .card-header 
@@ -109,13 +129,13 @@ block content
                                                         option(value=exercise.id)= exercise.name
                                         .col
                                             label(for='sets') Set Count:
-                                            input.form-control(type='text', placeholder="Ex. 2", name='sets')
+                                            input.form-control(type='text', placeholder="Ex. 2", name='m_sets', id='m_sets')
                                         .col
                                             label(for='reps') Rep Count:
-                                            input.form-control(type='text', placeholder="Ex. 5", name='reps')
+                                            input.form-control(type='text', placeholder="Ex. 5", name='m_reps', id='m_reps')
                                         .col
                                             label(for='weight') Weight (lbs):
-                                            input.form-control(type='text', placeholder="Ex. 225", name='weight')
+                                            input.form-control(type='text', placeholder="Ex. 225", name='m_weight', id='m_weight')
                                         p
                                         hr
                                 .row
@@ -123,7 +143,7 @@ block content
                                         button(type="button", id='addMainRowButton' class="btn btn-success btn-block") Add Another Main
                                     .col-auto 
                                         button(type="button", id='removeMainRowButton', class="btn btn-danger btn-block") Delete Last Row
-                .row-justify-content-center.mt-5 
+                .row-justify-content-center.mt-4 
                     .col-justfiy-content-center.md-6 
                         .card.accesory-card 
                             .card-header 
@@ -139,13 +159,13 @@ block content
                                                         option(value=exercise.id)= exercise.name
                                         .col
                                             label(for='sets') Set Count:
-                                            input.form-control(type='text', placeholder="Ex. 3", name='sets')
+                                            input.form-control(type='text', placeholder="Ex. 3", name='a_sets', id='a_sets')
                                         .col
                                             label(for='reps') Rep Count:
-                                            input.form-control(type='text', placeholder="Ex. 10", name='reps')
+                                            input.form-control(type='text', placeholder="Ex. 10", name='a_reps', id='a_reps')
                                         .col
                                             label(for='weight') Weight (lbs):
-                                            input.form-control(type='text', placeholder="Ex. 85", name='weight')
+                                            input.form-control(type='text', placeholder="Ex. 85", name='a_weight', id='a_weight')
                                         p
                                         hr
                                 .row
@@ -153,6 +173,28 @@ block content
                                         button(type="button", id="addAccesoryRowButton", class="btn btn-success btn-block") Add Another Accessory
                                     .col-auto 
                                         button(type="button", id='removeAccesoryRowButton', class="btn btn-danger btn-block") Delete Last Row
-                .row-justify-content-center.mt-5 
-                    .col-justify-content-center.md-6 
+                .row
+                    .col-md-6
+                        .card.my-4
+                            .card-header 
+                                h4.card-title Time Spent 
+                            .card-body
+                                .container(id='timeLoggingContainer')
+                                    .col
+                                        .row
+                                            .col-md-4.text-center
+                                                label(for='startTime') Time Started 
+                                                input.form-control(type='time', id='startTime')
+                                            .col-md-4.text-center
+                                                label(for='endTime') Time Ended 
+                                                input.form-control(type='time', id='endTime')
+                    .col-md-6
+                        .card.my-4
+                            .card-header 
+                                h4.card-title Finish Workout
+                            .card-body
+                                .container-submissionContainer
+                                    .row-justify-content-center.mt-4.md-6
+                                        .col-saveButton
+                                            button(type="submit", class="btn btn-info btn-block") Save Workout
                         

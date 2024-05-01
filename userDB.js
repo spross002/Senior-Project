@@ -62,6 +62,20 @@ class UserDB {
         }
     }
 
+    //Adds a workout to the workout table
+    async createWorkout(user_id, date, duration_minutes){
+        try{
+            const id = await this.db.create('Workouts', [
+                { column: 'user_id', value: user_id },
+                { column: 'date', value: date},
+                { column: 'duration_minutes', value: duration_minutes }
+            ])
+            return id;
+        } catch (error) {
+            console.error('Error creating a new workout: ', error);
+        }
+    }
+
     //Fills exercise Table from JSON
     async fillExercisesTable(){
         //Checks if Exercises is empty, because if it is not empty then we are just re-entering data again unecessarily

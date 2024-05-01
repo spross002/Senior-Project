@@ -34,5 +34,17 @@ body {
     overflow-y: auto;
 }
 
+.container-submissionContainer {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
 
+.col-saveButton {
+    background-color: #010407;
+    color: #000000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
