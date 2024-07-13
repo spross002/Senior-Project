@@ -26,8 +26,6 @@ block content
                                     a.dropdown-item(href="/logout") 
                                         i(class="bi bi-box-arrow-right" style="font-style: normal")  Logout
 
-
-
     body
 
         //- This is the navigation sidebar for the dashboard
@@ -42,7 +40,7 @@ block content
                     hr(class="my-3", style="color: gray")
                     ul(class="nav nav-pills flex-column mb-auto")
                         li(class="nav-item")
-                            a(class="nav-link active", aria-current="page")
+                            a(href="/dashboard" class="nav-link", aria-current="page")
                                 svg(class="bi me-2", width="16", height="16")
                                     i(class="bi bi-heart-pulse")
                                     |   Workouts
@@ -52,7 +50,7 @@ block content
                                     i(class="bi bi-arrow-counterclockwise")
                                     |   Latest Recap 
                         li(class="nav-item")
-                            a(href="/recaps-weekly" class="nav-link" aria-current="page")
+                            a(class="nav-link active" aria-current="page")
                                 svg(class="bi me-2", width="16", height="16")
                                     i(class="bi bi-journals")
                                     |   Weekly Recaps
@@ -60,26 +58,4 @@ block content
                             a(href='/friends' class="nav-link" aria-current="page")
                                 svg(class="bi me-2", width="16", height="16")
                                     i(class="bi bi-person-lines-fill")
-                                    |   Friend's Recaps          
-
-                div(class="col-md-9" style="color: white")
-                    .row 
-                        h1(style="margin-left: 10px") #{user.first_name}'s Workouts
-                        a(href=user.id + '/newWorkout', class="btn btn-primary rounded-pill col-md-3" style="margin-left: 10px") New Workout
-                    p
-                    .row
-                        each workout in workouts
-                            .col-md-4
-                                a(href="/workouts/"+workout.id class="card" style="margin: 10px 0; text-decoration: none")
-                                    .card-body 
-                                        h5.card-title(style="color: black") Workout on #{workout.date}
-                                        p.card-text(style="color: black") Duration: #{workout.duration_minutes} minutes
-
-
-
-                
-                
-
-
-//- Each dashboard selection will be its own page under dashboard/whatever, and clicking each one will send the user to said page
-//- the difference in the sidebar will be whatever page it is at, the list item is set to active
+                                    |   Friend's Recaps  

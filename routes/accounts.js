@@ -2,7 +2,50 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 
-//If logged in then allow contact addition and deletion and editing
+
+/*
+    Sebastian Pross - Accounts
+
+    ACCOUNTS.JS:
+
+        This javascript page holds all of the backend functions pertaining to anything related to a profile.
+        That includes login, signup, profile editing, and password change.
+
+        In order:
+
+            router.get(/logout)
+                --> This function is purely for the 'logout' button, and logs the user out of the session, redirecting them to the home page.
+
+
+            router.get(/login)
+                --> This function calls the render function for the login page
+            router.post(/login)
+                --> This function posts the login page, taking the input information and logging the user in. 
+
+
+            router.get(/signup)
+                --> This function calls the render function for the signup page
+            router.post(/signup)
+                --> This function posts the signup page, taking the input information and creating a new account in the database, issuing an error 
+                    if the account already exists.
+
+            
+            router.get(/profile)
+                --> This function calls the render function for the profile viewing page
+            router.post(/profile)
+                --> This function posts the profile page, if the user inputs a new name or email, and changeds it in the database
+
+
+            router.get(/pswdchange)
+                --> This function calls the render function for the password changing page
+            router.post(/pswdchange)
+                --> This function posts the password change page, taking the user's new password and changing it in the database
+
+
+*/
+
+//This function checks if the user is logged in, redirecting to the unauthorized page if they are not
+//This is done for security reasons. If a user is not logged in, we don't want them to be able to access certain pages
 const logged_in = (req, res, next) => {
     if (req.session.user) {
         next();
@@ -47,7 +90,7 @@ router.get('/signup', async (req, res) => {
 
 //Signup page functionality
 router.post('/signup', async (req, res) => {
-    //Get all the information from the text boxes
+    //Retreive all the user's input information from the text boxes
     const first = req.body.first;
     const last = req.body.last;
     const username = req.body.username.trim();
@@ -165,8 +208,5 @@ router.post('/pswdchange', async (req, res) => {
 
     res.render('pswdchange', { user: user, message: "Password successfully updated!", success: true })
 });
-
-
-
 
 module.exports = router;

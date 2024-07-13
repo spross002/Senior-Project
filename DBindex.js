@@ -132,6 +132,26 @@ class DataStore {
         });
     }
 
+    //Returns all with specified parameters
+    getAllWhere(table, query){
+        let sql = `SELECT * from ${table}`;
+        if (query.length > 0) {
+            sql += ` WHERE ${query.map(d => `${d.column} = '${d.value}'`).join(' and ')}`
+        }
+
+        return new Promise((resolve, reject) => {
+            this.db.all(sql, (err, rows) => {
+                if (err) {
+                    console.error('Error:', err.message);
+                    reject(err);
+                } else {
+                    console.log('Successful lookup');
+                    resolve(rows);
+                }
+            });
+        });
+    }
+
     // /** This is limited to supporting direct match query parameters.
     //  *  Query is an array of column/value pairs
     //  */

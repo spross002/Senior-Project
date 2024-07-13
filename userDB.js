@@ -180,6 +180,18 @@ class UserDB {
             console.error('Error retrieving exercises:', error.message);
         }
     }
+
+    //Returns all the workouts from a specified user id
+    async getAllWorkouts(id){
+        const user = this.findUserById(id);
+
+        try{
+            let workouts = await this.db.getAllWhere('Workouts', [{ column: 'user_id', value: id }]);
+            return workouts;
+        } catch (error) {
+            console.error('Error retreiving the user workouts: ', error.message);
+        }
+    }
   
     close() {
       this.db.close();

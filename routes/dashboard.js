@@ -25,12 +25,39 @@ router.get('/logout', async (req, res) => {
     res.redirect('/');
 });
 
-//Render the dashboard page
+//Render the main dashboard page
 router.get('/dashboard', logged_in, async (req, res) => {
     const userId = req.session.user ? req.session.user.id : -1;
     const user = await req.db.findUserById(userId);
 
-    res.render('dashboard', { user: user });
+    //This retreives all of the user's workouts from the database in order to list them for the user to see them
+    const workouts = await req.db.getAllWorkouts(userId);
+
+    res.render('dashboard', { user: user, workouts: workouts });
 });
+
+//Render the latest recap dashboard page
+router.get('/recap', logged_in, async (req, res) => {
+    const userId = req.session.user ? req.session.user.id : -1;
+    const user = await req.db.findUserById(userId);
+
+    res.render('recap', { user: user })
+})
+
+//Render the weekly recaps dashboard page
+router.get('/recaps-weekly', logged_in, async (req, res) => {
+    const userId = req.session.user ? req.session.user.id : -1;
+    const user = await req.db.findUserById(userId);
+
+    res.render('recaps-weekly', { user: user })
+})
+
+//Render the friend's recaps dashboard page
+router.get('/friends', logged_in, async (req, res) => {
+    const userId = req.session.user ? req.session.user.id : -1;
+    const user = await req.db.findUserById(userId);
+
+    res.render('friends', { user: user })
+})
 
 module.exports = router;

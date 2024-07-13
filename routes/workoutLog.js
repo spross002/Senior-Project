@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const moment = require('moment');
 
 //If logged in then allow contact addition and deletion and editing
 const logged_in = (req, res, next) => {
@@ -56,11 +55,31 @@ router.post('/:id/newWorkout', async (req, res) => {
     const startTimeStr = req.body.startTime;
     const endTimeStr = req.body.endTime;
 
-    const startTime = moment(startTimeStr, 'HH:mm');
-    const endTime = moment(endTimeStr, 'HH:mm');
+    function parseTime(timeString) {
+        const [hours, minutes] = timeString.split(':').map(Number);
+        const date = new Date();
+        date.setHours(hours, minutes, 0, 0);
+        return date;
+    }
+
+    // Parse the start and end times
+    const start = parseTime(startTimeStr);
+    const end = parseTime(endTimeStr);
+
+    //If the end time is before the start time, that means it ends on the next day (for those late night lifters)
+    // so, we need to account for that
+    if(end < start){
+        end.setDate(end.getDate() + 1);
+    }
+
+    //Calculates the workout time in milliseconds
+    const diffMilliseconds = end - start;
+
+    //Convert the milliseconds to minutes
+    const diffMinutes = diffMilliseconds / (1000 * 60);
 
     //Calculates the workout time in minutes
-    const workoutDuration = endTime.diff(startTime, 'minutes');
+    const workoutDuration = diffMinutes;
 
     console.log(workoutDuration);
 
