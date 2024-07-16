@@ -90,6 +90,12 @@ router.post('/:id/newWorkout', async (req, res) => {
     //Creates a new workout table entry and returns the workout ID
     const workoutId = await req.db.createWorkout(userId, currentDate, workoutDuration);
 
+    //Right here will be a loop to take all of the exercises from the page and create entries in the "UserExercises" table
+    //This is done at this point in the post function because the workout id needs to be known already to properly store the user's exercises.
+    //For the mainRowContainer, we loop through all the rows
+
+    //For the accessoryRowContainer, we loop through all the rows
+
     res.redirect('/dashboard');
 });
 

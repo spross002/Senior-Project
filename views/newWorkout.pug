@@ -36,16 +36,27 @@ block content
     
     //- Below is all of the scripts for dynamic exercise addition/deletion
     script.
+        var mainRowCount = 1;
+        var accessoryRowCount = 1;
         //- Main lift rows addition
         $(document).ready(function() {
             $("#addMainRowButton").click(function() {
                 
                 //Clones the target row
                 var $row = $('#mainRow').clone();
+                mainRowCount++;
+                $('#mainRowCount').val(mainRowCount);
+                console.log(mainRowCount);
 
                 var $rowCount = $('#mainRowContainer .row').length; 
 
-                //This function makes sure the form input ids maintain uniqueness
+                //This function makes sure the exercise selection ids maintain uniqueness
+                $row.find('select[name="m_exercise-dropdown"]').each(function(){
+                    var currentName = $(this).attr('name')
+                    $(this).attr('id', (currentName + $rowCount))
+                })
+
+                //This function makes sure the form input ids maintain uniqueness (reps, sets, weight)
                 $row.find('input').each(function() {
                     var currentName = $(this).attr('name');
                     $(this).attr('id', (currentName + $rowCount))
@@ -64,10 +75,19 @@ block content
             $("#addAccesoryRowButton").click(function() {
                 //Clones the target row
                 var $row = $('#accesoryRow').clone();
+                accessoryRowCount++;
+                $('#accessoryRowCount').val(accessoryRowCount);
+                console.log(accessoryRowCount);
 
                 var $rowCount = $('#accesoryRowContainer .row').length; 
 
-                //This function makes sure the form input ids maintain uniqueness
+                //This function makes sure the exercise selection ids maintain uniqueness
+                $row.find('select[name="a_exercise-dropdown"]').each(function(){
+                    var currentName = $(this).attr('name')
+                    $(this).attr('id', (currentName + $rowCount))
+                })
+
+                //This function makes sure the form input ids maintain uniqueness (reps, sets, weight)
                 $row.find('input').each(function() {
                     var currentName = $(this).attr('name');
                     $(this).attr('id', (currentName + $rowCount))
@@ -84,6 +104,12 @@ block content
         //- Main lift rows deletion
         $(document).ready(function() {
             $('#removeMainRowButton').click(function(){
+                if(mainRowCount > 1){
+                    mainRowCount--;
+                    $('#mainRowCount').val(mainRowCount);
+                    console.log(mainRowCount);
+                }
+
                 //Check the count of rows
                 var rowCount = $('#mainRowContainer .row').length;
 
@@ -98,6 +124,12 @@ block content
         //- Accesory lift rows deletion
         $(document).ready(function() {
             $('#removeAccesoryRowButton').click(function(){
+                if(accessoryRowCount > 1){
+                    accessoryRowCount--;
+                    $('#accessoryRowCount').val(accessoryRowCount);
+                    console.log(accessoryRowCount);
+                }
+
                 //Check the count of rows
                 var rowCount = $('#accesoryRowContainer .row').length;
 
@@ -123,7 +155,7 @@ block content
                                     .row(id='mainRow')
                                         .col
                                             label(for='exercise') Select Exercise: 
-                                            select(name='exercise', id='exercise', class='scrollable-dropdown')
+                                            select(name='m_exercise-dropdown', id='m_exercise-dropdown', class='scrollable-dropdown')
                                                 each exercise in exercises
                                                     if exercise.classification == 'Main' 
                                                         option(value=exercise.id)= exercise.name
@@ -153,7 +185,7 @@ block content
                                     .row(id='accesoryRow')
                                         .col
                                             label(for='exercise') Select Exercise: 
-                                            select(name='exercise', id='exercise', class='scrollable-dropdown')
+                                            select(name='a_exercise-dropdown', id='a_exercise-dropdown', class='scrollable-dropdown')
                                                 each exercise in exercises
                                                     if exercise.classification == 'Accessory' 
                                                         option(value=exercise.id)= exercise.name
@@ -196,5 +228,7 @@ block content
                                 .container-submissionContainer
                                     .row-justify-content-center.mt-4.md-6
                                         .col-saveButton
+                                            input(type="hidden", name="mainRowCount", id="mainRowCount", value='0')
+                                            input(type="hidden", name="accessoryRowCount", id="accessoryRowCount", value='0')
                                             button(type="submit", class="btn btn-info btn-block") Save Workout
                         
