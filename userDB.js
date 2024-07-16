@@ -62,6 +62,22 @@ class UserDB {
         }
     }
 
+    //Makes the table to store all the exercises in the user's workouts (upon very first run)
+    async makeUserExercisesTable(){
+        try{
+            await this.db.schema('UserExercises', [
+                { name: 'exercise_id', type: 'INTEGER' },
+                { name: 'workout_id', type: 'INTEGER' },
+                { name: 'exercise_name', type: 'TEXT' },
+                { name: 'sets', type: 'INTEGER' },
+                { name: 'reps', type: 'INTEGER' },
+                { name: 'weight', type: 'INTEGER' },
+            ], 'exercise_id', ', FOREIGN KEY ("workout_id") REFERENCES Workouts ("id") )');
+        } catch (error) {
+            console.error('Error creating User Exercises Table', error.message);
+        }
+    }
+
     //Adds a workout to the workout table
     async createWorkout(user_id, date, duration_minutes){
         try{
@@ -73,6 +89,22 @@ class UserDB {
             return id;
         } catch (error) {
             console.error('Error creating a new workout: ', error);
+        }
+    }
+
+    //Adds an exercise to the user exercises table
+    async addUserExercise(workout_id, exercise_name, sets, reps, weight){
+        try {
+            const id = await this.db.create('UserExercises' [
+                { column: 'workout_id', value: workout_id },
+                { column: 'exercise_name', value: exercise_name },
+                { column: 'sets', value: sets },
+                { column: 'reps', value: reps },
+                { column: 'weight', value: weight }
+            ])
+            return id;
+        } catch (error) {
+            console.error('Error creating a new exercise in user exercises: ', error);
         }
     }
 

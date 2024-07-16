@@ -11,6 +11,7 @@ db.initialize();
 db.makeUserTable();
 db.makeWorkoutTable();
 db.makeExercisesTable();
+db.makeUserExercisesTable();
 
 //Only happens on creation
 db.fillExercisesTable();
