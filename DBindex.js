@@ -99,8 +99,7 @@ class DataStore {
 
         //Insert the item into the specified table
         const result = this.db.run(
-            sql,
-            data.map(d => d.value));
+            sql, data.map(d => d.value));
 
         return;
     }
