@@ -1,1 +1,1 @@
-Repository of my senior project (Gymbuds) from Spring of 2024
+Repository of my senior project (Gymbuds) from Spring/Summer of 2024
