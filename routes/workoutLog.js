@@ -93,8 +93,27 @@ router.post('/:id/newWorkout', async (req, res) => {
     //Right here will be a loop to take all of the exercises from the page and create entries in the "UserExercises" table
     //This is done at this point in the post function because the workout id needs to be known already to properly store the user's exercises.
     //For the mainRowContainer, we loop through all the rows
+    const mainRowCount = req.body.mainRowCount;
+
+    //Starts with nothing, then adds one to each, so we begin with the very first row
+    var exerciseName = req.body.m_exercise_dropdown;
+    var exerciseSets = req.body.m_sets;
+    var exerciseReps = req.body.m_reps;
+    var exerciseWeight = req.body.m_weight;
+
+    const newExercise = await req.db.addUserExercise(workoutId, exerciseName, exerciseSets, exerciseReps, exerciseWeight);
+
+    for(var i = 1; i < mainRowCount; i++){
+
+    }
+
+    console.log("Main rows: ", mainRowCount);
+    
 
     //For the accessoryRowContainer, we loop through all the rows
+    const accessoryRowCount = req.body.accessoryRowCount;
+
+    console.log("Accessory rows:", accessoryRowCount);
 
     res.redirect('/dashboard');
 });

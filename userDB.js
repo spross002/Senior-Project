@@ -95,7 +95,7 @@ class UserDB {
     //Adds an exercise to the user exercises table
     async addUserExercise(workout_id, exercise_name, sets, reps, weight){
         try {
-            const id = await this.db.create('UserExercises' [
+            const id = await this.db.create('UserExercises', [
                 { column: 'workout_id', value: workout_id },
                 { column: 'exercise_name', value: exercise_name },
                 { column: 'sets', value: sets },
