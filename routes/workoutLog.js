@@ -106,14 +106,10 @@ router.post('/:id/newWorkout', async (req, res) => {
     for(var i = 1; i < mainRowCount; i++){
 
     }
-
-    console.log("Main rows: ", mainRowCount);
     
 
     //For the accessoryRowContainer, we loop through all the rows
     const accessoryRowCount = req.body.accessoryRowCount;
-
-    console.log("Accessory rows:", accessoryRowCount);
 
     res.redirect('/dashboard');
 });

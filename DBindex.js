@@ -97,11 +97,21 @@ class DataStore {
         const sql = `INSERT into ${table} (${data.map(d => d.column).join(',')}) values (${params.join(',')})`;
         console.log(sql, data.map(d => d.value));
 
-        //Insert the item into the specified table
-        const result = this.db.run(
-            sql, data.map(d => d.value));
+        let lastID = null;
 
-        return;
+        //Insert the item into the specified table
+        return new Promise((resolve, reject) => {
+            this.db.run(sql, data.map(d => d.value), function(err) {
+                if (err) {
+                    reject(err);
+                    return;
+                } else {
+                    lastID = this.lastID;
+                    resolve(lastID);
+                    console.log('Inserted row ID: ', lastID);
+                }
+            });
+        })
     }
 
     //Checks whether or not a table is empty

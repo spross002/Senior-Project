@@ -66,13 +66,13 @@ class UserDB {
     async makeUserExercisesTable(){
         try{
             await this.db.schema('UserExercises', [
-                { name: 'exercise_id', type: 'INTEGER' },
+                { name: 'id', type: 'INTEGER' },
                 { name: 'workout_id', type: 'INTEGER' },
                 { name: 'exercise_name', type: 'TEXT' },
                 { name: 'sets', type: 'INTEGER' },
                 { name: 'reps', type: 'INTEGER' },
                 { name: 'weight', type: 'INTEGER' },
-            ], 'exercise_id', ', FOREIGN KEY ("workout_id") REFERENCES Workouts ("id") )');
+            ], 'id', ', FOREIGN KEY ("workout_id") REFERENCES Workouts ("id") )');
         } catch (error) {
             console.error('Error creating User Exercises Table', error.message);
         }
