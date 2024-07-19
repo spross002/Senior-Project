@@ -81,8 +81,6 @@ router.post('/:id/newWorkout', async (req, res) => {
     //Calculates the workout time in minutes
     const workoutDuration = diffMinutes;
 
-    console.log(workoutDuration);
-
     //Get the current user id (for the workout entry)
     const userId = req.session.user.id;
     const user = await req.db.findUserById(userId);
