@@ -52,12 +52,14 @@ block content
                 //This function makes sure the exercise selection ids maintain uniqueness
                 $row.find('select[name="m_exercise_dropdown"]').each(function(){
                     var currentName = $(this).attr('name')
+                    $(this).attr('name', (currentName + $rowCount))
                     $(this).attr('id', (currentName + $rowCount))
                 })
 
                 //This function makes sure the form input ids maintain uniqueness (reps, sets, weight)
                 $row.find('input').each(function() {
                     var currentName = $(this).attr('name');
+                    $(this).attr('name', (currentName + $rowCount))
                     $(this).attr('id', (currentName + $rowCount))
                 })
 
@@ -82,12 +84,14 @@ block content
                 //This function makes sure the exercise selection ids maintain uniqueness
                 $row.find('select[name="a_exercise_dropdown"]').each(function(){
                     var currentName = $(this).attr('name')
+                    $(this).attr('name', (currentName + $rowCount))
                     $(this).attr('id', (currentName + $rowCount))
                 })
 
                 //This function makes sure the form input ids maintain uniqueness (reps, sets, weight)
                 $row.find('input').each(function() {
                     var currentName = $(this).attr('name');
+                    $(this).attr('name', (currentName + $rowCount))
                     $(this).attr('id', (currentName + $rowCount))
                 })
 
