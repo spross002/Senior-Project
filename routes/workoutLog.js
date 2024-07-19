@@ -88,26 +88,63 @@ router.post('/:id/newWorkout', async (req, res) => {
     //Creates a new workout table entry and returns the workout ID
     const workoutId = await req.db.createWorkout(userId, currentDate, workoutDuration);
 
+    //-------------------------------------------------------------------------------------------
+
     //Right here will be a loop to take all of the exercises from the page and create entries in the "UserExercises" table
     //This is done at this point in the post function because the workout id needs to be known already to properly store the user's exercises.
-    //For the mainRowContainer, we loop through all the rows
+    
+    //For the mainRowContainer, we first need to get the amount of rows
     const mainRowCount = req.body.mainRowCount;
 
     //Starts with nothing, then adds one to each, so we begin with the very first row
-    var exerciseName = req.body.m_exercise_dropdown;
-    var exerciseSets = req.body.m_sets;
-    var exerciseReps = req.body.m_reps;
-    var exerciseWeight = req.body.m_weight;
+    const main_exerciseName = req.body.m_exercise_dropdown;
+    const main_exerciseSets = req.body.m_sets;
+    const main_exerciseReps = req.body.m_reps;
+    const main_exerciseWeight = req.body.m_weight;
 
-    const newExercise = await req.db.addUserExercise(workoutId, exerciseName, exerciseSets, exerciseReps, exerciseWeight);
-
+    //As long as one of the fields are filled, we log the exercise, if none of them are filled the exercise doesn't get logged. This will be the same in the loop
+    if (main_exerciseSets != '' || main_exerciseReps != '' || main_exerciseWeight != ''){
+        const firstMain = await req.db.addUserExercise(workoutId, main_exerciseName, main_exerciseSets, main_exerciseReps, main_exerciseWeight);
+    }
+    //Loop through each main row and add the exercises
     for(var i = 1; i < mainRowCount; i++){
+        var loop_main_exerciseName = req.body[`m_exercise_dropdown${i}`];
+        var loop_main_exerciseSets = req.body[`m_sets${i}`];
+        var loop_main_exerciseReps = req.body[`m_reps${i}`];
+        var loop_main_exerciseWeight = req.body[`m_weight${i}`];
 
+        if (loop_main_exerciseSets != '' || loop_main_exerciseReps != '' || loop_main_exerciseWeight != ''){
+            var mainExercise = await req.db.addUserExercise(workoutId, loop_main_exerciseName, loop_main_exerciseSets, loop_main_exerciseReps, loop_main_exerciseWeight);
+        }
     }
     
+    //-------------------------------------------------------------------------------------------
 
     //For the accessoryRowContainer, we loop through all the rows
     const accessoryRowCount = req.body.accessoryRowCount;
+
+    //Starts with nothing, then adds one to each, so we begin with the very first row
+    var accessory_exerciseName = req.body.a_exercise_dropdown;
+    var accessory_exerciseSets = req.body.a_sets;
+    var accessory_exerciseReps = req.body.a_reps;
+    var accessory_exerciseWeight = req.body.a_weight;
+
+    //As long as one of the fields are filled, we log the exercise, if none of them are filled the exercise doesn't get logged. This will be the same in the loop
+    if (accessory_exerciseSets != '' || accessory_exerciseReps != '' || accessory_exerciseWeight != ''){
+        const firstAccesory = await req.db.addUserExercise(workoutId, accessory_exerciseName, accessory_exerciseSets, accessory_exerciseReps, accessory_exerciseWeight);
+    }
+
+    //Loop through each accessory row and add the exercises
+    for(var i = 1; i < accessoryRowCount; i++){
+        var loop_accessory_exerciseName = req.body[`a_exercise_dropdown${i}`];
+        var loop_accessory_exerciseSets = req.body[`a_sets${i}`];
+        var loop_accessory_exerciseReps = req.body[`a_reps${i}`];
+        var loop_accessory_exerciseWeight = req.body[`a_weight${i}`];
+
+        if (loop_accessory_exerciseSets != '' || loop_accessory_exerciseReps != '' || loop_accessory_exerciseWeight != ''){
+            var accesoryExercise = await req.db.addUserExercise(workoutId, loop_accessory_exerciseName, loop_accessory_exerciseSets, loop_accessory_exerciseReps, loop_accessory_exerciseWeight);
+        }
+    }
 
     res.redirect('/dashboard');
 });
