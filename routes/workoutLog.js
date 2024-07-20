@@ -40,7 +40,7 @@ router.get('/:id/newWorkout', logged_in, async (req, res) => {
 router.post('/:id/newWorkout', async (req, res) => {
 
     /*
-        Current plan: when a workout is saved/submitted, an ID is created for said workout, then each exercise is individually saved
+        When a workout is saved/submitted, an ID is created for said workout, then each exercise is individually saved
         into a table with the workout id, and the exercise id
         (exercise id is linked with the id from the Exercises table)
 
@@ -147,6 +147,16 @@ router.post('/:id/newWorkout', async (req, res) => {
     }
 
     res.redirect('/dashboard');
+});
+
+//This renders the workout editting page
+router.get('/workouts/:id', logged_in, async (req, res) => {
+
+});
+
+//Workout editing page functionality/post
+router.post('/workouts/:id', async (req, res) => {
+
 });
 
 module.exports = router;
