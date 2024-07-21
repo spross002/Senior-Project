@@ -3,16 +3,23 @@ extends layout.pug
 block content 
     .container
         .header(style="color: white")
-            h1 Unauthorized!
+            h1 User Unauthorized!
         .row 
             .col
                 .card(class="text-white bg-dark mb-3")
                     .card-body
                         .row 
                             .col 
-                                h2 Please log in to access this page. 
-                                p
-                                    .form-group
-                                        div(class="d-grid gap-2 d-md-flex justify-content-md-start")
-                                            a(class="btn btn-success", href='/login', role='button') Log In 
-                                            a(class="btn btn-info", href='/', role="button") Return Home  
+                                if (userUnauthorized)
+                                    h2 Sorry, that workout isn't yours.
+                                    p
+                                        .form-group
+                                            div(class="d-grid gap-2 d-md-flex justify-content-md-start") 
+                                                a(class="btn btn-info", href='/dashboard', role="button") Return To Your Dashboard  
+                                else
+                                    h2 Please log in to access this page. 
+                                    p
+                                        .form-group
+                                            div(class="d-grid gap-2 d-md-flex justify-content-md-start")
+                                                a(class="btn btn-success", href='/login', role='button') Log In 
+                                                a(class="btn btn-info", href='/', role="button") Return Home  
