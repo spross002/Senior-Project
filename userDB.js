@@ -197,6 +197,17 @@ class UserDB {
         
     }
 
+    //Find the workout by the ID
+    async findWorkoutById(id) {
+        try {
+            const workout = await this.db.read('Workouts', [{ column: 'id', value: id}]);
+            console.log(workout);
+            return workout;
+        } catch (error) {
+            console.error('Error finding the workout by id: ', error.message);
+        }
+    }
+
     //Returns the user's first and last name (searched by their ID)
     async getUserFirstLast(id){
         user = this.findUserById(id);
