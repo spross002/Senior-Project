@@ -91,7 +91,7 @@ router.post('/:id/newWorkout', async (req, res) => {
     //-------------------------------------------------------------------------------------------
 
     //Right here will be a loop to take all of the exercises from the page and create entries in the "UserExercises" table
-    //This is done at this point in the post function because the workout id needs to be known already to properly store the user's exercises.
+    //This is done here specifically at this point in the post function because the workout id needs to be known already to properly store the user's exercises.
     
     //For the mainRowContainer, we first need to get the amount of rows
     const mainRowCount = req.body.mainRowCount;
@@ -114,7 +114,7 @@ router.post('/:id/newWorkout', async (req, res) => {
         var loop_main_exerciseWeight = req.body[`m_weight${i}`];
 
         if (loop_main_exerciseSets != '' || loop_main_exerciseReps != '' || loop_main_exerciseWeight != ''){
-            var mainExercise = await req.db.addUserExercise(workoutId, loop_main_exerciseName, loop_main_exerciseSets, loop_main_exerciseReps, loop_main_exerciseWeight);
+            const mainExercise = await req.db.addUserExercise(workoutId, loop_main_exerciseName, loop_main_exerciseSets, loop_main_exerciseReps, loop_main_exerciseWeight);
         }
     }
     
@@ -151,7 +151,25 @@ router.post('/:id/newWorkout', async (req, res) => {
 
 //This renders the workout editting page
 router.get('/workouts/:id', logged_in, async (req, res) => {
+    //In this router.get we need to do something extra instead of just rendering something, which is double checking that the user ID matches the user id that is connected to the workout
+    // This is done to ensure that a user can only edit their own workouts.
 
+    //Get the user id from the database
+    const userId = req.session.user.id;
+    const user = await req.db.findUserById(userId);
+
+    //Find the workout from the database based on the ID in the URL
+    const workoutId = req.params.id;
+    const workout = await req.db.findWorkoutById(workoutId);
+
+    //Check the user's id matches with the workout's user id to ensure that the workout they are trying to view is in fact theirs.
+    if(workout.user_id == userId){
+        //Render the edit page if they match
+        res.render('editWorkout', { user: user , workout: workout});
+    } else {
+        //Render unauthorized if they don't match
+        res.render('unauthorized', { userUnauthorized: true });
+    }
 });
 
 //Workout editing page functionality/post
