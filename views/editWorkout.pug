@@ -31,92 +31,98 @@ block content
                     else
                         li.nav-item
                             a.nav-link(href='/login') Login
-    //- body
-    //-     .container 
-    //-         form(id='postForm', action=`/${user.id}/newWorkout`, method='post').form
-    //-             .row-justify-content-center.mt-4 
-    //-                 .col-justfiy-content-center.md-6 
-    //-                     .card.mains-card 
-    //-                         .card-header 
-    //-                             h4.card-title Main Lifts 
-    //-                         .card-body
-    //-                             .container(id='mainRowContainer')
-    //-                                 .row(id='mainRow')
-    //-                                     .col
-    //-                                         label(for='exercise') Select Exercise: 
-    //-                                         select(name='m_exercise_dropdown', id='m_exercise_dropdown', class='scrollable-dropdown')
-    //-                                             each exercise in exercises
-    //-                                                 if exercise.classification == 'Main' 
-    //-                                                     option(value=exercise.name)= exercise.name
-    //-                                     .col
-    //-                                         label(for='sets') Set Count:
-    //-                                         input.form-control(type='text', placeholder="Ex. 2", name='m_sets', id='m_sets')
-    //-                                     .col
-    //-                                         label(for='reps') Rep Count:
-    //-                                         input.form-control(type='text', placeholder="Ex. 5", name='m_reps', id='m_reps')
-    //-                                     .col
-    //-                                         label(for='weight') Weight (lbs):
-    //-                                         input.form-control(type='text', placeholder="Ex. 225", name='m_weight', id='m_weight')
-    //-                                     p
-    //-                                     hr
-    //-                             .row
-    //-                                 .col
-    //-                                     button(type="button", id='addMainRowButton' class="btn btn-success btn-block") Add Another Main
-    //-                                 .col-auto 
-    //-                                     button(type="button", id='removeMainRowButton', class="btn btn-danger btn-block") Delete Last Row
-    //-             .row-justify-content-center.mt-4 
-    //-                 .col-justfiy-content-center.md-6 
-    //-                     .card.accesory-card 
-    //-                         .card-header 
-    //-                             h4.card-title Accessories 
-    //-                         .card-body 
-    //-                             .container(id='accesoryRowContainer')
-    //-                                 .row(id='accesoryRow')
-    //-                                     .col
-    //-                                         label(for='exercise') Select Exercise: 
-    //-                                         select(name='a_exercise_dropdown', id='a_exercise_dropdown', class='scrollable-dropdown')
-    //-                                             each exercise in exercises
-    //-                                                 if exercise.classification == 'Accessory' 
-    //-                                                     option(value=exercise.name)= exercise.name
-    //-                                     .col
-    //-                                         label(for='sets') Set Count:
-    //-                                         input.form-control(type='text', placeholder="Ex. 3", name='a_sets', id='a_sets')
-    //-                                     .col
-    //-                                         label(for='reps') Rep Count:
-    //-                                         input.form-control(type='text', placeholder="Ex. 10", name='a_reps', id='a_reps')
-    //-                                     .col
-    //-                                         label(for='weight') Weight (lbs):
-    //-                                         input.form-control(type='text', placeholder="Ex. 85", name='a_weight', id='a_weight')
-    //-                                     p
-    //-                                     hr
-    //-                             .row
-    //-                                 .col
-    //-                                     button(type="button", id="addAccesoryRowButton", class="btn btn-success btn-block") Add Another Accessory
-    //-                                 .col-auto 
-    //-                                     button(type="button", id='removeAccesoryRowButton', class="btn btn-danger btn-block") Delete Last Row
-    //-             .row
-    //-                 .col-md-6
-    //-                     .card.my-4
-    //-                         .card-header 
-    //-                             h4.card-title Time Spent 
-    //-                         .card-body
-    //-                             .container(id='timeLoggingContainer')
-    //-                                 .col
-    //-                                     .row
-    //-                                         .col-md-4.text-center
-    //-                                             label(for='startTime') Time Started 
-    //-                                             input.form-control(type='time', id='startTime', name='startTime', required)
-    //-                                         .col-md-4.text-center
-    //-                                             label(for='endTime') Time Ended 
-    //-                                             input.form-control(type='time', id='endTime', name='endTime', required)
-    //-                 .col-md-6
-    //-                     .card.my-4
-    //-                         .card-header 
-    //-                             h4.card-title Finish Workout
-    //-                         .card-body
-    //-                             .container-submissionContainer
-    //-                                 .row-justify-content-center.mt-4.md-6
-    //-                                     .col-saveButton
-    //-                                         input(type="hidden", name="mainRowCount", id="mainRowCount")
-    //-                                         input(type="hidden", name="accessoryRowCount", id="accessoryRowCount")
-    //-                                         button(type="submit", class="btn btn-info btn-block") Save Workout
+
+    //
+        The next step is figuring out how to pre-load all of the rows with the workouts. 
+            First thing to do is determine how many rows there are - how many mains and how many accessories. 
+    body
+        .container 
+            form(id='postForm', action=`/${user.id}/newWorkout`, method='post').form
+                .row-justify-content-center.mt-4 
+                    .col-justfiy-content-center.md-6 
+                        .card.mains-card 
+                            .card-header 
+                                h4.card-title Main Lifts 
+                            .card-body
+                                .container(id='mainRowContainer')
+                                    .row(id='mainRow')
+                                        //- .col
+                                        //-     label(for='exercise') Select Exercise: 
+                                        //-     select(name='m_exercise_dropdown', id='m_exercise_dropdown', class='scrollable-dropdown')
+                                        //-         each exercise in exercises
+                                        //-             if exercise.classification == 'Main' 
+                                        //-                 option(value=exercise.name)= exercise.name
+                                        //- .col
+                                        //-     label(for='sets') Set Count:
+                                        //-     input.form-control(type='text', placeholder="Ex. 2", name='m_sets', id='m_sets')
+                                        //- .col
+                                        //-     label(for='reps') Rep Count:
+                                        //-     input.form-control(type='text', placeholder="Ex. 5", name='m_reps', id='m_reps')
+                                        //- .col
+                                        //-     label(for='weight') Weight (lbs):
+                                        //-     input.form-control(type='text', placeholder="Ex. 225", name='m_weight', id='m_weight')
+                                        //- p
+                                        //- hr
+                                .row
+                                    .col
+                                        button(type="button", id='addMainRowButton' class="btn btn-success btn-block") Add Another Main
+                                    .col-auto 
+                                        button(type="button", id='removeMainRowButton', class="btn btn-danger btn-block") Delete Last Row
+                .row-justify-content-center.mt-4 
+                    .col-justfiy-content-center.md-6 
+                        .card.accesory-card 
+                            .card-header 
+                                h4.card-title Accessories 
+                            .card-body 
+                                .container(id='accesoryRowContainer')
+                                    .row(id='accesoryRow')
+                                        //- .col
+                                        //-     label(for='exercise') Select Exercise: 
+                                        //-     select(name='a_exercise_dropdown', id='a_exercise_dropdown', class='scrollable-dropdown')
+                                        //-         each exercise in exercises
+                                        //-             if exercise.classification == 'Accessory' 
+                                        //-                 option(value=exercise.name)= exercise.name
+                                        //- .col
+                                        //-     label(for='sets') Set Count:
+                                        //-     input.form-control(type='text', placeholder="Ex. 3", name='a_sets', id='a_sets')
+                                        //- .col
+                                        //-     label(for='reps') Rep Count:
+                                        //-     input.form-control(type='text', placeholder="Ex. 10", name='a_reps', id='a_reps')
+                                        //- .col
+                                        //-     label(for='weight') Weight (lbs):
+                                        //-     input.form-control(type='text', placeholder="Ex. 85", name='a_weight', id='a_weight')
+                                        //- p
+                                        //- hr
+                                .row
+                                    .col
+                                        button(type="button", id="addAccesoryRowButton", class="btn btn-success btn-block") Add Another Accessory
+                                    .col-auto 
+                                        button(type="button", id='removeAccesoryRowButton', class="btn btn-danger btn-block") Delete Last Row
+                .row
+                    .col-md-6
+                        .card.my-4
+                            .card-header 
+                                h4.card-title Time Spent 
+                            .card-body
+                                .container(id='timeLoggingContainer')
+                                    .col
+                                        .row
+                                            .col-md-4.text-center
+                                                label(for='startTime') Time Started 
+                                                input.form-control(type='time', id='startTime', name='startTime', required)
+                                            .col-md-4.text-center
+                                                label(for='endTime') Time Ended 
+                                                input.form-control(type='time', id='endTime', name='endTime', required)
+                    .col-md-6
+                        .card.my-4
+                            .card-header 
+                                h4.card-title Alter Workout
+                            .card-body
+                                .container-submissionContainer
+                                    .row
+                                        .col
+                                            a(type="button", href='/dashboard' id="cancelButton", class="btn btn-danger btn-block") CANCEL
+                                        .col-auto
+                                            input(type="hidden", name="mainRowCount", id="mainRowCount")
+                                            input(type="hidden", name="accessoryRowCount", id="accessoryRowCount")
+                                            button(type="submit", class="btn btn-info btn-block") Save Workout

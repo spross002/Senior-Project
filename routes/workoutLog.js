@@ -169,7 +169,7 @@ router.get('/workouts/:id', logged_in, async (req, res) => {
     //Check the user's id matches with the workout's user id to ensure that the workout they are trying to view is in fact theirs.
     if(workout.user_id == userId){
         //Retreive all of the exercises that have the workout and user id from userExercises if they match
-        //const userExercises = await req.db.getUserWorkoutExercises(userId, workoutId);
+        const userExercises = await req.db.getAllWorkoutExercises(workoutId);
 
         //Render the edit page
         res.render('editWorkout', { user: user , workout: workout, userExercises : userExercises });

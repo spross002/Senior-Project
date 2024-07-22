@@ -226,17 +226,15 @@ class UserDB {
         }
     }
 
-    // //Returns all of the exercises logged in a specific workout from userExercises
-    // async getUserWorkoutExercises(user_id, workout_id){
-    //     const user = this.findUserById(user_id);
-
-    //     try {
-    //         let exercises = await this.db.getAllWhere('UserExercises', [{ column: 'workout_id', value: workout_id }]);
-    //         return exercises;
-    //     } catch (error) {
-    //         console.error('Error retreiving workout exercises from userExercises: ', error.message);
-    //     }
-    // }
+    //Returns all of the exercises logged in a specific workout from userExercises
+    async getAllWorkoutExercises(workout_id){
+        try {
+            let exercises = await this.db.getAllWhere('UserExercises', [{ column: 'workout_id', value: workout_id }]);
+            return exercises;
+        } catch (error) {
+            console.error('Error retreiving workout exercises from userExercises: ', error.message);
+        }
+    }
 
     //Returns all the workouts from a specified user id
     async getAllWorkouts(id){
