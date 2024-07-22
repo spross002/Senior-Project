@@ -165,6 +165,10 @@ router.get('/workouts/:id', logged_in, async (req, res) => {
     //Find the workout from the database based on the ID in the URL
     const workoutId = req.params.id;
     const workout = await req.db.findWorkoutById(workoutId);
+
+    //Store the start and end times to pass into the render call
+    const startTime = workout.start_time;
+    const endTime = workout.end_time;
      
     //Check the user's id matches with the workout's user id to ensure that the workout they are trying to view is in fact theirs.
     if(workout.user_id == userId){
@@ -172,7 +176,7 @@ router.get('/workouts/:id', logged_in, async (req, res) => {
         const userExercises = await req.db.getAllWorkoutExercises(workoutId);
 
         //Render the edit page
-        res.render('editWorkout', { user: user , workout: workout, userExercises : userExercises });
+        res.render('editWorkout', { user: user , workout: workout, userExercises : userExercises, startTime: startTime, endTime: endTime });
     } else {
         //Render unauthorized if they don't match
         res.render('unauthorized', { userUnauthorized: true });
