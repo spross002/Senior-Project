@@ -41,6 +41,8 @@ class UserDB {
                 { name: 'user_id', type: 'INTEGER' },
                 { name: 'date', type: 'DATE' },
                 { name: 'duration_minutes', type: 'INTEGER' },
+                { name: 'start_time', type: 'TEXT'},
+                { name: 'end_time', type: 'TEXT'}
             ], 'id', ', FOREIGN KEY ("user_id") REFERENCES Users ("id") )');
         } catch (error) {
             console.error('Error creating workout table', error.message);
@@ -72,7 +74,7 @@ class UserDB {
                 { name: 'classification', type: 'TEXT' },
                 { name: 'sets', type: 'INTEGER' },
                 { name: 'reps', type: 'INTEGER' },
-                { name: 'weight', type: 'INTEGER' },
+                { name: 'weight', type: 'INTEGER' }
             ], 'id', ', FOREIGN KEY ("workout_id") REFERENCES Workouts ("id") )');
         } catch (error) {
             console.error('Error creating User Exercises Table', error.message);
@@ -80,12 +82,14 @@ class UserDB {
     }
 
     //Adds a workout to the workout table
-    async createWorkout(user_id, date, duration_minutes){
+    async createWorkout(user_id, date, start_time, end_time, duration_minutes){
         try{
             const id = await this.db.create('Workouts', [
                 { column: 'user_id', value: user_id },
                 { column: 'date', value: date},
-                { column: 'duration_minutes', value: duration_minutes }
+                { column: 'duration_minutes', value: duration_minutes },
+                { column: 'start_time', value: start_time },
+                { column: 'end_time', value: end_time }
             ])
             return id;
         } catch (error) {

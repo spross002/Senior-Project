@@ -86,7 +86,7 @@ router.post('/:id/newWorkout', async (req, res) => {
     const user = await req.db.findUserById(userId);
 
     //Creates a new workout table entry and returns the workout ID
-    const workoutId = await req.db.createWorkout(userId, currentDate, workoutDuration);
+    const workoutId = await req.db.createWorkout(userId, currentDate, startTimeStr, endTimeStr, workoutDuration);
 
     //-------------------------------------------------------------------------------------------
 
