@@ -69,6 +69,7 @@ class UserDB {
                 { name: 'id', type: 'INTEGER' },
                 { name: 'workout_id', type: 'INTEGER' },
                 { name: 'exercise_name', type: 'TEXT' },
+                { name: 'classification', type: 'TEXT' },
                 { name: 'sets', type: 'INTEGER' },
                 { name: 'reps', type: 'INTEGER' },
                 { name: 'weight', type: 'INTEGER' },
@@ -93,11 +94,12 @@ class UserDB {
     }
 
     //Adds an exercise to the user exercises table
-    async addUserExercise(workout_id, exercise_name, sets, reps, weight){
+    async addUserExercise(workout_id, exercise_name, classification, sets, reps, weight){
         try {
             const id = await this.db.create('UserExercises', [
                 { column: 'workout_id', value: workout_id },
                 { column: 'exercise_name', value: exercise_name },
+                { column: 'classification', value: classification },
                 { column: 'sets', value: sets },
                 { column: 'reps', value: reps },
                 { column: 'weight', value: weight }
@@ -223,6 +225,18 @@ class UserDB {
             console.error('Error retrieving exercises:', error.message);
         }
     }
+
+    // //Returns all of the exercises logged in a specific workout from userExercises
+    // async getUserWorkoutExercises(user_id, workout_id){
+    //     const user = this.findUserById(user_id);
+
+    //     try {
+    //         let exercises = await this.db.getAllWhere('UserExercises', [{ column: 'workout_id', value: workout_id }]);
+    //         return exercises;
+    //     } catch (error) {
+    //         console.error('Error retreiving workout exercises from userExercises: ', error.message);
+    //     }
+    // }
 
     //Returns all the workouts from a specified user id
     async getAllWorkouts(id){

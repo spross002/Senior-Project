@@ -102,9 +102,11 @@ router.post('/:id/newWorkout', async (req, res) => {
     const main_exerciseReps = req.body.m_reps;
     const main_exerciseWeight = req.body.m_weight;
 
+    const main_string = "Main";
+
     //As long as one of the fields are filled, we log the exercise, if none of them are filled the exercise doesn't get logged. This will be the same in the loop
     if (main_exerciseSets != '' || main_exerciseReps != '' || main_exerciseWeight != ''){
-        const firstMain = await req.db.addUserExercise(workoutId, main_exerciseName, main_exerciseSets, main_exerciseReps, main_exerciseWeight);
+        const firstMain = await req.db.addUserExercise(workoutId, main_exerciseName, main_string, main_exerciseSets, main_exerciseReps, main_exerciseWeight);
     }
     //Loop through each main row and add the exercises
     for(var i = 1; i < mainRowCount; i++){
@@ -114,7 +116,7 @@ router.post('/:id/newWorkout', async (req, res) => {
         var loop_main_exerciseWeight = req.body[`m_weight${i}`];
 
         if (loop_main_exerciseSets != '' || loop_main_exerciseReps != '' || loop_main_exerciseWeight != ''){
-            const mainExercise = await req.db.addUserExercise(workoutId, loop_main_exerciseName, loop_main_exerciseSets, loop_main_exerciseReps, loop_main_exerciseWeight);
+            const mainExercise = await req.db.addUserExercise(workoutId, loop_main_exerciseName, main_string, loop_main_exerciseSets, loop_main_exerciseReps, loop_main_exerciseWeight);
         }
     }
     
@@ -129,9 +131,11 @@ router.post('/:id/newWorkout', async (req, res) => {
     var accessory_exerciseReps = req.body.a_reps;
     var accessory_exerciseWeight = req.body.a_weight;
 
+    const accessory_string = "Accessory";
+
     //As long as one of the fields are filled, we log the exercise, if none of them are filled the exercise doesn't get logged. This will be the same in the loop
     if (accessory_exerciseSets != '' || accessory_exerciseReps != '' || accessory_exerciseWeight != ''){
-        const firstAccesory = await req.db.addUserExercise(workoutId, accessory_exerciseName, accessory_exerciseSets, accessory_exerciseReps, accessory_exerciseWeight);
+        const firstAccesory = await req.db.addUserExercise(workoutId, accessory_exerciseName, accessory_string, accessory_exerciseSets, accessory_exerciseReps, accessory_exerciseWeight);
     }
 
     //Loop through each accessory row and add the exercises
@@ -142,7 +146,7 @@ router.post('/:id/newWorkout', async (req, res) => {
         var loop_accessory_exerciseWeight = req.body[`a_weight${i}`];
 
         if (loop_accessory_exerciseSets != '' || loop_accessory_exerciseReps != '' || loop_accessory_exerciseWeight != ''){
-            var accesoryExercise = await req.db.addUserExercise(workoutId, loop_accessory_exerciseName, loop_accessory_exerciseSets, loop_accessory_exerciseReps, loop_accessory_exerciseWeight);
+            var accesoryExercise = await req.db.addUserExercise(workoutId, loop_accessory_exerciseName, accessory_string, loop_accessory_exerciseSets, loop_accessory_exerciseReps, loop_accessory_exerciseWeight);
         }
     }
 
@@ -161,11 +165,14 @@ router.get('/workouts/:id', logged_in, async (req, res) => {
     //Find the workout from the database based on the ID in the URL
     const workoutId = req.params.id;
     const workout = await req.db.findWorkoutById(workoutId);
-
+     
     //Check the user's id matches with the workout's user id to ensure that the workout they are trying to view is in fact theirs.
     if(workout.user_id == userId){
-        //Render the edit page if they match
-        res.render('editWorkout', { user: user , workout: workout});
+        //Retreive all of the exercises that have the workout and user id from userExercises if they match
+        //const userExercises = await req.db.getUserWorkoutExercises(userId, workoutId);
+
+        //Render the edit page
+        res.render('editWorkout', { user: user , workout: workout, userExercises : userExercises });
     } else {
         //Render unauthorized if they don't match
         res.render('unauthorized', { userUnauthorized: true });
