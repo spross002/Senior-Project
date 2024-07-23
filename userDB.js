@@ -97,6 +97,19 @@ class UserDB {
         }
     }
 
+    //Updates a workout
+    async updateWorkout(workout_id, start_time, end_time, duration_minutes){
+        try{
+            const id = await this.db.update('Workouts', [
+                { column: 'start_time', value: start_time },
+                { column: 'end_time', value: end_time},
+                { column: 'duration_minutes', value: duration_minutes }
+            ], [{ column: 'id', value: workout_id }]);
+        } catch (error) {
+            console.error('Error updating workout: ', error.message);
+        }
+    }
+
     //Adds an exercise to the user exercises table
     async addUserExercise(workout_id, exercise_name, classification, sets, reps, weight){
         try {

@@ -201,6 +201,45 @@ router.get('/workouts/:id', logged_in, async (req, res) => {
 
 //Workout editing page functionality/post
 router.post('/workouts/:id', async (req, res) => {
+    //We don't need the get the current date here because that is already saved, so it doesn't need to be touched. 
+
+    //Get the duration of the workout (for the workout duration entry)
+    const startTimeStr = req.body.startTime;
+    const endTimeStr = req.body.endTime;
+
+    function parseTime(timeString) {
+        const [hours, minutes] = timeString.split(':').map(Number);
+        const date = new Date();
+        date.setHours(hours, minutes, 0, 0);
+        return date;
+    }
+
+    // Parse the start and end times
+    const start = parseTime(startTimeStr);
+    const end = parseTime(endTimeStr);
+
+    //If the end time is before the start time, that means it ends on the next day (for those late night lifters)
+    // so, we need to account for that
+    if(end < start){
+        end.setDate(end.getDate() + 1);
+    }
+
+    //Calculates the workout time in milliseconds
+    const diffMilliseconds = end - start;
+
+    //Convert the milliseconds to minutes
+    const diffMinutes = diffMilliseconds / (1000 * 60);
+
+    //Calculates the workout time in minutes
+    const workoutDuration = diffMinutes;
+
+    //Get the current user id (for the workout entry)
+    const userId = req.session.user.id;
+    const user = await req.db.findUserById(userId);
+
+    //Now we need to update/change the workout saved
+    const workoutId = req.params.id;
+    const edittedWorkoutId = await req.db.updateWorkout(workoutId, startTimeStr, endTimeStr, workoutDuration);
 
 });
 
