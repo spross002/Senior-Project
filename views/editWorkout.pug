@@ -36,9 +36,10 @@ block content
 
     //- Below is all of the scripts for dynamic exercise addition/deletion
     script.
-        //- Change these to the amount of mains and accessories from the already saved log.
-        var mainRowCount = 1;
-        var accessoryRowCount = 1;
+        //- The amount of rows to edit corressponds to the amount of mains and accessories 
+        var mainRowCount = m_count;
+        var accessoryRowCount = a_count;
+
         //- Main lift rows addition
         $(document).ready(function() {
             $("#addMainRowButton").click(function() {

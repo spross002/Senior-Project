@@ -178,8 +178,21 @@ router.get('/workouts/:id', logged_in, async (req, res) => {
         //Retreive all of the exercises that have the workout and user id from userExercises if they match
         const userExercises = await req.db.getAllWorkoutExercises(workoutId);
 
+        //Variables to store the amount of main and accessories.
+        var m_count = 0;
+        var a_count = 0;
+
+        //Loop through userExercises to find how many mains and accessories are in the workout to pass to the page
+        for(const exercise of userExercises){
+            if(exercise.classification === 'Main'){
+                m_count++;
+            } else if (exercise.classification === 'Accessory'){
+                a_count++;
+            }
+        }
+
         //Render the edit page
-        res.render('editWorkout', { user: user , workout: workout, exercises: exercises, userExercises: userExercises, startTime: startTime, endTime: endTime });
+        res.render('editWorkout', { user: user, workout: workout, exercises: exercises, userExercises: userExercises, startTime: startTime, endTime: endTime, m_count: m_count, a_count: a_count });
     } else {
         //Render unauthorized if they don't match
         res.render('unauthorized', { userUnauthorized: true });
