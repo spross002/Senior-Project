@@ -32,18 +32,17 @@ block content
                         li.nav-item
                             a.nav-link(href='/login') Login
 
+    //These are some hidden inputs in order to pass the main and accessory counts into the script.
+    input(type="hidden", name="m_count", id="m_count", value=m_count)
+    input(type="hidden", name="a_count", id="a_count", value=a_count)
+
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js")
-
-    //- Below is all of the scripts for dynamic exercise addition/deletion
     script.
-        //- The amount of rows to edit corressponds to the amount of mains and accessories 
-        var mainRowCount = m_count;
-        var accessoryRowCount = a_count;
-
+        var mainRowCount = $('#m_count').val();
+        var accessoryRowCount = $("#a_count").val();
         //- Main lift rows addition
         $(document).ready(function() {
             $("#addMainRowButton").click(function() {
-                
                 //Clones the target row
                 var $row = $('#mainRow').clone();
                 mainRowCount++;
@@ -75,13 +74,13 @@ block content
 
         //- Accesory lift rows addition
         $(document).ready(function() {
-            $("#addAccesoryRowButton").click(function() {
+            $("#addAccessoryRowButton").click(function() {
                 //Clones the target row
-                var $row = $('#accesoryRow').clone();
+                var $row = $('#accessoryRow').clone();
                 accessoryRowCount++;
                 console.log(accessoryRowCount);
 
-                var $rowCount = $('#accesoryRowContainer .row').length; 
+                var $rowCount = $('#accessoryRowContainer .row').length; 
 
                 //This function makes sure the exercise selection ids maintain uniqueness
                 $row.find('select[name="a_exercise_dropdown"]').each(function(){
@@ -101,7 +100,7 @@ block content
                 $row.find(":text").val("");
 
                 //Appends the targeted row to the overbearing container
-                $("#accesoryRowContainer").append($row);
+                $("#accessoryRowContainer").append($row);
             });
         });
 
@@ -121,42 +120,31 @@ block content
                     //Removes the latest row
                     $('#mainRowContainer .row:last').remove();
                 }
-            })
-        })
+            });
+        });
 
         //- Accesory lift rows deletion
         $(document).ready(function() {
-            $('#removeAccesoryRowButton').click(function(){
+            $('#removeAccessoryRowButton').click(function(){
                 if(accessoryRowCount > 1){
                     accessoryRowCount--;
                     console.log(accessoryRowCount);
                 }
 
                 //Check the count of rows
-                var rowCount = $('#accesoryRowContainer .row').length;
+                var rowCount = $('#accessoryRowContainer .row').length;
 
-                //This ensures that there is always at least one row to copy for the addition.+
+                //This ensures that there is always at least one row to copy for the addition
                 if(rowCount >= 2){
                     //Removes the latest row
-                    $('#accesoryRowContainer .row:last').remove();
+                    $('#accessoryRowContainer .row:last').remove();
                 }
-            })
-        })
+            });
+        });
 
-        //- This function passes the row counts when the page is submitted
-        $(document).ready(function() {
-            $('#postForm').submit(function(){
-                $('#mainRowCount').val(mainRowCount);
-                $('#accessoryRowCount').val(accessoryRowCount);
-            })
-        })
-
-    //
-        The next step is figuring out how to pre-load all of the rows with the workouts. 
-            First thing to do is determine how many rows there are - how many mains and how many accessories. 
     body
         .container 
-            form(id='postForm', action=`/${user.id}/newWorkout`, method='post').form
+            form(id='postForm', action=`/workouts/:id`, method='post').form
                 .row-justify-content-center.mt-4 
                     .col-justfiy-content-center.md-6 
                         .card.mains-card 
@@ -164,12 +152,20 @@ block content
                                 h4.card-title Main Lifts 
                             .card-body
                                 .container(id='mainRowContainer')
+                                    - var rowCount = 0
+                                    - var loopCount = 0
+                                    - var temp
                                     each userExercise in userExercises 
+                                        if loopCount == 0
+                                            - var temp = rowCount 
+                                            - rowCount = ''
+                                        else
+                                            - rowCount = rowCount + 1
                                         if userExercise.classification == 'Main'
                                             .row(id='mainRow')
                                                 .col
                                                     label(for='exercise') Select Exercise: 
-                                                    select(name='m_exercise_dropdown', id='m_exercise_dropdown', class='scrollable-dropdown')
+                                                    select(name=`m_exercise_dropdown${rowCount}`, id=`m_exercise_dropdown${rowCount}`, class='scrollable-dropdown')
                                                         each exercise in exercises
                                                             if exercise.classification == 'Main'
                                                                 if exercise.name == userExercise.exercise_name
@@ -178,101 +174,68 @@ block content
                                                                     option(value=exercise.name)= exercise.name
                                                 .col
                                                     label(for='sets') Set Count:
-                                                    input.form-control(type='text', value=userExercise.sets, placeholder="Ex. 2", name='m_sets', id='m_sets')
+                                                    input.form-control(type='text', value=userExercise.sets, placeholder="Ex. 2", name=`m_sets${rowCount}`, id=`m_sets${rowCount}`)
                                                 .col
                                                     label(for='reps') Rep Count:
-                                                    input.form-control(type='text', value=userExercise.reps, placeholder="Ex. 5", name='m_reps', id='m_reps')
+                                                    input.form-control(type='text', value=userExercise.reps, placeholder="Ex. 5", name=`m_reps${rowCount}`, id=`m_reps${rowCount}`)
                                                 .col
                                                     label(for='weight') Weight (lbs):
-                                                    input.form-control(type='text', value=userExercise.weight, placeholder="Ex. 225", name='m_weight', id='m_weight')
+                                                    input.form-control(type='text', value=userExercise.weight, placeholder="Ex. 225", name=`m_weight${rowCount}`, id=`m_weight${rowCount}`)
                                                 p
                                                 hr
-                                    .row
-                                        .col
-                                            button(type="button", id='addMainRowButton' class="btn btn-success btn-block") Add Another Main
-                                        .col-auto 
-                                            button(type="button", id='removeMainRowButton', class="btn btn-danger btn-block") Delete Last Row
-                                    //- .row(id='mainRow')
-                                        //- .col
-                                        //-     label(for='exercise') Select Exercise: 
-                                        //-     select(name='m_exercise_dropdown', id='m_exercise_dropdown', class='scrollable-dropdown')
-                                        //-         each exercise in exercises
-                                        //-             if exercise.classification == 'Main' 
-                                        //-                 option(value=exercise.name)= exercise.name
-                                        //- .col
-                                        //-     label(for='sets') Set Count:
-                                        //-     input.form-control(type='text', placeholder="Ex. 2", name='m_sets', id='m_sets')
-                                        //- .col
-                                        //-     label(for='reps') Rep Count:
-                                        //-     input.form-control(type='text', placeholder="Ex. 5", name='m_reps', id='m_reps')
-                                        //- .col
-                                        //-     label(for='weight') Weight (lbs):
-                                        //-     input.form-control(type='text', placeholder="Ex. 225", name='m_weight', id='m_weight')
-                                        //- p
-                                        //- hr
-                                //- .row
-                                //-     .col
-                                //-         button(type="button", id='addMainRowButton' class="btn btn-success btn-block") Add Another Main
-                                //-     .col-auto 
-                                //-         button(type="button", id='removeMainRowButton', class="btn btn-danger btn-block") Delete Last Row
+                                            - loopCount++
+                                            - rowCount = temp++
+                                .row
+                                    .col
+                                        button(type="button", id='addMainRowButton' class="btn btn-success btn-block") Add Another Main
+                                    .col-auto 
+                                        button(type="button", id='removeMainRowButton', class="btn btn-danger btn-block") Delete Last Row
                 .row-justify-content-center.mt-4 
                     .col-justfiy-content-center.md-6 
                         .card.accesory-card 
                             .card-header 
                                 h4.card-title Accessories 
                             .card-body 
-                                .container(id='accesoryRowContainer')
+                                .container(id='accessoryRowContainer')
+                                    - var a_rowCount = 0
+                                    - var a_loopCount = ''
+                                    - var temp1
                                     each userExercise in userExercises 
-                                            if userExercise.classification == 'Accessory'
-                                                .row(id='accessoryRow')
-                                                    .col
-                                                        label(for='exercise') Select Exercise: 
-                                                        select(name='a_exercise_dropdown', id='a_exercise_dropdown', class='scrollable-dropdown')
-                                                            each exercise in exercises
-                                                                if exercise.classification == 'Accessory'
-                                                                    if exercise.name == userExercise.exercise_name
-                                                                        option(value=exercise.name, selected)= exercise.name 
-                                                                    else 
-                                                                        option(value=exercise.name)= exercise.name
-                                                    .col
-                                                        label(for='sets') Set Count:
-                                                        input.form-control(type='text', value=userExercise.sets, placeholder="Ex. 2", name='a_sets', id='a_sets')
-                                                    .col
-                                                        label(for='reps') Rep Count:
-                                                        input.form-control(type='text', value=userExercise.reps, placeholder="Ex. 5", name='a_reps', id='a_reps')
-                                                    .col
-                                                        label(for='weight') Weight (lbs):
-                                                        input.form-control(type='text', value=userExercise.weight, placeholder="Ex. 225", name='a_weight', id='a_weight')
-                                                    p
-                                                    hr
-                                    .row
-                                        .col
-                                            button(type="button", id='addMainRowButton' class="btn btn-success btn-block") Add Another Main
-                                        .col-auto 
-                                            button(type="button", id='removeMainRowButton', class="btn btn-danger btn-block") Delete Last Row
-                                    //- .row(id='accesoryRow')
-                                        //- .col
-                                        //-     label(for='exercise') Select Exercise: 
-                                        //-     select(name='a_exercise_dropdown', id='a_exercise_dropdown', class='scrollable-dropdown')
-                                        //-         each exercise in exercises
-                                        //-             if exercise.classification == 'Accessory' 
-                                        //-                 option(value=exercise.name)= exercise.name
-                                        //- .col
-                                        //-     label(for='sets') Set Count:
-                                        //-     input.form-control(type='text', placeholder="Ex. 3", name='a_sets', id='a_sets')
-                                        //- .col
-                                        //-     label(for='reps') Rep Count:
-                                        //-     input.form-control(type='text', placeholder="Ex. 10", name='a_reps', id='a_reps')
-                                        //- .col
-                                        //-     label(for='weight') Weight (lbs):
-                                        //-     input.form-control(type='text', placeholder="Ex. 85", name='a_weight', id='a_weight')
-                                        //- p
-                                        //- hr
-                                //- .row
-                                //-     .col
-                                //-         button(type="button", id="addAccesoryRowButton", class="btn btn-success btn-block") Add Another Accessory
-                                //-     .col-auto 
-                                //-         button(type="button", id='removeAccesoryRowButton', class="btn btn-danger btn-block") Delete Last Row
+                                        if a_loopCount == 0
+                                            - var temp1 = a_rowCount 
+                                            - a_rowCount = ''
+                                        else
+                                            - a_rowCount = a_rowCount + 1
+                                        if userExercise.classification == 'Accessory'
+                                            .row(id='accessoryRow')
+                                                .col
+                                                    label(for='exercise') Select Exercise: 
+                                                    select(name=`a_exercise_dropdown${a_rowCount}`, id=`a_exercise_dropdown${a_rowCount}`, class='scrollable-dropdown')
+                                                        each exercise in exercises
+                                                            if exercise.classification == 'Accessory'
+                                                                if exercise.name == userExercise.exercise_name
+                                                                    option(value=exercise.name, selected)= exercise.name 
+                                                                else 
+                                                                    option(value=exercise.name)= exercise.name
+                                                .col
+                                                    label(for='sets') Set Count:
+                                                    input.form-control(type='text', value=userExercise.sets, placeholder="Ex. 2", name=`a_sets${a_rowCount}`, id=`a_sets${a_rowCount}`)
+                                                .col
+                                                    label(for='reps') Rep Count:
+                                                    input.form-control(type='text', value=userExercise.reps, placeholder="Ex. 5", name=`a_reps${a_rowCount}`, id=`a_reps${a_rowCount}`)
+                                                .col
+                                                    label(for='weight') Weight (lbs):
+                                                    input.form-control(type='text', value=userExercise.weight, placeholder="Ex. 225", name=`a_weight${a_rowCount}`, id=`a_weight${a_rowCount}`)
+                                                p
+                                                hr
+                                            - a_loopCount++
+                                            - a_rowCount = temp1++
+
+                                .row
+                                    .col
+                                        button(type="button", id='addAccessoryRowButton' class="btn btn-success btn-block") Add Another Accessory
+                                    .col-auto 
+                                        button(type="button", id='removeAccessoryRowButton', class="btn btn-danger btn-block") Delete Last Row
                 .row
                     .col-md-6
                         .card.my-4
