@@ -61,7 +61,12 @@ block content
                 $row.find('input').each(function() {
                     var currentName = $(this).attr('name');
                     $(this).attr('name', (currentName + $rowCount))
-                    $(this).attr('id', (currentName + $rowCount))
+
+                    if($(this).attr('id') === `m_exercise_id`){
+                        $(this).attr('value', 'null');
+                    } else {
+                        $(this).attr('id', (currentName + $rowCount))
+                    }
                 })
 
                 //Clears the text boxes on the cloned row
@@ -142,6 +147,14 @@ block content
             });
         });
 
+        //- This function passes the row counts when the page is submitted
+        $(document).ready(function() {
+            $('#postForm').submit(function(){
+                $('#mainRowCount').val(mainRowCount);
+                $('#accessoryRowCount').val(accessoryRowCount);
+            })
+        })
+
     body
         .container 
             form(id='postForm', action=`/workouts/:id`, method='post').form
@@ -163,6 +176,8 @@ block content
                                             - rowCount = rowCount + 1
                                         if userExercise.classification == 'Main'
                                             .row(id='mainRow')
+                                                if userExercise.id != null 
+                                                    input(type="hidden", name=`m_exercise_id${rowCount}`, id='m_exercise_id' value=userExercise.id)
                                                 .col
                                                     label(for='exercise') Select Exercise: 
                                                     select(name=`m_exercise_dropdown${rowCount}`, id=`m_exercise_dropdown${rowCount}`, class='scrollable-dropdown')
@@ -263,4 +278,5 @@ block content
                                         .col-auto
                                             input(type="hidden", name="mainRowCount", id="mainRowCount")
                                             input(type="hidden", name="accessoryRowCount", id="accessoryRowCount")
+                                            input(type="hidden", name="workoutId", value=workout.id)
                                             button(type="submit", class="btn btn-info btn-block") Save Workout
