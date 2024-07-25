@@ -127,6 +127,21 @@ class UserDB {
         }
     }
 
+    //Updates a userExercuse entry
+    async updateUserExercise(exercise_id, workout_id, exercise_name, classification, sets, reps, weight){
+        try {
+            const id = await this.db.update('userExercises', [
+                { column: 'exercise_name', value: exercise_name },
+                { column: 'classification', value: classification },
+                { column: 'sets', value: sets },
+                { column: 'reps', value: reps },
+                { column: 'weight', value: weight }
+            ], [{ column: 'id', value: exercise_id }]);
+        } catch (error) {
+            console.error('Error updating exercise entry: ', error.message);
+        }
+    }
+
     //Fills exercise Table from JSON
     async fillExercisesTable(){
         //Checks if Exercises is empty, because if it is not empty then we are just re-entering data again unecessarily
@@ -224,6 +239,16 @@ class UserDB {
             return workout;
         } catch (error) {
             console.error('Error finding the workout by id: ', error.message);
+        }
+    }
+
+    //Finds a userExercise by the ID
+    async findUserExerciseById(id) {
+        try { 
+            const exercise = await this.db.read('userExercises', [{ column: 'id', value: id}]);
+            return exercise;
+        } catch (error) {
+            console.error('Error in finding user Exercise by ID: ', error.message);
         }
     }
 

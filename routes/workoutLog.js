@@ -237,10 +237,83 @@ router.post('/workouts/:id', async (req, res) => {
     const userId = req.session.user.id;
     const user = await req.db.findUserById(userId);
 
-    //Now we need to update/change the workout saved
-    const workoutId = req.params.id;
+    //Now we need to update/change the workout saved by getting the workout ID from the URL and calling a function to update the workout table entry
+    const workoutId = req.body.workoutId;
     const edittedWorkoutId = await req.db.updateWorkout(workoutId, startTimeStr, endTimeStr, workoutDuration);
 
+    //The next step is to update all of the exercises that were changed. 
+    //There are a few ways of doing this, to be honest the easiest is just deleting all of the exercises from userExercises and re-saving them, but I don't think that is good practice.
+
+    /*
+        Idea: Loop through the rows in the container. If there is an ID associated with that row, then we update with that ID
+        else, we create a new entry.
+
+        Check 'm_exercise_id${rowCount}`, and if the value is a number, that is the exercise ID to edit, and if it is 'null', then we make a new table entry.
+    */
+
+    //For the mainRowContainer, we first need to get the amount of rows
+    const mainRowCount = req.body.mainRowCount;
+
+    //Starts with nothing, then adds one to each, so we begin with the very first row
+    const main_exerciseID = req.body.m_exercise_id;
+    const main_exerciseName = req.body.m_exercise_dropdown;
+    const main_exerciseSets = req.body.m_sets;
+    const main_exerciseReps = req.body.m_reps;
+    const main_exerciseWeight = req.body.m_weight;
+
+    const main_string = "Main";
+
+    //Check if the first exercise has an ID
+    if(main_exerciseID != 'null'){
+        //If it does, we update the entry in the table
+
+        //As long as one of the fields are filled, we log the exercise, if none of them are filled the exercise doesn't get logged. This will be the same in the loop
+        if (main_exerciseSets != '' || main_exerciseReps != '' || main_exerciseWeight != ''){
+            const firstMain = await req.db.updateUserExercise(main_exerciseID, workoutId, main_exerciseName, main_string, main_exerciseSets, main_exerciseReps, main_exerciseWeight);
+        }
+        
+    } else {
+        //If it does not, we create a new entry
+        if (main_exerciseSets != '' || main_exerciseReps != '' || main_exerciseWeight != ''){
+            const firstMain = await req.db.addUserExercise(workoutId, main_exerciseName, main_string, main_exerciseSets, main_exerciseReps, main_exerciseWeight);
+        }
+    }
+
+
+    //Now the first one is handled, we loop through each main row and update or add the exercises
+    for(var i = 1; i < mainRowCount; i++){
+        var loop_main_exerciseID = req.body[`m_exercise_id${i}`];
+        var loop_main_exerciseName = req.body[`m_exercise_dropdown${i}`];
+        var loop_main_exerciseSets = req.body[`m_sets${i}`];
+        var loop_main_exerciseReps = req.body[`m_reps${i}`];
+        var loop_main_exerciseWeight = req.body[`m_weight${i}`];
+
+        if(loop_main_exerciseID != 'null'){
+            //If there is a value, we update the entry
+
+            //As long as one of the fields are filled, we log the exercise, if none of them are filled the exercise doesn't get logged. This will be the same in the loop
+            if (loop_main_exerciseSets != '' || loop_main_exerciseReps != '' || loop_main_exerciseWeight != ''){
+                const mainExercise = await req.db.updateUserExercise(loop_main_exerciseID, workoutId, loop_main_exerciseName, main_string, loop_main_exerciseSets, loop_main_exerciseReps, loop_main_exerciseWeight);
+            }   
+
+        } else {
+            //If it does not, we create a new entry
+            if (loop_main_exerciseSets != '' || loop_main_exerciseReps != '' || loop_main_exerciseWeight != ''){
+                const mainExercise = await req.db.addUserExercise(workoutId, loop_main_exerciseName, main_string, loop_main_exerciseSets, loop_main_exerciseReps, loop_main_exerciseWeight);
+            }
+        }
+
+    //The last thing we need to do is check for any deleted exercises from the workout.
+    
+
+    //Loop through and check the rest
+    for(var i = 1; i < mainRowCount; i++){
+
+    }
+
+    }
+
+    res.redirect('/dashboard');
 });
 
 module.exports = router;
