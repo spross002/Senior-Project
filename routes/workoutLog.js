@@ -251,6 +251,8 @@ router.post('/workouts/:id', async (req, res) => {
         Check 'm_exercise_id${rowCount}`, and if the value is a number, that is the exercise ID to edit, and if it is 'null', then we make a new table entry.
     */
 
+    //---------------------------------------------------------------------------------------------------------------------------------------------------------
+
     //For the mainRowContainer, we first need to get the amount of rows
     const mainRowCount = req.body.mainRowCount;
 
@@ -260,6 +262,8 @@ router.post('/workouts/:id', async (req, res) => {
     const main_exerciseSets = req.body.m_sets;
     const main_exerciseReps = req.body.m_reps;
     const main_exerciseWeight = req.body.m_weight;
+
+    var exerciseID_list = [main_exerciseID];
 
     const main_string = "Main";
 
@@ -276,6 +280,7 @@ router.post('/workouts/:id', async (req, res) => {
         //If it does not, we create a new entry
         if (main_exerciseSets != '' || main_exerciseReps != '' || main_exerciseWeight != ''){
             const firstMain = await req.db.addUserExercise(workoutId, main_exerciseName, main_string, main_exerciseSets, main_exerciseReps, main_exerciseWeight);
+            exerciseID_list.push(firstMain.id);
         }
     }
 
@@ -289,6 +294,9 @@ router.post('/workouts/:id', async (req, res) => {
         var loop_main_exerciseWeight = req.body[`m_weight${i}`];
 
         if(loop_main_exerciseID != 'null'){
+            //Append to the list of exercise IDs (for deletion checking later)
+            exerciseID_list.push(loop_main_exerciseID);
+
             //If there is a value, we update the entry
 
             //As long as one of the fields are filled, we log the exercise, if none of them are filled the exercise doesn't get logged. This will be the same in the loop
@@ -300,16 +308,36 @@ router.post('/workouts/:id', async (req, res) => {
             //If it does not, we create a new entry
             if (loop_main_exerciseSets != '' || loop_main_exerciseReps != '' || loop_main_exerciseWeight != ''){
                 const mainExercise = await req.db.addUserExercise(workoutId, loop_main_exerciseName, main_string, loop_main_exerciseSets, loop_main_exerciseReps, loop_main_exerciseWeight);
+                exerciseID_list.push(mainExercise.id);
             }
         }
 
+    //---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    //For the accessories
+
     //The last thing we need to do is check for any deleted exercises from the workout.
+
+    //Get all exercise IDs that have this workout ID.
+    const allExercises = await req.db.getAllWorkoutExercises(workoutId);
+    var datbaseIDs_list = [];
+
+    for(const exercise of allExercises){
+        datbaseIDs_list.push(exercise.id);
+    }
+
+    console.log("LIST OF IDS FROM DATABASE", datbaseIDs_list);
+
+    console.log("LIST OF EXERCISE IDS", exerciseID_list);
+
+    //If the exercises in the list don't correspond with the exercises from the database, we delete the ones that aren't in the list
+
     
 
     //Loop through and check the rest
-    for(var i = 1; i < mainRowCount; i++){
+    // for(var i = 1; i < mainRowCount; i++){
 
-    }
+    // }
 
     }
 
