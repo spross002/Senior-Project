@@ -166,15 +166,13 @@ block content
                             .card-body
                                 .container(id='mainRowContainer')
                                     - var rowCount = 0
-                                    - var loopCount = 0
+                                    - var first_row = ''
                                     - var temp
-                                    each userExercise in userExercises 
-                                        if loopCount == 0
-                                            - var temp = rowCount 
-                                            - rowCount = ''
-                                        else
-                                            - rowCount = rowCount + 1
+                                    each userExercise in userExercises
                                         if userExercise.classification == 'Main'
+                                            if rowCount === 0
+                                                - temp = rowCount 
+                                                - rowCount = first_row
                                             .row(id='mainRow')
                                                 if userExercise.id != null 
                                                     input(type="hidden", name=`m_exercise_id${rowCount}`, id='m_exercise_id' value=userExercise.id)
@@ -198,8 +196,12 @@ block content
                                                     input.form-control(type='text', value=userExercise.weight, placeholder="Ex. 225", name=`m_weight${rowCount}`, id=`m_weight${rowCount}`)
                                                 p
                                                 hr
-                                            - loopCount++
-                                            - rowCount = temp++
+                                            if temp === 0
+                                                - rowCount = 1
+                                                - temp = 'null'
+                                            else
+                                                - rowCount++
+
                                 .row
                                     .col
                                         button(type="button", id='addMainRowButton' class="btn btn-success btn-block") Add Another Main
@@ -213,16 +215,16 @@ block content
                             .card-body 
                                 .container(id='accessoryRowContainer')
                                     - var a_rowCount = 0
-                                    - var a_loopCount = ''
+                                    - var a_first_row = ''
                                     - var temp1
                                     each userExercise in userExercises 
-                                        if a_loopCount == 0
-                                            - var temp1 = a_rowCount 
-                                            - a_rowCount = ''
-                                        else
-                                            - a_rowCount = a_rowCount + 1
+                                        if a_rowCount === 0
+                                            - temp1 = a_rowCount 
+                                            - a_rowCount = a_first_row
                                         if userExercise.classification == 'Accessory'
                                             .row(id='accessoryRow')
+                                                if userExercise.id != null 
+                                                    input(type="hidden", name=`a_exercise_id${a_rowCount}`, id='a_exercise_id' value=userExercise.id)
                                                 .col
                                                     label(for='exercise') Select Exercise: 
                                                     select(name=`a_exercise_dropdown${a_rowCount}`, id=`a_exercise_dropdown${a_rowCount}`, class='scrollable-dropdown')
@@ -243,8 +245,11 @@ block content
                                                     input.form-control(type='text', value=userExercise.weight, placeholder="Ex. 225", name=`a_weight${a_rowCount}`, id=`a_weight${a_rowCount}`)
                                                 p
                                                 hr
-                                            - a_loopCount++
-                                            - a_rowCount = temp1++
+                                            if temp1 === 0
+                                                - a_rowCount = 1
+                                                - temp1 = 'null'
+                                            else 
+                                                - a_rowCount++
 
                                 .row
                                     .col
