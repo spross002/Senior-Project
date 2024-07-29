@@ -142,6 +142,15 @@ class UserDB {
         }
     }
 
+    //Deletes a userExercise
+    async deleteUserExercise(exercise_id){
+        try {
+            await this.db.delete('userExercises', [{ column: 'id', value: exercise_id}])
+        } catch (error) {
+            console.error('Error deleting user exercise: ', error.message);
+        }
+    }
+
     //Fills exercise Table from JSON
     async fillExercisesTable(){
         //Checks if Exercises is empty, because if it is not empty then we are just re-entering data again unecessarily
