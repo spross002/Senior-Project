@@ -90,6 +90,26 @@ class DataStore {
           });
     }
 
+    //Delete an entry from a table
+    delete(table, query){
+        let sql = `DELETE from ${table}`;
+        if (query.length > 0) {
+            sql += ` WHERE ${query.map(d => `${d.column} = '${d.value}'`).join(' and ')}`
+        }
+
+        return new Promise((resolve, reject) => {
+            this.db.run(sql, (err) => {
+              if (err) {
+                console.error('Error deleting from table:', err.message);
+                reject(err);
+              } else {
+                console.log('Table entry successfully deleted');
+                resolve();
+              }
+            });
+          });
+    }
+
 
     //Create an entry and enter into a specific table
     create(table, data) {
