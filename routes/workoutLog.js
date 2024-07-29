@@ -242,13 +242,12 @@ router.post('/workouts/:id', async (req, res) => {
     const edittedWorkoutId = await req.db.updateWorkout(workoutId, startTimeStr, endTimeStr, workoutDuration);
 
     //The next step is to update all of the exercises that were changed. 
-    //There are a few ways of doing this, to be honest the easiest is just deleting all of the exercises from userExercises and re-saving them, but I don't think that is good practice.
 
     /*
-        Idea: Loop through the rows in the container. If there is an ID associated with that row, then we update with that ID
-        else, we create a new entry.
+        Strategy: Loop through the rows in the container. If there is an ID associated with that row, then we update with that ID.
+        Else, we create a new entry.
 
-        Check 'm_exercise_id${rowCount}`, and if the value is a number, that is the exercise ID to edit, and if it is 'null', then we make a new table entry.
+        Check 'm_exercise_id${rowCount}`, and if the value is a number, that is the exercise ID to edit, and if it is 'null' (meaning it is a new addition), then we make a new table entry.
     */
 
     //---------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -380,26 +379,31 @@ router.post('/workouts/:id', async (req, res) => {
 
     //Get all exercise IDs that have this workout ID.
     const allExercises = await req.db.getAllWorkoutExercises(workoutId);
-    var datbaseIDs_list = [];
+    var databaseIDs_list = [];
 
     for(const exercise of allExercises){
-        datbaseIDs_list.push(exercise.id);
+        databaseIDs_list.push(exercise.id);
     }
 
-    console.log("LIST OF IDS FROM DATABASE", datbaseIDs_list);
-
-    console.log("LIST OF EXERCISE IDS", exerciseID_list);
-
     //If the exercises in the list don't correspond with the exercises from the database, we delete the ones that aren't in the list
-
-    
-
-    //Loop through and check the rest
-    // for(var i = 1; i < mainRowCount; i++){
-
-    // }
-
-    
+    var idFound
+    //Loop through databse IDs
+    for(var i = 0; i < databaseIDs_list.length; i++){
+        idFound = false
+        //loop through exercise IDs
+        for(var j = 0; j < exerciseID_list.length; j++){
+            //If the database ID is found in the exercise list we exit the inner loop to check the next ID
+            if(databaseIDs_list[i] == exerciseID_list[j]){
+                idFound = true;
+                j = exerciseID_list.length;
+            }
+        }
+        //Check at the end if the ID was found. If it is in the database, but not the user list, that means they deleted it.
+        if(idFound == false){
+            //Call the delete function here
+            await req.db.deleteUserExercise(databaseIDs_list[i]);
+        }
+    }
 
     res.redirect('/dashboard');
 });
