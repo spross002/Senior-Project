@@ -33,6 +33,19 @@ class UserDB {
         }
     }
 
+    //Makes the friends table (upon very first run)
+    async makeFriendsTable(){
+        try {
+            await this.db.schema('Friends', [
+                { name: 'id', type: 'INTEGER' },
+                { name: 'user_id', type: 'INTEGER' },
+                { name: 'friend_id', type: 'INTEGER' }
+            ], 'id', ', FOREIGN KEY ("user_id") REFERENCES Users ("id"), FOREIGN KEY ("friend_id") REFERENCES Users ("id"), UNIQUE ("user_id", "friend_id") )')
+        } catch (error) {
+            console.error('Error creating friends table', error.message);
+        }
+    }
+
     //Makes the workout table (upon very first run)
     async makeWorkoutTable(){
         try{
@@ -296,6 +309,30 @@ class UserDB {
             return workouts;
         } catch (error) {
             console.error('Error retreiving the user workouts: ', error.message);
+        }
+    }
+
+    //Adds a friend
+    async addFriend(user_id, friend_id){
+        try {
+            await this.db.create('Friends', [
+                { name: 'user_id', value: user_id },
+                { name: 'friend_id', value: friend_id }
+            ])
+        } catch (error) {
+            console.error('Error adding friend: ', error.message);
+        }
+    }
+
+    //Removes a friend
+    async removeFriend(user_id, friend_id){
+        try {
+            await this.db.delete('Friends', [
+                { column: 'user_id', value: user_id },
+                { column: 'friend_id', value: friend_id }
+            ])
+        } catch (error) {
+            console.error("Error removing friend: ", error.message);
         }
     }
   

@@ -12,6 +12,7 @@ db.makeUserTable();
 db.makeWorkoutTable();
 db.makeExercisesTable();
 db.makeUserExercisesTable();
+db.makeFriendsTable();
 
 //Only happens on creation
 db.fillExercisesTable();
@@ -63,6 +64,8 @@ app.use('/', require('./routes/accounts'))
 app.use('/', require('./routes/home'))
 app.use('/', require('./routes/dashboard'))
 app.use('/', require('./routes/workoutLog'))
+app.use('/', require('./routes/recap'))
+app.use('/', require('./routes/friends'))
 
 app.listen(8080, () => {
     console.log('Server is running on port 8080')
