@@ -41,6 +41,10 @@ const bcrypt = require('bcryptjs');
             router.post(/pswdchange)
                 --> This function posts the password change page, taking the user's new password and changing it in the database
 
+            router.get(/profile/username)
+                --> This function calls the render function for the public page to look at other people's profiles
+            router.post(/profile/username)
+                --> (Finish later) Post for profile 
 
 */
 
@@ -208,5 +212,22 @@ router.post('/pswdchange', async (req, res) => {
 
     res.render('pswdchange', { user: user, message: "Password successfully updated!", success: true })
 });
+
+//Render the public profile page
+router.get('/u/:username', async (req, res) => {
+    //Check if the session has a user logged in
+    const userId = req.session.user ? req.session.user.id : -1;
+    const activeUser = await req.db.findUserById(userId);
+
+    const userPage = await req.db.findUserByUsername(req.params.username);
+
+    if (userPage == null) {
+        //If there is no user by that username we render the page with that info to generate a warning
+        res.render('publicProfile', { activeUser: activeUser, userPage: 'undefined' })
+    } else {
+        //If there is a user with that username we generate their public profile information
+        res.render('publicProfile', { activeUser: activeUser, userPage: userPage })
+    }
+})
 
 module.exports = router;
