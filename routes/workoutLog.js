@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 
-//If logged in then allow contact addition and deletion and editing
+//This function checks if the user is logged in (for authorization)
 const logged_in = (req, res, next) => {
     if (req.session.user) {
         next();
