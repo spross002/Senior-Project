@@ -23,8 +23,48 @@ block content
                                     .dropdown-item.dropdown-header(style="text-align: center; color: #000;") #{user.first_name} #{user.last_name}
                                 div.dropdown-divider
                                 li 
+                                    a.dropdown-item(href="/profile")
+                                        i(class="bi bi-gear-fill" style="font-style: normal")  Profile Settings
+                                li 
                                     a.dropdown-item(href="/logout") 
                                         i(class="bi bi-box-arrow-right" style="font-style: normal")  Logout
                     else
                         li.nav-item
                             a.nav-link(href='/login') Login
+
+    body 
+        if userPage === 'undefined'
+                .container.d-flex.justify-content-center.align-items-center(style="height: 80vh;")
+                    .card.text-center(style="width: 24rem;")
+                        .card-body
+                            h1.card-title User Not Found!
+                            p.card-text Sorry, the user you are looking for does not exist.
+                            if user
+                                a.btn.btn-primary(href='/dashboard') Return to Dashboard
+                            else 
+                                a.btn.btn-primary(href='/') Return Home
+        else if user.id === userPage.id
+            .container.mt-5
+                .row.justify-content-center
+                    .col-md-6
+                        .card-profile.text-center.shadow-lg.border-0.rounded
+                            .card-body
+                                h4.card-title #{userPage.first_name} #{userPage.last_name}
+                                p.card-text
+                                    | Username: #{userPage.username}
+                                a.btn.btn-primary(href='/profile') View Profile Settings
+        else
+            .container.mt-5
+                .row.justify-content-center
+                    .col-md-6
+                        .card-profile.text-center.shadow-lg.border-0.rounded
+                            .card-body
+                                h4.card-title #{userPage.first_name} #{userPage.last_name}
+                                p.card-text
+                                    | Username: #{userPage.username}
+                                if !isFriend
+                                    form(action='/send-friend-request', method='POST')
+                                        input(type='hidden', name='friend_id', value=userPage.id)
+                                        button.btn.btn-primary(type='submit') Add as Friend
+                                else
+                                    p.text-success You are already friends!

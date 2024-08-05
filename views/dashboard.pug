@@ -70,7 +70,7 @@ block content
                     .row
                         each workout in workouts
                             .col-md-4
-                                a(href="/workouts/"+workout.id class="card" style="margin: 10px 0; text-decoration: none")
+                                a(href="/workouts/"+workout.id class="card workout-card" style="margin: 10px 0; text-decoration: none")
                                     .card-body 
                                         h5.card-title(style="color: black") #{workout.date}
                                         p.card-text(style="color: black") #{workout.duration_minutes} minute workout

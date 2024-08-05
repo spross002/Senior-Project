@@ -47,3 +47,31 @@ body {
     border-radius: 5px;
     cursor: pointer;
 }
+
+/* This is for the dahsboard, to make the workout link cards look better and be a bit more dynamic */
+.workout-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.workout-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.workout-card {
+    background-color: #f8f9fa; /* Light background color for the workout cards */
+    color: black;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+}
+
+/* This is for the public profile page, to make the card look a bit more dynamic */
+.card-profile {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: white
+}
+
+.card-profile:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(216, 211, 211, 0.2);
+}

@@ -223,10 +223,10 @@ router.get('/u/:username', async (req, res) => {
 
     if (userPage == null) {
         //If there is no user by that username we render the page with that info to generate a warning
-        res.render('publicProfile', { activeUser: activeUser, userPage: 'undefined' })
+        res.render('publicProfile', { user: activeUser, userPage: 'undefined' })
     } else {
         //If there is a user with that username we generate their public profile information
-        res.render('publicProfile', { activeUser: activeUser, userPage: userPage })
+        res.render('publicProfile', { user: activeUser, userPage: userPage })
     }
 })
 
