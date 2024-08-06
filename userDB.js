@@ -315,10 +315,11 @@ class UserDB {
     //Adds a friend
     async addFriend(user_id, friend_id){
         try {
-            await this.db.create('Friends', [
-                { name: 'user_id', value: user_id },
-                { name: 'friend_id', value: friend_id }
+            const id = await this.db.create('Friends', [
+                { column: 'user_id', value: user_id },
+                { column: 'friend_id', value: friend_id }
             ])
+            return id;
         } catch (error) {
             console.error('Error adding friend: ', error.message);
         }
@@ -333,6 +334,19 @@ class UserDB {
             ])
         } catch (error) {
             console.error("Error removing friend: ", error.message);
+        }
+    }
+
+    //Checks friend status
+    async checkFriendStatus(user_id, friend_id){
+        try {
+            const id = await this.db.read('Friends', [
+                { column: 'user_id', value: user_id },
+                { column: 'friend_id', value: friend_id }
+            ])
+            return id;
+        } catch (error) {
+            console.error("Error checking friend status: ", error.message);
         }
     }
   
