@@ -63,7 +63,7 @@ block content
                                     |   Friend's Recaps          
 
                 div(class="col-md-9" style="color: white")
-                    .row 
+                    .row
                         h1(style="margin-left: 10px") #{user.first_name}'s Workouts
                         a(href=user.id + '/newWorkout', class="btn btn-primary rounded-pill col-md-3" style="margin-left: 10px") New Workout
                     p
@@ -74,12 +74,3 @@ block content
                                     .card-body 
                                         h5.card-title(style="color: black") #{workout.date}
                                         p.card-text(style="color: black") #{workout.duration_minutes} minute workout
-
-
-
-                
-                
-
-
-//- Each dashboard selection will be its own page under dashboard/whatever, and clicking each one will send the user to said page
-//- the difference in the sidebar will be whatever page it is at, the list item is set to active
