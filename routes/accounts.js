@@ -46,6 +46,12 @@ const bcrypt = require('bcryptjs');
             router.post(/profile/username)
                 --> (Finish later) Post for profile 
 
+            router.post(/add-friend)
+                --> This post function comes from the public profile page, and calls the database to ADD two users as friends
+            
+            router.post(/remove-friend)
+                --> This post function comes from the public profile page, and calls the database to REMOVE two users as friends
+
 */
 
 //This function checks if the user is logged in, redirecting to the unauthorized page if they are not
@@ -237,7 +243,7 @@ router.get('/u/:username', async (req, res) => {
     }
 })
 
-//Post the friend addition
+//Post from public profile to add a friend
 router.post('/add-friend', async (req, res) => {
     const friend_id = req.body.friend_id;
     const user_id = req.body.user_id;
@@ -247,6 +253,7 @@ router.post('/add-friend', async (req, res) => {
     res.redirect('back');
 })
 
+//Post from public profile to remove a friend
 router.post('/remove-friend', async (req, res) => {
     const friend_id = req.body.friend_id;
     const user_id = req.body.user_id;
