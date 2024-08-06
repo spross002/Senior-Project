@@ -221,13 +221,39 @@ router.get('/u/:username', async (req, res) => {
 
     const userPage = await req.db.findUserByUsername(req.params.username);
 
+    //Check to see if the user and the profile being looked at are friends to show the proper page information
+    const isFriend = await req.db.checkFriendStatus(userId, userPage.id);
+
     if (userPage == null) {
         //If there is no user by that username we render the page with that info to generate a warning
         res.render('publicProfile', { user: activeUser, userPage: 'undefined' })
+    } else if(activeUser == null) {
+        //If the user isn't logged in we don't pass the user
+        res.render('publicProfile', { userPage: userPage });
+
     } else {
         //If there is a user with that username we generate their public profile information
-        res.render('publicProfile', { user: activeUser, userPage: userPage })
+        res.render('publicProfile', { user: activeUser, userPage: userPage, isFriend: isFriend })
     }
+})
+
+//Post the friend addition
+router.post('/add-friend', async (req, res) => {
+    const friend_id = req.body.friend_id;
+    const user_id = req.body.user_id;
+
+    await req.db.addFriend(user_id, friend_id);
+
+    res.redirect('back');
+})
+
+router.post('/remove-friend', async (req, res) => {
+    const friend_id = req.body.friend_id;
+    const user_id = req.body.user_id;
+
+    await req.db.removeFriend(user_id, friend_id);
+
+    res.redirect('back');
 })
 
 module.exports = router;
