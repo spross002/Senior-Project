@@ -43,7 +43,7 @@ block content
                                 a.btn.btn-primary(href='/dashboard') Return to Dashboard
                             else 
                                 a.btn.btn-primary(href='/') Return Home
-        else if user.id === userPage.id
+        else if !user
             .container.mt-5
                 .row.justify-content-center
                     .col-md-6
@@ -52,19 +52,36 @@ block content
                                 h4.card-title #{userPage.first_name} #{userPage.last_name}
                                 p.card-text
                                     | Username: #{userPage.username}
-                                a.btn.btn-primary(href='/profile') View Profile Settings
-        else
-            .container.mt-5
-                .row.justify-content-center
-                    .col-md-6
-                        .card-profile.text-center.shadow-lg.border-0.rounded
-                            .card-body
-                                h4.card-title #{userPage.first_name} #{userPage.last_name}
-                                p.card-text
-                                    | Username: #{userPage.username}
-                                if !isFriend
-                                    form(action='/send-friend-request', method='POST')
-                                        input(type='hidden', name='friend_id', value=userPage.id)
-                                        button.btn.btn-primary(type='submit') Add as Friend
-                                else
-                                    p.text-success You are already friends!
+                                a.btn.btn-primary(href='/login') Login To Add as Friend
+        else if user 
+            if user.id === userPage.id
+                .container.mt-5
+                    .row.justify-content-center
+                        .col-md-6
+                            .card-profile.text-center.shadow-lg.border-0.rounded
+                                .card-body
+                                    h4.card-title #{userPage.first_name} #{userPage.last_name}
+                                    p.card-text
+                                        | Username: #{userPage.username}
+                                    a.btn.btn-primary(href='/profile') View Profile Settings
+            else
+                .container.mt-5
+                    .row.justify-content-center
+                        .col-md-6
+                            .card-profile.text-center.shadow-lg.border-0.rounded
+                                .card-body
+                                    h4.card-title #{userPage.first_name} #{userPage.last_name}
+                                    p.card-text
+                                        | Username: #{userPage.username}
+                                    if !isFriend
+                                        form(action='/add-friend', method='POST')
+                                            input(type='hidden', name='friend_id', value=userPage.id)
+                                            input(type='hidden', name='user_id', value=user.id)
+                                            button.btn.btn-primary(type='submit') Add as Friend
+                                    else
+                                        p.text-success You are already friends!
+                                        form(action='/remove-friend', method='POST')
+                                            input(type='hidden', name='friend_id', value=userPage.id)
+                                            input(type='hidden', name='user_id', value=user.id)
+                                            button.btn.btn-danger(type='submit') Remove Friend
+
