@@ -9,7 +9,7 @@ const bcrypt = require('bcryptjs');
     ACCOUNTS.JS:
 
         This javascript page holds all of the backend functions pertaining to anything related to a profile.
-        That includes login, signup, profile editing, and password change.
+        That includes login, signup, profile editing, and password change, and viewing a person's public profile page, as well as adding/removing them as friends.
 
         In order:
 
@@ -46,8 +46,10 @@ const bcrypt = require('bcryptjs');
             router.post(/profile/username)
                 --> (Finish later) Post for profile 
 
+
             router.post(/add-friend)
                 --> This post function comes from the public profile page, and calls the database to ADD two users as friends
+                
             
             router.post(/remove-friend)
                 --> This post function comes from the public profile page, and calls the database to REMOVE two users as friends

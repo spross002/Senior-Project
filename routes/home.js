@@ -21,6 +21,4 @@ router.get('/', async(req, res) => {
     res.render('home', { user: user });
 });
 
-
-
 module.exports = router;
