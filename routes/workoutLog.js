@@ -462,7 +462,87 @@ router.post('/:id/newSportsActivity', async (req, res) => {
     const sport = req.body.sport_dropdown;
 
     //Creates a new sport activity entry and returns the generated ID.
-    const activityId = await req.db.createSportsActivity(userId, sport, currentDate, activityDuration);
+    const activityId = await req.db.createSportsActivity(userId, sport, currentDate, activityDuration, startTimeStr, endTimeStr);
+
+    res.redirect('/dashboard');
+})
+
+//Renders the page to edit a sport activity
+router.get('/sportsActivities/:id', logged_in, async (req, res) => {
+    //In this router.get we need to do something extra instead of just rendering something, which is double checking that the user ID matches the user id that is connected to the sports activity
+    // This is done to ensure that a user can only edit their own sports activities.
+
+    //Get the user id from the database
+    const userId = req.session.user.id;
+    const user = await req.db.findUserById(userId);
+
+    //Find the workout from the database based on the ID in the URL
+    const activityId = req.params.id;
+    const sportsActivity = await req.db.findSportsActivityById(activityId);
+
+    //Retrieve all of the possible sports from the sports table
+    const sports = await req.db.getSports();
+
+    //Store the start and end times to pass into the render call
+    const startTime = sportsActivity.start_time;
+    const endTime = sportsActivity.end_time;
+
+    //Check the user's id matches with the sport activity's user id to ensure that the activity they are trying to view is in fact theirs.
+    if(sportsActivity.user_id == userId){
+        //Render the edit page
+        res.render('editSportsActivity', { user: user, sports: sports, sportsActivity: sportsActivity, startTime: startTime, endTime: endTime})
+    } else {
+        //Render unauthorized if they don't match
+        res.render('unauthorized', { userUnauthorized: true });
+    }
+})
+
+//Sport activity edit page functionality (saving, etc)
+router.post('/sportsActivities/:id', async (req, res) => {
+    //We don't need the get the current date here because that is already saved, so it doesn't need to be touched. 
+
+    //Get the duration of the workout (for the workout duration entry)
+    const startTimeStr = req.body.startTime;
+    const endTimeStr = req.body.endTime;
+
+    function parseTime(timeString) {
+        const [hours, minutes] = timeString.split(':').map(Number);
+        const date = new Date();
+        date.setHours(hours, minutes, 0, 0);
+        return date;
+    }
+
+    // Parse the start and end times
+    const start = parseTime(startTimeStr);
+    const end = parseTime(endTimeStr);
+
+    //If the end time is before the start time, that means it ends on the next day (for those late night lifters)
+    // so, we need to account for that
+    if(end < start){
+        end.setDate(end.getDate() + 1);
+    }
+
+    //Calculates the workout time in milliseconds
+    const diffMilliseconds = end - start;
+
+    //Convert the milliseconds to minutes
+    const diffMinutes = diffMilliseconds / (1000 * 60);
+
+    //Calculates the workout time in minutes
+    const workoutDuration = diffMinutes;
+
+    //Get the current user id (for the workout entry)
+    const userId = req.session.user.id;
+    const user = await req.db.findUserById(userId);
+
+    //Get the sports activity id from the url
+    const activityId = req.body.sportsActivityId;
+
+    //Get the sports activity name
+    const sport = req.body.sport_dropdown;
+
+    //Update the database entry
+    const edittedSportsActivityId = await req.db.updateSportsActivity(activityId, sport, workoutDuration, startTimeStr, endTimeStr);
 
     res.redirect('/dashboard');
 })
