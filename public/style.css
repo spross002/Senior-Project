@@ -34,6 +34,10 @@ body {
     overflow-y: auto;
 }
 
+.scrollable-dropdown-sports {
+    width: auto;
+}
+
 .container-submissionContainer {
     display: flex;
     justify-content: center; /* Center horizontally */

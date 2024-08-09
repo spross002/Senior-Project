@@ -66,6 +66,7 @@ block content
                     .row
                         h1(style="margin-left: 10px") #{user.first_name}'s Workouts
                         a(href=user.id + '/newWorkout', class="btn btn-primary rounded-pill col-md-3" style="margin-left: 10px") New Workout
+                        a(href=user.id + '/newSportsActivity', class="btn btn-primary rounded-pill col-md-3" style="margin-left: 10px") New Sports Activity
                     p
                     .row
                         each workout in workouts
@@ -74,3 +75,13 @@ block content
                                     .card-body 
                                         h5.card-title(style="color: black") #{workout.date}
                                         p.card-text(style="color: black") #{workout.duration_minutes} minute workout
+                    p
+                    .row
+                        h1(style="margin-left: 10px") #{user.first_name}'s Sports Activity
+                    .row
+                        each sport in sports 
+                            .col-md-4
+                                a(href="/workouts/"+sport.id class="card workout-card" style="margin: 10px 0; text-decoration: none")
+                                    .card-body 
+                                        h5.card-title(style="color: black") #{sport.date}
+                                        p.card-text(style="color: black") #{sport.duration_minutes} minutes of #{sport.sport}

@@ -79,7 +79,7 @@ block content
                                             input(type='hidden', name='user_id', value=user.id)
                                             button.btn.btn-primary(type='submit') Add as Friend
                                     else
-                                        p.text-success You are already friends!
+                                        p.text-success You are friends!
                                         form(action='/remove-friend', method='POST')
                                             input(type='hidden', name='friend_id', value=userPage.id)
                                             input(type='hidden', name='user_id', value=user.id)

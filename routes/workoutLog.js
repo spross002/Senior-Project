@@ -408,4 +408,63 @@ router.post('/workouts/:id', async (req, res) => {
     res.redirect('/dashboard');
 });
 
+//Renders the page to log a sport activity (non-gym activity)
+router.get('/:id/newSportsActivity', logged_in, async (req, res) => {
+    const userId = req.session.user ? req.session.user.id : -1;
+    const user = await req.db.findUserById(userId);
+
+    //Retrieve all of the possible sports from the sports table
+    const sports = await req.db.getSports();
+
+    res.render('newSportActivity', { user: user, sports: sports });
+})
+
+//Sport activity page functionality (saving, etc)
+router.post('/:id/newSportsActivity', async (req, res) => {
+
+    //Get the current date (for the sports activity entry)
+    const currentDate = new Date().toDateString();
+
+    //Get the duration of the workout (for the duration entry)
+    const startTimeStr = req.body.startTime;
+    const endTimeStr = req.body.endTime;
+
+    function parseTime(timeString) {
+        const [hours, minutes] = timeString.split(':').map(Number);
+        const date = new Date();
+        date.setHours(hours, minutes, 0, 0);
+        return date;
+    }
+
+    // Parse the start and end times
+    const start = parseTime(startTimeStr);
+    const end = parseTime(endTimeStr);
+
+    //If the end time is before the start time, that means it ends on the next day (for those people active late at night)
+    // so, we need to account for that
+    if(end < start){
+        end.setDate(end.getDate() + 1);
+    }
+
+    //Calculates the workout time in milliseconds
+    const diffMilliseconds = end - start;
+
+    //Convert the milliseconds to minutes
+    const diffMinutes = diffMilliseconds / (1000 * 60);
+
+    //Calculates the workout time in minutes
+    const activityDuration = diffMinutes;
+
+    const userId = req.session.user.id;
+    const user = await req.db.findUserById(userId);
+
+    //Retreive the sport the person is logging
+    const sport = req.body.sport_dropdown;
+
+    //Creates a new sport activity entry and returns the generated ID.
+    const activityId = await req.db.createSportsActivity(userId, sport, currentDate, activityDuration);
+
+    res.redirect('/dashboard');
+})
+
 module.exports = router;

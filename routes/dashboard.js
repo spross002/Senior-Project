@@ -33,7 +33,10 @@ router.get('/dashboard', logged_in, async (req, res) => {
     //This retreives all of the user's workouts from the database in order to list them for the user to see them
     const workouts = await req.db.getAllWorkouts(userId);
 
-    res.render('dashboard', { user: user, workouts: workouts });
+    //This retreives all of the user's logged sports activies from the database in order to list them for the user to see them
+    const sports = await req.db.getAllSportsActivity(userId);
+
+    res.render('dashboard', { user: user, workouts: workouts, sports: sports });
 });
 
 //Render the latest recap dashboard page

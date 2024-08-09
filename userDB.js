@@ -62,6 +62,21 @@ class UserDB {
         }
     }
 
+    //Makes the sport activity table (upon very first run)
+    async makeSportsActivityTable(){
+        try {
+            await this.db.schema('SportActivity', [
+                { name: 'id', type: 'INTEGER'},
+                { name: 'user_id', type: 'INTEGER'},
+                { name: 'sport', type: 'TEXT' },
+                { name: 'date', type: 'DATE' },
+                { name: 'duration_minutes', type: 'INTEGER' }
+            ], 'id', ', FOREIGN KEY ("user_id") REFERENCES Users ("id") )');
+        } catch (error) {
+            console.error('Error creating sports activity table', error.message);
+        }
+    }
+
     //Makes the table for exercises (upon very first run)
     async makeExercisesTable(){
         try{
@@ -74,6 +89,18 @@ class UserDB {
             ], 'id');
         } catch (error) {
             console.error('Error creating workout table', error.message);
+        }
+    }
+
+    //Makes the table to store all the sports for the users to choose from (upon very first run)
+    async makeSportsTable(){
+        try{
+            await this.db.schema('Sports', [
+                { name: 'id', type: 'INTEGER' },
+                { name: 'sport', type: 'TEXT'},
+            ], 'id');
+        } catch (error) {
+            console.error('Error creating sports table: ', error.message);
         }
     }
 
@@ -93,6 +120,8 @@ class UserDB {
             console.error('Error creating User Exercises Table', error.message);
         }
     }
+
+    
 
     //Adds a workout to the workout table
     async createWorkout(user_id, date, start_time, end_time, duration_minutes){
@@ -119,8 +148,38 @@ class UserDB {
                 { column: 'duration_minutes', value: duration_minutes }
             ], [{ column: 'id', value: workout_id }]);
         } catch (error) {
-            console.error('Error updating workout: ', error.message);
+            console.error('Error updating workout: ', error);
         }
+    }
+
+    //Creates a sports activity
+    async createSportsActivity(user_id, sport, date, duration_minutes){
+        try{
+            const id = await this.db.create('SportActivity', [
+                { column: 'user_id', value: user_id },
+                { column: 'sport', value: sport },
+                { column: 'date', value: date },
+                { column: 'duration_minutes', value: duration_minutes }
+            ])
+            return id;
+        } catch (error) {
+            console.error('Error creating a new sports activity entry: ', error);
+        }
+    }
+
+    //Updates a sports activity
+    async updateSportsActivity(activity_id, sport, date, duration_minutes){
+        try{
+            const id = await this.db.update('SportActivity', [
+                { column: 'sport', value: sport },
+                { column: 'date', value: date },
+                { column: 'duration_minutes', value: duration_minutes }
+            ], [{ column: 'id', value: activity_id }]);
+            return id;
+        } catch (error) {
+            console.error('Error updating sports activity entry: ', error);
+        }
+
     }
 
     //Adds an exercise to the user exercises table
@@ -186,6 +245,29 @@ class UserDB {
                     ])
                 });
             } catch (error) {
+                console.error('Error reading or parsing JSON file: ', error);
+            }
+        }
+    }
+
+    //Fills sports Table from JSON
+    async fillSportsTable(){
+        //Checks if sports is empty, because if it is not empty then we are just ren-entering data again unecessarily
+        const empty = await this.db.isTableEmpty('Sports');
+
+        if(empty){
+            try {
+                const jsonData = fs.readFileSync('sports.json', 'utf-8');
+
+                const parsedData = JSON.parse(jsonData);
+
+                //Loop through the parsed data from the JSON (the sports) and add them to the table by calling create
+                parsedData.forEach(sport => {
+                    this.db.create('Sports', [
+                        { column: 'sport', value: sport.name }
+                    ]);
+                });
+            } catch (error) { 
                 console.error('Error reading or parsing JSON file: ', error);
             }
         }
@@ -290,6 +372,16 @@ class UserDB {
         }
     }
 
+    //Returns all of the sports from the sports table
+    async getSports(){
+        try{
+            let sports = await this.db.getAll('Sports');
+            return sports;
+        } catch (error) {
+            console.error('Error retreiving sports: ', error.message);
+        }
+    }
+
     //Returns all of the exercises logged in a specific workout from userExercises
     async getAllWorkoutExercises(workout_id){
         try {
@@ -309,6 +401,18 @@ class UserDB {
             return workouts;
         } catch (error) {
             console.error('Error retreiving the user workouts: ', error.message);
+        }
+    }
+
+    //Returns all sports activity logs from a specified user id
+    async getAllSportsActivity(id){
+        const user = this.findUserById(id);
+
+        try{
+            let sports = await this.db.getAllWhere('SportActivity', [{ column: 'user_id', value: id }]);
+            return sports;
+        } catch (error) {
+            console.error('Error retreiving the user sports activity logs: ', error.message);
         }
     }
 

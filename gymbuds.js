@@ -13,9 +13,12 @@ db.makeWorkoutTable();
 db.makeExercisesTable();
 db.makeUserExercisesTable();
 db.makeFriendsTable();
+db.makeSportsActivityTable();
+db.makeSportsTable();
 
 //Only happens on creation
 db.fillExercisesTable();
+db.fillSportsTable();
 
 //Declare the express app
 const app = express();
