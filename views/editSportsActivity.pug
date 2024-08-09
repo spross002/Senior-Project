@@ -1,0 +1,65 @@
+extends layout.pug
+
+block content 
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+        .container-fluid
+            a.navbar-brand(href='/')
+                img.img-fluid(src="/logo.png", alt='Logo', width='50')
+                |   Gymbuds
+            button.navbar-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+                span.navbar-toggler-icon
+            #navbarSupportedContent.collapse.navbar-collapse
+                ul.navbar-nav.me-auto.mb-2.mb-lg-0
+                    if user
+                        li.nav-item
+                            a.nav-link(href='/dashboard') Dashboard 
+                ul.navbar-nav
+                    if user
+                        li.nav-item.dropdown
+                            a.nav-link(class="btn dropdown-toggle", data-bs-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
+                                i(class="bi bi-person-circle profile-icon")
+                            ul.dropdown-menu.dropdown-menu-end(aria-labelledby="dropdownMenuButton")
+                                li 
+                                    .dropdown-item.dropdown-header(style="text-align: center; color: #000;") #{user.first_name} #{user.last_name}
+                                div.dropdown-divider
+                                li 
+                                    a.dropdown-item(href="/profile")
+                                        i(class="bi bi-gear-fill" style="font-style: normal")  Profile Settings
+                                li 
+                                    a.dropdown-item(href="/logout") 
+                                        i(class="bi bi-box-arrow-right" style="font-style: normal")  Logout
+
+    body 
+        .container.mt-5
+            form(id='postForm', action=`/sportsActivities/:id`, method='post').form
+                .row.justify-content-center
+                    .col-md-6
+                        .login-card.text-center.shadow-lg.border-0.rounded
+                            .card-header
+                                h4.card-title Log a New Sports Activity
+                            .card-body
+                                .container(id='sportActivityContainer')
+                                    .row
+                                        label(for='sport') Select Sport 
+                                    .row.justify-content-center
+                                        select(name='sport_dropdown', id='sport_dropdown', class='scrollable-dropdown-sports')
+                                            each sport in sports
+                                                if sport.sport == sportsActivity.sport
+                                                    option(value=sports.sport, selected)= sport.sport
+                                                else
+                                                    option(value=sport.sport)= sport.sport
+                                    p
+                                    .row.justify-content-center
+                                        .col-md-4.text-center
+                                            label(for='startTime') Time Started 
+                                            input.form-control(type='time', id='startTime', name='startTime', value=startTime, required)
+                                        .col-md-4.text-center
+                                            label(for='endTime') Time Ended 
+                                            input.form-control(type='time', id='endTime', name='endTime', value=endTime, required)
+                                    p
+                                    .row
+                                        .col
+                                            a(type="button", href='/dashboard' id="cancelButton", class="btn btn-danger btn-block rounded-pill") CANCEL
+                                        .col
+                                            input(type="hidden", name="sportsActivityId", value=sportsActivity.id)
+                                            button(type="submit", class="btn btn-success btn-block rounded-pill") Log Sports Activity
