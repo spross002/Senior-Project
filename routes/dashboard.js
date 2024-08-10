@@ -31,21 +31,29 @@ router.get('/dashboard', logged_in, async (req, res) => {
     const user = await req.db.findUserById(userId);
 
     //This retreives all of the user's workouts from the database in order to list them for the user to see them
-    const workouts = await req.db.getAllWorkouts(userId);
+    let workouts = await req.db.getAllWorkouts(userId);
+
+    //Make sure the workouts are sorted in ascending date.
+    workouts.sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateA - dateB;
+    })
 
     //This retreives all of the user's logged sports activies from the database in order to list them for the user to see them
-    const sports = await req.db.getAllSportsActivity(userId);
+    let sports = await req.db.getAllSportsActivity(userId);
 
+    //Make sure the sports are sorted in ascending date.
+    sports.sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateA - dateB;
+    })
+
+    
     res.render('dashboard', { user: user, workouts: workouts, sports: sports });
 });
 
-//Render the latest recap dashboard page
-router.get('/recap', logged_in, async (req, res) => {
-    const userId = req.session.user ? req.session.user.id : -1;
-    const user = await req.db.findUserById(userId);
-
-    res.render('recap', { user: user })
-})
 
 //Render the weekly recaps dashboard page
 router.get('/recaps-weekly', logged_in, async (req, res) => {
