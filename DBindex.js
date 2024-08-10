@@ -181,35 +181,28 @@ class DataStore {
         });
     }
 
-    // /** This is limited to supporting direct match query parameters.
-    //  *  Query is an array of column/value pairs
-    //  */
-    // async read(table, query) {
-    //     let sql = `SELECT * from ${table}`;
-    //     if (query.length > 0) {
-    //         sql += ` WHERE ${query.map(d => `${d.column} = ?`).join(' and ')}`
-    //     }
-    //     console.log(sql, query.map(d => d.value));
-    //     return await this.db.all(
-    //         sql, query.map(d => d.value)
-    //     );
-    // }
+    //Returns all with specified between parameters
+    getAllWorkoutsInRange(table, user_id, query){
+        let sql = `SELECT * from ${table} WHERE user_id = ${user_id}`;
+        if (query.length > 0){
+            sql += ` AND date BETWEEN ${query.map(d => `'${d.value}'`).join(' and ')}`
+        }
 
-    // async update(table, data, query) {
-    //     let sql = `UPDATE ${table} set ${data.map(d => `${d.column}=?`)} where ${query.map(d => `${d.column} = ?`).join(' and ')}`;
-    //     const _data = data.map(d => d.value).concat(query.map(q => q.value));
-    //     console.log(sql, _data);
-    //     return await this.db.run(sql, _data)
-    // }
+        console.log("In range sql: ", sql);
 
-    // async delete(table, query) {
-    //     assert(query.length > 0, 'Deleting without query is a bad idea');
-    //     let sql = `DELETE from ${table} WHERE ${query.map(d => `${d.column} = ?`).join(' and ')}`;
-    //     console.log(sql, query.map(d => d.value));
-    //     return await this.db.all(
-    //         sql, query.map(d => d.value)
-    //     );
-    // }
+        return new Promise((resolve, reject) => {
+            this.db.all(sql, (err, rows) => {
+                if (err) {
+                    console.error('Error: ', err.message);
+                    reject(err);
+                } else {
+                    console.log('Successful lookup');
+                    resolve(rows);
+                }
+            });
+        });
+    }
+
 }
 
 module.exports = DataStore;
