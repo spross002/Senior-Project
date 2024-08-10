@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const { formatDate } = require('../services/commonFunctions');
 
 //This function checks if the user is logged in (for authorization)
 const logged_in = (req, res, next) => {
@@ -49,7 +50,10 @@ router.post('/:id/newWorkout', async (req, res) => {
     */
 
     //Get the current date (for the workout entry)
-    const currentDate = new Date().toDateString();
+    const currentDate = new Date()
+
+    //Format the date
+    const formattedDate = formatDate(currentDate);
 
     //Get the duration of the workout (for the workout duration entry)
     const startTimeStr = req.body.startTime;
@@ -86,7 +90,7 @@ router.post('/:id/newWorkout', async (req, res) => {
     const user = await req.db.findUserById(userId);
 
     //Creates a new workout table entry and returns the workout ID
-    const workoutId = await req.db.createWorkout(userId, currentDate, startTimeStr, endTimeStr, workoutDuration);
+    const workoutId = await req.db.createWorkout(userId, formattedDate, startTimeStr, endTimeStr, workoutDuration);
 
     //-------------------------------------------------------------------------------------------
 
@@ -423,7 +427,10 @@ router.get('/:id/newSportsActivity', logged_in, async (req, res) => {
 router.post('/:id/newSportsActivity', async (req, res) => {
 
     //Get the current date (for the sports activity entry)
-    const currentDate = new Date().toDateString();
+    const currentDate = new Date()
+
+    //Format the date
+    const formattedDate = formatDate(currentDate);
 
     //Get the duration of the workout (for the duration entry)
     const startTimeStr = req.body.startTime;
@@ -462,7 +469,7 @@ router.post('/:id/newSportsActivity', async (req, res) => {
     const sport = req.body.sport_dropdown;
 
     //Creates a new sport activity entry and returns the generated ID.
-    const activityId = await req.db.createSportsActivity(userId, sport, currentDate, activityDuration, startTimeStr, endTimeStr);
+    const activityId = await req.db.createSportsActivity(userId, sport, formattedDate, activityDuration, startTimeStr, endTimeStr);
 
     res.redirect('/dashboard');
 })
