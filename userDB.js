@@ -454,13 +454,26 @@ class UserDB {
     //Returns all of the workouts within a set date range for a set user
     async getAllWorkoutsForWeek(id, start_date, end_date){
         try {
-            let workouts = await this.db.getAllWorkoutsInRange('Workouts', id, [
+            let workouts = await this.db.getAllInRange('Workouts', id, [
                 { column: 'date', value: start_date },
                 { column: 'date', value: end_date }
             ]);
             return workouts;
         } catch (error) {
             console.error('Error retrieving all workouts within set range: ', error.message);
+        }
+    }
+
+    //Returns all of the sports activities logged within a set date range for a set user
+    async getAllSportsForWeek(id, start_date, end_date){
+        try {
+            let sports = await this.db.getAllInRange('SportActivity', id, [
+                { column: 'date', value: start_date },
+                { column: 'date', value: end_date }
+            ]);
+            return sports;
+        } catch (error) {
+            console.error('Error retrieving all sport activites within set range: ', error.message);
         }
     }
 
