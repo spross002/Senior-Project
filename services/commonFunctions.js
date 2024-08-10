@@ -18,6 +18,11 @@ const formatDate = (date) => {
     return formattedDate;
 }
 
+/*
+    Function: calcDuration
+    Parameters: start_time (string), end_time (string)
+    Returns: The difference in minutes between two start times.
+*/
 const calcDuration = (start_time, end_time) => {
 
     function parseTime(timeString) {
