@@ -123,6 +123,25 @@ class UserDB {
         }
     }
 
+    //Makes the table to store all of the user's weekly recaps
+    async makeRecapTable(){
+        try{
+            await this.db.schema('Recaps', [
+                { name: 'id', type: 'INTEGER' },
+                { name: 'user_id', type: 'INTEGER' },
+                { name: 'total_time', type: 'INTEGER' },
+                { name: 'longest_time', type: 'INTEGER' },
+                { name: 'total_body', type: 'REAL' },
+                { name: 'upper_body', type: 'REAL' },
+                { name: 'lower_body', type: 'REAL' },
+                { name: 'monday_date', type: 'TEXT' },
+                { name: 'sunday_date', type: 'TEXT' }
+            ], 'id', ', FOREIGN KEY ("user_id") REFERENCES Users ("id") )');
+        } catch (error) {
+            console.error('Error creating recaps table', error.message);
+        }
+    }
+
     
 
     //Adds a workout to the workout table
@@ -431,6 +450,25 @@ class UserDB {
             console.error('Error retreiving the user sports activity logs: ', error.message);
         }
     }
+
+    //Returns all of the workouts within a set date range for a set user
+    async getAllWorkoutsForWeek(id, start_date, end_date){
+        try {
+            let workouts = await this.db.getAllWorkoutsInRange('Workouts', id, [
+                { column: 'date', value: start_date },
+                { column: 'date', value: end_date }
+            ]);
+            return workouts;
+        } catch (error) {
+            console.error('Error retrieving all workouts within set range: ', error.message);
+        }
+    }
+
+    //Returns all of the exercises logged within a set date range for a set user
+    async getAllExercisesForWeek(id, start_date, end_date){
+
+    }
+
 
     //Adds a friend
     async addFriend(user_id, friend_id){

@@ -15,6 +15,7 @@ db.makeUserExercisesTable();
 db.makeFriendsTable();
 db.makeSportsActivityTable();
 db.makeSportsTable();
+db.makeRecapTable();
 
 //Only happens on creation
 db.fillExercisesTable();
@@ -68,6 +69,9 @@ app.use('/', require('./routes/dashboard'))
 app.use('/', require('./routes/workoutLog'))
 app.use('/', require('./routes/recap'))
 app.use('/', require('./routes/friends'))
+
+//This tells express to read the service javascript files
+const { calculateWeeklyBreakdown } = require('./services/weeklyBreakdown');
 
 //This renders a custom page for 404 errors.
 app.use((req, res, next) => {
