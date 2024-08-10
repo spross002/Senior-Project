@@ -38,9 +38,24 @@ router.get('/recap', logged_in, async (req, res) => {
     const week_workouts = await req.db.getAllWorkoutsForWeek(userId, lastMonday, formattedToday);
     console.log(week_workouts);
 
+    let workout_ids = [];
+
+    //Fill the workout_ids array with all of the workout ids from this week's workouts
+    for(const workout of week_workouts){
+        workout_ids.push(workout.id);
+    }
+
     //Get all of the exercises from the workouts for the week
+    let week_exercises = []
+    for(var i = 0; i < workout_ids.length; i++){
+        week_exercises.push(await req.db.getAllWorkoutExercises(workout_ids[i]));
+    }
+
+    //"Flatten" the week_exercises array so its just an array of objects, not an "array of object arrays"
+    week_exercises = week_exercises.flat();
 
     //Take the information and generate the weekly recap
+    const recap = calculateWeeklyBreakdown(userId, week_workouts, week_exercises);
 
 
     //If "isSunday" is true, that means the day is sunday and we can store the recap to the database
