@@ -464,12 +464,6 @@ class UserDB {
         }
     }
 
-    //Returns all of the exercises logged within a set date range for a set user
-    async getAllExercisesForWeek(id, start_date, end_date){
-
-    }
-
-
     //Adds a friend
     async addFriend(user_id, friend_id){
         try {
