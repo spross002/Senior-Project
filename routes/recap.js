@@ -25,7 +25,7 @@ router.get('/recap', logged_in, async (req, res) => {
     //This gets removed later *******IMPORTANT*******
     const isFriday = today.getDay() === 5;
 
-    //Find the date of the last monday that passed and store it in a string
+    //Find the date of the last monday that passed and store it
     let lastMonday = new Date();
     const daysToSubtract = ((today.getDay() + 6) % 7);
     lastMonday.setDate(today.getDate() - daysToSubtract);
@@ -36,6 +36,7 @@ router.get('/recap', logged_in, async (req, res) => {
     //Now we have the dates we are calculating the recap in, we can query the database for everything within that range
     //Get the workouts for the week
     const week_workouts = await req.db.getAllWorkoutsForWeek(userId, lastMonday, formattedToday);
+    console.log(week_workouts);
 
     //Get all of the exercises from the workouts for the week
 

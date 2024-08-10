@@ -18,7 +18,36 @@ const formatDate = (date) => {
     return formattedDate;
 }
 
+const calcDuration = (start_time, end_time) => {
+
+    function parseTime(timeString) {
+        const [hours, minutes] = timeString.split(':').map(Number);
+        const date = new Date();
+        date.setHours(hours, minutes, 0, 0);
+        return date;
+    }
+
+    // Parse the start and end times
+    const start = parseTime(start_time);
+    const end = parseTime(end_time);
+
+    //If the end time is before the start time, that means it ends on the next day (for those late night lifters)
+    // so, we need to account for that
+    if(end < start){
+        end.setDate(end.getDate() + 1);
+    }
+
+    //Calculates the workout time in milliseconds
+    const diffMilliseconds = end - start;
+
+    //Convert the milliseconds to minutes
+    const diffMinutes = diffMilliseconds / (1000 * 60);
+
+    return diffMinutes;
+}
+
 
 module.exports = { 
     formatDate,
+    calcDuration,
 };

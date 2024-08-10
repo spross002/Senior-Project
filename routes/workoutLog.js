@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const { formatDate } = require('../services/commonFunctions');
+const { formatDate, calcDuration } = require('../services/commonFunctions');
 
 //This function checks if the user is logged in (for authorization)
 const logged_in = (req, res, next) => {
@@ -59,31 +59,8 @@ router.post('/:id/newWorkout', async (req, res) => {
     const startTimeStr = req.body.startTime;
     const endTimeStr = req.body.endTime;
 
-    function parseTime(timeString) {
-        const [hours, minutes] = timeString.split(':').map(Number);
-        const date = new Date();
-        date.setHours(hours, minutes, 0, 0);
-        return date;
-    }
-
-    // Parse the start and end times
-    const start = parseTime(startTimeStr);
-    const end = parseTime(endTimeStr);
-
-    //If the end time is before the start time, that means it ends on the next day (for those late night lifters)
-    // so, we need to account for that
-    if(end < start){
-        end.setDate(end.getDate() + 1);
-    }
-
-    //Calculates the workout time in milliseconds
-    const diffMilliseconds = end - start;
-
-    //Convert the milliseconds to minutes
-    const diffMinutes = diffMilliseconds / (1000 * 60);
-
-    //Calculates the workout time in minutes
-    const workoutDuration = diffMinutes;
+    //Calculate Duration
+    const workoutDuration = calcDuration(startTimeStr, endTimeStr);
 
     //Get the current user id (for the workout entry)
     const userId = req.session.user.id;
@@ -211,31 +188,8 @@ router.post('/workouts/:id', async (req, res) => {
     const startTimeStr = req.body.startTime;
     const endTimeStr = req.body.endTime;
 
-    function parseTime(timeString) {
-        const [hours, minutes] = timeString.split(':').map(Number);
-        const date = new Date();
-        date.setHours(hours, minutes, 0, 0);
-        return date;
-    }
-
-    // Parse the start and end times
-    const start = parseTime(startTimeStr);
-    const end = parseTime(endTimeStr);
-
-    //If the end time is before the start time, that means it ends on the next day (for those late night lifters)
-    // so, we need to account for that
-    if(end < start){
-        end.setDate(end.getDate() + 1);
-    }
-
-    //Calculates the workout time in milliseconds
-    const diffMilliseconds = end - start;
-
-    //Convert the milliseconds to minutes
-    const diffMinutes = diffMilliseconds / (1000 * 60);
-
-    //Calculates the workout time in minutes
-    const workoutDuration = diffMinutes;
+    //Calculate Duration
+    const workoutDuration = calcDuration(startTimeStr, endTimeStr);
 
     //Get the current user id (for the workout entry)
     const userId = req.session.user.id;
@@ -436,31 +390,8 @@ router.post('/:id/newSportsActivity', async (req, res) => {
     const startTimeStr = req.body.startTime;
     const endTimeStr = req.body.endTime;
 
-    function parseTime(timeString) {
-        const [hours, minutes] = timeString.split(':').map(Number);
-        const date = new Date();
-        date.setHours(hours, minutes, 0, 0);
-        return date;
-    }
-
-    // Parse the start and end times
-    const start = parseTime(startTimeStr);
-    const end = parseTime(endTimeStr);
-
-    //If the end time is before the start time, that means it ends on the next day (for those people active late at night)
-    // so, we need to account for that
-    if(end < start){
-        end.setDate(end.getDate() + 1);
-    }
-
-    //Calculates the workout time in milliseconds
-    const diffMilliseconds = end - start;
-
-    //Convert the milliseconds to minutes
-    const diffMinutes = diffMilliseconds / (1000 * 60);
-
-    //Calculates the workout time in minutes
-    const activityDuration = diffMinutes;
+    //Calculate Duration
+    const activityDuration = calcDuration(startTimeStr, endTimeStr);
 
     const userId = req.session.user.id;
     const user = await req.db.findUserById(userId);
@@ -512,31 +443,8 @@ router.post('/sportsActivities/:id', async (req, res) => {
     const startTimeStr = req.body.startTime;
     const endTimeStr = req.body.endTime;
 
-    function parseTime(timeString) {
-        const [hours, minutes] = timeString.split(':').map(Number);
-        const date = new Date();
-        date.setHours(hours, minutes, 0, 0);
-        return date;
-    }
-
-    // Parse the start and end times
-    const start = parseTime(startTimeStr);
-    const end = parseTime(endTimeStr);
-
-    //If the end time is before the start time, that means it ends on the next day (for those late night lifters)
-    // so, we need to account for that
-    if(end < start){
-        end.setDate(end.getDate() + 1);
-    }
-
-    //Calculates the workout time in milliseconds
-    const diffMilliseconds = end - start;
-
-    //Convert the milliseconds to minutes
-    const diffMinutes = diffMilliseconds / (1000 * 60);
-
-    //Calculates the workout time in minutes
-    const workoutDuration = diffMinutes;
+    //Calculate Duration
+    const activityDuration = calcDuration(startTimeStr, endTimeStr);
 
     //Get the current user id (for the workout entry)
     const userId = req.session.user.id;
@@ -549,7 +457,7 @@ router.post('/sportsActivities/:id', async (req, res) => {
     const sport = req.body.sport_dropdown;
 
     //Update the database entry
-    const edittedSportsActivityId = await req.db.updateSportsActivity(activityId, sport, workoutDuration, startTimeStr, endTimeStr);
+    const edittedSportsActivityId = await req.db.updateSportsActivity(activityId, sport, activityDuration, startTimeStr, endTimeStr);
 
     res.redirect('/dashboard');
 })
