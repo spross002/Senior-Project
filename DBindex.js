@@ -182,7 +182,7 @@ class DataStore {
     }
 
     //Returns all with specified between parameters
-    getAllWorkoutsInRange(table, user_id, query){
+    getAllInRange(table, user_id, query){
         let sql = `SELECT * from ${table} WHERE user_id = ${user_id}`;
         if (query.length > 0){
             sql += ` AND date BETWEEN ${query.map(d => `'${d.value}'`).join(' and ')}`
