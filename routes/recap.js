@@ -54,8 +54,13 @@ router.get('/recap', logged_in, async (req, res) => {
     //"Flatten" the week_exercises array so its just an array of objects, not an "array of object arrays"
     week_exercises = week_exercises.flat();
 
+    //Get all of the sport activities for the week
+    const week_sportActivities = await req.db.getAllSportsForWeek(userId, lastMonday, formattedToday);
+
+    console.log(week_sportActivities);
+
     //Take the information and generate the weekly recap
-    const recap = calculateWeeklyBreakdown(userId, week_workouts, week_exercises);
+    const recap = calculateWeeklyBreakdown(userId, week_workouts, week_exercises, week_sportActivities);
 
 
     //If "isSunday" is true, that means the day is sunday and we can store the recap to the database
