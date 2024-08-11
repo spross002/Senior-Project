@@ -36,7 +36,7 @@ router.get('/recap', logged_in, async (req, res) => {
     //Now we have the dates we are calculating the recap in, we can query the database for everything within that range
     //Get the workouts for the week
     const week_workouts = await req.db.getAllWorkoutsForWeek(userId, lastMonday, formattedToday);
-    console.log(week_workouts);
+    //console.log(week_workouts);
 
     let workout_ids = [];
 
@@ -57,10 +57,11 @@ router.get('/recap', logged_in, async (req, res) => {
     //Get all of the sport activities for the week
     const week_sportActivities = await req.db.getAllSportsForWeek(userId, lastMonday, formattedToday);
 
-    console.log(week_sportActivities);
-
     //Take the information and generate the weekly recap
-    const recap = calculateWeeklyBreakdown(userId, week_workouts, week_exercises, week_sportActivities);
+
+    const exerciseTable = await req.db.getExercises();
+
+    const recap = calculateWeeklyBreakdown(userId, week_workouts, week_exercises, week_sportActivities, exerciseTable);
 
 
     //If "isSunday" is true, that means the day is sunday and we can store the recap to the database
