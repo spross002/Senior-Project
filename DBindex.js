@@ -188,8 +188,6 @@ class DataStore {
             sql += ` AND date BETWEEN ${query.map(d => `'${d.value}'`).join(' and ')}`
         }
 
-        console.log("In range sql: ", sql);
-
         return new Promise((resolve, reject) => {
             this.db.all(sql, (err, rows) => {
                 if (err) {
