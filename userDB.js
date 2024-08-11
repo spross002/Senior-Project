@@ -351,7 +351,6 @@ class UserDB {
     async findUserById(id) {
         try {
             const user = await this.db.read('Users', [{ column: 'id', value: id }]);
-            console.log(user);
             return user;
         } catch (error) {
             console.error('Error finding user by id: ', error.message);
@@ -363,7 +362,6 @@ class UserDB {
     async findWorkoutById(id) {
         try {
             const workout = await this.db.read('Workouts', [{ column: 'id', value: id }]);
-            console.log(workout);
             return workout;
         } catch (error) {
             console.error('Error finding the workout by id: ', error.message);
@@ -384,7 +382,6 @@ class UserDB {
     async findSportsActivityById(id) {
         try {
             const sportActivity = await this.db.read('SportActivity', [{ column: 'id', value: id }]);
-            console.log(sportActivity);
             return sportActivity;
         } catch (error) {
             console.error('Error finding the sport activity by id: ', error.message);
@@ -404,6 +401,16 @@ class UserDB {
             return exercises;
         } catch (error) {
             console.error('Error retrieving exercises:', error.message);
+        }
+    }
+
+    //Finds the exercise from the exercises table by the name
+    async findExerciseByName(exercise_name){
+        try{
+            const exercise = await this.db.read('Exercises', [{ column: 'name', value: exercise_name }]);
+            return exercise;
+        } catch (error) {
+            console.error('Error finding the exercise by name: ', error.message);
         }
     }
 
