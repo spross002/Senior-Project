@@ -388,6 +388,16 @@ class UserDB {
         }
     }
 
+    //Returns all users from database
+    async getAllUsers(){
+        try {
+            const users = await this.db.getAll('Users');
+            return users;
+        } catch (error) {
+            console.error("Error finding all users: ", error.message);
+        }
+    }
+
     //Returns the user's first and last name (searched by their ID)
     async getUserFirstLast(id){
         user = this.findUserById(id);
