@@ -58,4 +58,15 @@ block content
                             a(class="nav-link active" aria-current="page")
                                 svg(class="bi me-2", width="16", height="16")
                                     i(class="bi bi-person-lines-fill")
-                                    |   Friend's Recaps  
+                                    |   Friends 
+                div(class="col-md-9" style="color: white")
+                    .container.mt-5
+                        each friend in friends
+                            .row.justify-content-center
+                                .col-md-6
+                                    a(href="/u/"+friend.username class="card workout-card" style="margin: 5px 0; text-decoration: none")
+                                        .card-body
+                                            h4.card-title #{friend.first_name} #{friend.last_name}
+                                            p.card-text
+                                                | Username: #{friend.username} 
+            
