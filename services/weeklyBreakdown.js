@@ -44,15 +44,14 @@ const calculateWeeklyBreakdown = (userId, week_workouts, week_exercises, week_sp
     //STEP 3: LONGEST AMOUNT OF TIME SPENT AT THE GYM
 
     //Pass this week's workouts into a function to return the workout with the longest time.
-    const longestWorkout = findLongestTime(week_workouts);
+    const longestWorkout = findLongestWorkout(week_workouts);
     fullBreakdown['longestWorkout'] = longestWorkout;
 
-    console.log('FULL BREAKDOWN', fullBreakdown);
     return fullBreakdown;
 }
 
 //This function finds the workout in the list with the longest amount of time spent doing said workout.
-const findLongestTime = (workouts) => {
+const findLongestWorkout = (workouts) => {
     let longestTimeGym = 0;
     let longestWorkout = null;
     for(const workout of workouts){
@@ -105,7 +104,10 @@ const calcMuscleGroupPercentages = (exercises, exerciseTable) => {
         };
     }
 
-    return tally;
+    //Sort by highest-lowest percentage
+    const sorted = percentageSortDesc(tally);
+
+    return sorted;
 }
 
 //This function calculates and returns the percentages of the workout categories (upper body, lower body, etc.)
@@ -141,7 +143,24 @@ const calcCategoryPercentages = (exercises, exerciseTable) => {
         };
     }
 
-    return tally;
+    //Sort by highest-lowest percentage
+    const sorted = percentageSortDesc(tally);
+
+    return sorted;
+}
+
+//This function takes an array of objects that have percentages and sorts it in descending order
+const percentageSortDesc = (tally) => {
+    //Converts the object to an array of entries
+    let sortedPercent = Object.entries(tally).sort((a, b) => {
+        //Sort by percentage descending
+        return parseFloat(b[1].percentage) - parseFloat(a[1].percentage);
+    });
+
+    //Converts the sorted array back to an object
+    let sortedPercentObj = Object.fromEntries(sortedPercent);
+
+    return sortedPercentObj;
 }
 
 
