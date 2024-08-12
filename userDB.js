@@ -484,6 +484,16 @@ class UserDB {
         }
     }
 
+    //Queries the database and returns all of one user's friends
+    async getAllFriends(user_id){
+        try {
+            const friends = await this.db.getAllWhere('Friends', [{ column: 'user_id', value: user_id }]);
+            return friends;
+        } catch (error) {
+            console.error('Error finding all friends of certain user: ', error.message);
+        }
+    }
+
     //Adds a friend
     async addFriend(user_id, friend_id){
         try {
