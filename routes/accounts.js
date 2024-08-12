@@ -229,19 +229,24 @@ router.get('/u/:username', async (req, res) => {
 
     const userPage = await req.db.findUserByUsername(req.params.username);
 
-    //Check to see if the user and the profile being looked at are friends to show the proper page information
-    const isFriend = await req.db.checkFriendStatus(userId, userPage.id);
+    let isFriend;
 
     if (userPage == null) {
         //If there is no user by that username we render the page with that info to generate a warning
-        res.render('publicProfile', { user: activeUser, userPage: 'undefined' })
+        res.render('publicProfile', { user: activeUser, userPage: 'undefined' });
     } else if(activeUser == null) {
+        //Check to see if the user and the profile being looked at are friends to show the proper page information
+        isFriend = await req.db.checkFriendStatus(userId, userPage.id);
+
         //If the user isn't logged in we don't pass the user
         res.render('publicProfile', { userPage: userPage });
 
     } else {
+        //Check to see if the user and the profile being looked at are friends to show the proper page information
+        isFriend = await req.db.checkFriendStatus(userId, userPage.id);
+
         //If there is a user with that username we generate their public profile information
-        res.render('publicProfile', { user: activeUser, userPage: userPage, isFriend: isFriend })
+        res.render('publicProfile', { user: activeUser, userPage: userPage, isFriend: isFriend });
     }
 })
 
