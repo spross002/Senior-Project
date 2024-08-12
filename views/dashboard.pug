@@ -60,7 +60,7 @@ block content
                             a(href='/friends' class="nav-link" aria-current="page")
                                 svg(class="bi me-2", width="16", height="16")
                                     i(class="bi bi-person-lines-fill")
-                                    |   Friend's Recaps          
+                                    |   Friends         
 
                 div(class="col-md-9" style="color: white")
                     .row
@@ -70,8 +70,8 @@ block content
                     p
                     .row
                         each workout in workouts
-                            .col-md-4
-                                a(href="/workouts/"+workout.id class="card workout-card" style="margin: 10px 0; text-decoration: none")
+                            .col-md-2
+                                a(href="/workouts/"+workout.id class="card workout-card" style="margin: 5px 0; text-decoration: none")
                                     .card-body 
                                         h5.card-title(style="color: black") #{workout.date}
                                         p.card-text(style="color: black") #{workout.duration_minutes} minute workout
@@ -80,8 +80,8 @@ block content
                         h1(style="margin-left: 10px") #{user.first_name}'s Sports Activities
                     .row
                         each sport in sports 
-                            .col-md-4
-                                a(href="/sportsActivities/"+sport.id class="card workout-card" style="margin: 10px 0; text-decoration: none")
+                            .col-md-2
+                                a(href="/sportsActivities/"+sport.id class="card workout-card" style="margin: 5px 0; text-decoration: none")
                                     .card-body 
                                         h5.card-title(style="color: black") #{sport.date}
                                         p.card-text(style="color: black") #{sport.duration_minutes} minutes of #{sport.sport}
