@@ -12,7 +12,23 @@ const logged_in = (req, res, next) => {
     }
 }
 
+//Render the friend's recaps dashboard page
+router.get('/friends', logged_in, async (req, res) => {
+    const userId = req.session.user ? req.session.user.id : -1;
+    const user = await req.db.findUserById(userId);
 
+    //Get the IDs of all the user's friends
+    const friendsIds = await req.db.getAllFriends(userId);
+
+    let friends = [];
+
+    //Loop through the IDs and retrieve each user's information to pass on to the html.
+    for(const user of friendsIds){
+        friends.push(await req.db.findUserById(user.friend_id));
+    }
+
+    res.render('friends', { user: user, friends: friends })
+})
 
 
 module.exports = router;

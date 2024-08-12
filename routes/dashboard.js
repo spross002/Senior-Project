@@ -63,12 +63,4 @@ router.get('/recaps-weekly', logged_in, async (req, res) => {
     res.render('recaps-weekly', { user: user })
 })
 
-//Render the friend's recaps dashboard page
-router.get('/friends', logged_in, async (req, res) => {
-    const userId = req.session.user ? req.session.user.id : -1;
-    const user = await req.db.findUserById(userId);
-
-    res.render('friends', { user: user })
-})
-
 module.exports = router;
