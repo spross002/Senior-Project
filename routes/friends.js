@@ -39,8 +39,6 @@ router.get('/findFriends', logged_in, async (req, res) => {
     //Get all of the users from the database
     const allUsers = await req.db.getAllUsers();
 
-    console.log(allUsers);
-
     res.render('findFriends', { user: user, allUsers: allUsers });
 })
 
