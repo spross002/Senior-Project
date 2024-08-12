@@ -79,3 +79,15 @@ body {
     transform: scale(1.05);
     box-shadow: 0 8px 16px rgba(216, 211, 211, 0.2);
 }
+
+/* These are all of the colors for the progress bar to ensure everything is different and doesn't get blended */
+.progress-bar-quadriceps { background-color: #FF5733; } /* Orange */
+.progress-bar-glutes { background-color: #33FF57; }     /* Green */
+.progress-bar-hamstrings { background-color: #3357FF; } /* Blue */
+.progress-bar-core { background-color: #FF33A1; }       /* Pink */
+.progress-bar-chest { background-color: #FFBD33; }      /* Yellow */
+.progress-bar-shoulders { background-color: #8E44AD; }  /* Purple */
+.progress-bar-triceps { background-color: #1ABC9C; }    /* Teal */
+.progress-bar-back { background-color: #C0392B; }       /* Red */
+.progress-bar-traps { background-color: #2980B9; }      /* Light Blue */
+.progress-bar-lowerback { background-color: #E67E22; }  /* Dark Orange */

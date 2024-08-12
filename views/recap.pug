@@ -26,8 +26,19 @@ block content
                                     a.dropdown-item(href="/logout") 
                                         i(class="bi bi-box-arrow-right" style="font-style: normal")  Logout
 
-    body
+    script.
+        muscleGroupColor = function(group) {
+            switch (group) {
+                case 'Quadriceps':
+                    return 'progress-bar-quadriceps';
+                case 'Glutes':
+                    return 'progress-bar-glutes';
+                default: 
+                    return 'bg-secondary';
+            }
+        };   
 
+    body
         //- This is the navigation sidebar for the dashboard
         div(class="container-fluid")
             .row
@@ -58,4 +69,59 @@ block content
                             a(href='/friends' class="nav-link" aria-current="page")
                                 svg(class="bi me-2", width="16", height="16")
                                     i(class="bi bi-person-lines-fill")
-                                    |   Friend's Recaps  
+                                    |   Friend's Recaps
+
+                div(class="col-md-9" style="color: white")
+                    h1 Weekly Workout Summary 
+                
+                    //- Total Gym and Sports Time
+                    .row(style="color: black") 
+                        .col-md-6 
+                            .workout-card.mb-4 
+                                .card-body 
+                                    h5.card-title Total Time Working out in the Gym
+                                    p.card-text #{recap.totalGymTime} minutes 
+                        .col-md-6 
+                            .workout-card.mb-4 
+                                .card-body 
+                                    h5.card-title Total Time Active Outside of the Gym 
+                                    p.card-text #{recap.totalSportsTime} minutes 
+
+                    //- Percentage Breakdown of Muscle Group Usage
+                    .workout-card.mb-4(style="color: black")
+                        .card-body 
+                            h5.card-title Muscle Group Usage 
+                            .progress
+                                each info, group in recap.MuscleGroupPercent 
+                                    .progress-bar(
+                                        
+                                        role="progressbar",
+                                        style=`width: ${info.percentage}%`,
+                                        aria-valuenow=info.percentage,
+                                        aria-valuemin="0",
+                                        aria-valuemax="100"
+                                    )
+                                        | #{group}
+                    
+                    //- Percentage Breakdown of Workout Category Usage
+                    .workout-card.mb-4(style="color: black")
+                        .card-body 
+                            h5.card-title Workout Category Usage 
+                            .progress 
+                                each info, category in recap.CategoryPercent 
+                                    .progress-bar(
+                                        
+                                        role="progressbar",
+                                        style=`width: ${info.percentage}%`,
+                                        aria-valuenow=info.percentage,
+                                        aria-valuemin="0",
+                                        aria-valuemax="100"
+                                    )
+                                        | #{category}
+                    
+                    //- Longest Workout of the Week
+                    .workout-card.mb-4 
+                        .card-body 
+                            h5.card-title Longest Workout of the Week 
+                            p.card-text Duration: #{recap.longestWorkout.duration_minutes} minutes 
+                            p.card-text Date: #{recap.longestWorkout.date}

@@ -10,7 +10,6 @@ const calculateWeeklyBreakdown = (userId, week_workouts, week_exercises, week_sp
             1. Calculate the amount of time spent in the gym during set week.
             2. Out of all of their exercises, calculate the percentages each of the major muscle groups take up.
             3. Find the longest amount of time spent at the gym for that certain week.
-            4. A list to look at each workout they did (possibly too much for one page, may change/disregard)
     */
 
     //PREREQUISITES
@@ -35,6 +34,7 @@ const calculateWeeklyBreakdown = (userId, week_workouts, week_exercises, week_sp
     //STEP 2: PERCENTAGES OF EACH OF THE MAJOR MUSCLE GROUPS
     //Now we need to loop through all of the exercises, storing each major muscle group when a new one is found, and tallying the rest.
     const breakdownMuscleGroup = calcMuscleGroupPercentages(week_exercises, exerciseTable);
+    fullBreakdown['MuscleGroupPercent'] = breakdownMuscleGroup;
 
     const breakdownCategories = calcCategoryPercentages(week_exercises, exerciseTable);
     fullBreakdown['CategoryPercent'] = breakdownCategories;
@@ -68,7 +68,44 @@ const findLongestTime = (workouts) => {
 
 //This function calculates and returns the percentages of major muscle groups
 const calcMuscleGroupPercentages = (exercises, exerciseTable) => {
+    //Tally for each major muscle group
+    const tally = {};
+    //Total amount of muscle groups trained
+    let totalCount = 0;
 
+    var exerciseDetails;
+    var muscleGroupsString;
+
+    exercises.forEach(exercise => {
+        exerciseDetails = exerciseTable.find(item => item.name === exercise.exercise_name);
+        muscleGroupsString = exerciseDetails.muscleGroups;
+        
+        //Since the musclegroups are stored as a string, we need to strip that string
+        let muscleGroupsArray = muscleGroupsString.split(', ').map(word => word.trim());
+
+        //Loop through the muscle groups
+        for(var i = 0; i < muscleGroupsArray.length; i++){
+            if(tally[muscleGroupsArray[i]]){
+                tally[muscleGroupsArray[i]]++;
+            } else {
+                tally[muscleGroupsArray[i]] = 1;
+            }
+
+            totalCount++;
+        }
+    })
+
+    //Now that we have the counts of each muscle group, we calculate what percentage of the total they each are
+    for(const key in tally){
+        const count = tally[key];
+
+        tally[key] = {
+            count: count,
+            percentage: ((count / totalCount) * 100).toFixed(2)
+        };
+    }
+
+    return tally;
 }
 
 //This function calculates and returns the percentages of the workout categories (upper body, lower body, etc.)

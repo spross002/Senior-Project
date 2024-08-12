@@ -22,9 +22,6 @@ router.get('/recap', logged_in, async (req, res) => {
     const today = new Date();
     const isSunday = today.getDay() === 0;
 
-    //This gets removed later *******IMPORTANT*******
-    const isFriday = today.getDay() === 5;
-
     //Find the date of the last monday that passed and store it
     let lastMonday = new Date();
     const daysToSubtract = ((today.getDay() + 6) % 7);
@@ -36,7 +33,6 @@ router.get('/recap', logged_in, async (req, res) => {
     //Now we have the dates we are calculating the recap in, we can query the database for everything within that range
     //Get the workouts for the week
     const week_workouts = await req.db.getAllWorkoutsForWeek(userId, lastMonday, formattedToday);
-    //console.log(week_workouts);
 
     let workout_ids = [];
 
@@ -57,10 +53,11 @@ router.get('/recap', logged_in, async (req, res) => {
     //Get all of the sport activities for the week
     const week_sportActivities = await req.db.getAllSportsForWeek(userId, lastMonday, formattedToday);
 
-    //Take the information and generate the weekly recap
-
+    //Get the table of available exercises from the database to pass into the breakdown function 
+    // so it can see muscle groups and workout categories
     const exerciseTable = await req.db.getExercises();
 
+    //Take all of the information gathered and pass it into the function to generate the weekly recap
     const recap = calculateWeeklyBreakdown(userId, week_workouts, week_exercises, week_sportActivities, exerciseTable);
 
 
@@ -70,7 +67,7 @@ router.get('/recap', logged_in, async (req, res) => {
         //const recap = await req.db.saveRecap();
     }
 
-    res.render('recap', { user: user })
+    res.render('recap', { user: user, recap: recap })
 })
 
 //This function
