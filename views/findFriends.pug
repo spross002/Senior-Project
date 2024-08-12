@@ -1,0 +1,66 @@
+extends layout.pug
+
+block content
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+        .container-fluid
+            a.navbar-brand(href='/')
+                img.img-fluid(src='logo.png', alt='Logo', width='50')
+                |   Gymbuds
+            button.navbar-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+                span.navbar-toggler-icon
+            #navbarSupportedContent.collapse.navbar-collapse
+                ul.navbar-nav.me-auto.mb-2.mb-lg-0
+                    if user
+                        li.nav-item 
+                            a.nav-link(href='/dashboard') Dashboard
+                ul.navbar-nav(style='display: flex; align-items: center;')
+                    if user
+                        li.nav-item.dropdown
+                            a.nav-link(class="btn dropdown-toggle", data-bs-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
+                                i(class="bi bi-person-circle profile-icon")
+                            ul.dropdown-menu.dropdown-menu-end(aria-labelledby="dropdownMenuButton")
+                                li 
+                                    .dropdown-item.dropdown-header(style="text-align: center; color: #000;") #{user.first_name} #{user.last_name}
+                                div.dropdown-divider
+                                li 
+                                    a.dropdown-item(href="/profile")
+                                        i(class="bi bi-gear-fill" style="font-style: normal")  Profile Settings
+                                li 
+                                    a.dropdown-item(href="/logout") 
+                                        i(class="bi bi-box-arrow-right" style="font-style: normal")  Logout
+
+    body 
+        .container.mt-4
+            h2(style="color: white") Search for a User 
+            input#searchInput.form-control(type="text" placeholder="Type a username...")
+            #userList.user-list.mt-3
+    
+        script.
+            const users = !{JSON.stringify(allUsers)};
+            const searchInput = document.getElementById('searchInput');
+            const userList = document.getElementById('userList');
+
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                userList.innerHTML = ''; //This clears the previous results
+
+                if(query){
+                    const filteredUsers = users.filter(user => {
+                        return (
+                            user.username.toLowerCase().includes(query) ||
+                            user.first_name.toLowerCase().includes(query) ||
+                            user.last_name.toLowerCase().includes(query) ||
+                            `${user.first_name} ${user.last_name}`.toLowerCase().includes(query)
+                        );
+                    });
+                    filteredUsers.forEach(user => {
+                        const userItem = document.createElement('div');
+                        userItem.className = 'user-item';
+                        userItem.textContent = `${user.first_name} ${user.last_name} (${user.username})`;
+                        userItem.addEventListener('click', () => {
+                            window.location.href = `/u/${user.username}`; //Redirects to the user's profile when clicked
+                        })
+                        userList.appendChild(userItem);
+                    });
+                }
+            });

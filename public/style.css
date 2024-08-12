@@ -88,3 +88,21 @@ body {
 .progress-bar:hover {
     transform: scale(1.05);
 }
+
+/* All for user search page */
+.user-list{
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.user-item{
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    background-color: white;
+    text-decoration: black;
+}
+
+.user-item:hover{
+    background-color: #7cc9ec;
+}

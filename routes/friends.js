@@ -27,8 +27,21 @@ router.get('/friends', logged_in, async (req, res) => {
         friends.push(await req.db.findUserById(user.friend_id));
     }
 
-    res.render('friends', { user: user, friends: friends })
+    res.render('friends', { user: user, friends: friends });
 })
 
+
+//Render the find new friends page
+router.get('/findFriends', logged_in, async (req, res) => {
+    const userId = req.session.user ? req.session.user.id: -1;
+    const user = await req.db.findUserById(userId);
+
+    //Get all of the users from the database
+    const allUsers = await req.db.getAllUsers();
+
+    console.log(allUsers);
+
+    res.render('findFriends', { user: user, allUsers: allUsers });
+})
 
 module.exports = router;
