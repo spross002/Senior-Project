@@ -1,5 +1,4 @@
 const assert = require('assert');
-//require('dotenv').config();
 const sqlite3 = require('sqlite3').verbose();
 
 //DataStore Class

@@ -3,18 +3,33 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 
 //This function will calculate the weekly workout breakdown
-const calculateWeeklyBreakdown = (userId, week_workouts, week_exercises, week_sportActivities, exerciseTable) => {
-    const fullBreakdown = {};
-    /*
-        CHECKLIST:
-            1. Calculate the amount of time spent in the gym during set week.
-            2. Out of all of their exercises, calculate the percentages each of the major muscle groups take up.
-            3. Find the longest amount of time spent at the gym for that certain week.
-    */
+/*
 
-    //PREREQUISITES
-    //Week_workouts is an array of the workouts from the week
-    //Week_exercises is an array of the exercises from the week
+    NAME:
+        calculateWeeklyBreakdown() - Calculates the breakdown of all workouts/exercises/activities from a certain week
+
+    SYNOPSIS:
+        const calculateWeeklyBreakdown(userId, week_workouts, week_exercises, week_sportActivities, exerciseTable) 
+
+        user_id --> The ID of the user the breakdown is for (integer)
+        week_workouts --> All of the workout entries for the week (object array)
+        week_exercises --> All of the logged exercises for the week (object array)
+        week_sportActivities --> All of the logged sports activity for the week (object array)
+        exerciseTable --> The table of exercise information from the database (object array)
+
+    DESCRIPTION:
+        This function takes all of the workouts/exercises/sports activities for the week and calculates a breakdown/recap.
+        This includes the amount of time spent in the gym during that week/the amount of time active outside of the gym,
+        as well as the percentages each of the major muscle groups and workout categories take up of their totals,
+        and the longest amount of time spent at once for that certain week.
+
+    RETURNS:
+        An object array with all of the information generated in the breakdown.
+
+*/
+const calculateWeeklyBreakdown = (userId, week_workouts, week_exercises, week_sportActivities, exerciseTable) => {
+    //The object array to store all of the breakdown information as it is calculated
+    const fullBreakdown = {};
 
     //STEP 1: AMOUNT OF TIME SPENT IN THE GYM / AMOUNT OF TIME ACTIVE (SPORTS/ETC)
     //Loop through workouts and add together time
@@ -32,13 +47,14 @@ const calculateWeeklyBreakdown = (userId, week_workouts, week_exercises, week_sp
 
 
     //STEP 2: PERCENTAGES OF EACH OF THE MAJOR MUSCLE GROUPS
+
+    //Pass this week's exercises into a function to return the percentage breakdown of muscle groups
     const breakdownMuscleGroup = calcMuscleGroupPercentages(week_exercises, exerciseTable);
     fullBreakdown['MuscleGroupPercent'] = breakdownMuscleGroup;
 
+    //Pass this week's exercises into a function to return the percentage breakdown of workout categories
     const breakdownCategories = calcCategoryPercentages(week_exercises, exerciseTable);
     fullBreakdown['CategoryPercent'] = breakdownCategories;
-
-
 
     //STEP 3: LONGEST AMOUNT OF TIME SPENT AT THE GYM
 
@@ -50,6 +66,24 @@ const calculateWeeklyBreakdown = (userId, week_workouts, week_exercises, week_sp
 }
 
 //This function finds the workout in the list with the longest amount of time spent doing said workout.
+/*
+
+    NAME:
+        findLongestWorkout() - Finds the workout with the longest time
+
+    SYNOPSIS:
+        const findLongestWorkout(workouts);
+
+        workouts --> An object array of all the workouts to compare with each other (object array)
+
+    DESCRIPTION:
+        This function takes all of the workouts given, and loops through them to find the workout that
+        has the longest duration.
+
+    RETURNS:
+        Returns a workout object. 
+
+*/
 const findLongestWorkout = (workouts) => {
     let longestTimeGym = 0;
     let longestWorkout = null;
@@ -64,7 +98,25 @@ const findLongestWorkout = (workouts) => {
     return longestWorkout;
 }
 
-//This function calculates and returns the percentages of major muscle groups
+/*
+
+    NAME:
+        calcMuscleGroupPercentages() - Calculates the percentages of the muscle groups
+
+    SYNOPSIS:
+        const calcMuscleGroupPercentages(exercises, exerciseTable);
+
+        exercises --> All of the exercises that are going to be tallied (object array)
+        exerciseTable --> All of the Exercises table information (object array) (To check the muscle groups of each exercise)
+
+    DESCRIPTION:
+        This function takes the exercises the user logged that week and looks at every single one of them, and uses the
+        ExercisesTable to check all of the muscle groups that exercise targets (quads, biceps, etc). 
+
+    RETURNS:
+        An array of objects containing the percentages of muscle groups hit for the week (sorted in descending order).
+
+*/
 const calcMuscleGroupPercentages = (exercises, exerciseTable) => {
     //Tally for each major muscle group
     const tally = {};
@@ -109,7 +161,25 @@ const calcMuscleGroupPercentages = (exercises, exerciseTable) => {
     return sorted;
 }
 
-//This function calculates and returns the percentages of the workout categories (upper body, lower body, etc.)
+/*
+
+    NAME:
+        calcCategoryPercentages() - Calculates the percentages of the workout categories (upper body, lower body, etc.)
+
+    SYNOPSIS:
+        const calcCategoryPercentages(exercises, exerciseTable);
+
+        exercises --> All of the exercises that are going to be tallied (object array)
+        exerciseTable --> All of the Exercises table information (object array) (To check the category of each exercise)
+
+    DESCRIPTION:
+        This function takes the exercises the user logged that week and looks at every single one of them, and uses the
+        ExercisesTable to check if it is upper body, lower body, or total body, and tallies up each entry. 
+
+    RETURNS:
+        An array of objects containing the percentages of upper/lower/total body exercises for the week (sorted in descending order).
+
+*/
 const calcCategoryPercentages = (exercises, exerciseTable) => {
     //Tally for each workout category
     const tally = {};
@@ -149,6 +219,25 @@ const calcCategoryPercentages = (exercises, exerciseTable) => {
 }
 
 //This function takes an array of objects that have percentages and sorts it in descending order
+/*
+
+    NAME:
+        percentageSortDesc() - Sorts a dictionary based on entries
+
+    SYNOPSIS:
+        const percentageSortDesc(tally);
+
+        tally - A dictionary of entries and their counts
+
+    DESCRIPTION:
+        This function takes a dictionary of entries and their total counts/percentages and sorts them
+        in descending order.
+
+    RETURNS:
+        The passed in object, but sorted in descending order.
+
+
+*/
 const percentageSortDesc = (tally) => {
     //Converts the object to an array of entries
     let sortedPercent = Object.entries(tally).sort((a, b) => {
