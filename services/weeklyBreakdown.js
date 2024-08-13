@@ -32,7 +32,6 @@ const calculateWeeklyBreakdown = (userId, week_workouts, week_exercises, week_sp
 
 
     //STEP 2: PERCENTAGES OF EACH OF THE MAJOR MUSCLE GROUPS
-    //Now we need to loop through all of the exercises, storing each major muscle group when a new one is found, and tallying the rest.
     const breakdownMuscleGroup = calcMuscleGroupPercentages(week_exercises, exerciseTable);
     fullBreakdown['MuscleGroupPercent'] = breakdownMuscleGroup;
 
