@@ -144,7 +144,29 @@ class UserDB {
 
     
 
-    //Adds a workout to the workout table
+    /*
+
+    NAME: 
+        createWorkout() - Creates a workout in the database
+
+    SYNOPSIS:
+        async createWorkout(user_id, date, start_time, end_time, duration_minutes);
+
+        user_id --> The ID of the user creating a workout (integer)
+        date --> The date that the workout is being created (YYYY:MM:DD format)
+        start_time - The time the workout began (24:00 Format)
+        end_time --> The time the workout ended (24:00 Format)
+        duration_minutes --> The duration of the workout in minutes (integer)
+
+    DESCRIPTION:
+        This function takes all of the details of a workout entry and calls a function to
+        query the database with an "INSERT" function with the input information to add a new
+        entry to the 'Workouts' table
+
+    RETURNS:
+        Returns the ID of the workout entry created. Reports an error to console if unsuccessful.
+
+    */
     async createWorkout(user_id, date, start_time, end_time, duration_minutes){
         try{
             const id = await this.db.create('Workouts', [
@@ -160,7 +182,28 @@ class UserDB {
         }
     }
 
-    //Updates a workout
+    /*
+
+    NAME:
+        updateWorkout() - Updates a workout in the database
+
+    SYNOPSIS:
+        async updateWorkout(workout_id, start_time, end_time, duration_minutes)
+
+        workout_id --> The ID of the workout that will be updated/changed. (integer)
+        start_time - The time the workout began (24:00 Format)
+        end_time --> The time the workout ended (24:00 Format)
+        duration_minutes --> The duration of the workout in minutes (integer)
+
+    DESCRIPTION:
+        This function takes all of the details of a workout entry (minus the date because that doesn't change)
+        and calls a function to query the database with an "UPDATE" function with the input information to change
+        the details of the workout entry under the given workout ID.
+
+    RETURNS:
+        Reports an error to console if unsuccessful.
+
+    */
     async updateWorkout(workout_id, start_time, end_time, duration_minutes){
         try{
             const id = await this.db.update('Workouts', [
@@ -174,6 +217,31 @@ class UserDB {
     }
 
     //Creates a sports activity
+    /*
+
+    NAME:
+        createSportsActivity() - Creates a sports activity entry in the database
+
+    SYNOPSIS:
+        async createSportsActivity(user_id, sport, date, duration_minutes, start_time, end_time);
+
+        user_id --> The ID of the user creating the sports activity entry (integer)
+        sport --> The name of the sport the user is logging (text)
+        date --> The date that the workout is being created (YYYY:MM:DD format)
+        start_time - The time the workout began (24:00 Format)
+        end_time --> The time the workout ended (24:00 Format)
+        duration_minutes --> The duration of the workout in minutes (integer)
+
+
+    DESCRIPTION:
+        This function takes all of the details of a sports activity entry and calls a function to
+        query the database with an "INSERT" function with the input information to create a new entry
+        in the "SportActivity" table in the database.
+
+    RETURNS:
+        Returns the ID of the Sport Activity entry created. Reports an error to console if unsuccessful.
+
+    */
     async createSportsActivity(user_id, sport, date, duration_minutes, start_time, end_time){
         try{
             const id = await this.db.create('SportActivity', [
@@ -190,7 +258,29 @@ class UserDB {
         }
     }
 
-    //Updates a sports activity
+    /*
+
+    NAME:
+        updateSportActivity() - Updates a SportActivity entry in the database
+
+    SYNOPSIS:
+        async updateSportActivity(activity_id, sport, duration_minutes, start_time, end_time);
+
+        activity_id --> The ID of the activity that will be updated/changed. (integer)
+        sport --> The name of the sport being logged (text)
+        start_time - The time the workout began (24:00 Format)
+        end_time --> The time the workout ended (24:00 Format)
+        duration_minutes --> The duration of the workout in minutes (integer)
+
+    DESCRIPTION:
+        This function takes all of the details of a sports activity entry (minus the date because that doesn't change)
+        and calls a function to query the database with an "UPDATE" function with the input information to change
+        the details of the sports activity entry under the given workout ID.
+
+    RETURNS:
+        Returns the ID of the entry in the table changed. Reports an error to console if unsuccessful.
+
+    */
     async updateSportsActivity(activity_id, sport, duration_minutes, start_time, end_time){
         try{
             const id = await this.db.update('SportActivity', [
@@ -206,7 +296,30 @@ class UserDB {
 
     }
 
-    //Adds an exercise to the user exercises table
+    /*
+
+    NAME:
+        addUserExercise() - Creates/Adds a user exercise entry in the database
+
+    SYNOPSIS:
+        async addUserExercise(workout_id, exercise_name, classification, sets, reps, weight);
+
+        workout_id --> The ID of the workout associated with this certain exercise (integer)
+        exercise_name --> The name of the exercise being logged (text)
+        classification --> The type (main, accessory) of the exercise being logged (text)
+        sets --> The amount of sets of the exercise (integer)
+        reps --> The amount of reps of the exercise (integer)
+        weight --> The weight of the exercise (integer)
+
+    DESCRIPTION:
+        This function takes all of the details of an exercise entry and calls a function to
+        query the database with an "INSERT" function with the input information to create an
+        entry in the 'UserExercises' table.
+
+    RETURNS:
+        Returns of ID of the entry in the table created. Reports an error to console if unsuccessful.
+
+    */
     async addUserExercise(workout_id, exercise_name, classification, sets, reps, weight){
         try {
             const id = await this.db.create('UserExercises', [
@@ -223,7 +336,30 @@ class UserDB {
         }
     }
 
-    //Updates a userExercuse entry
+    /*
+
+    NAME:
+        updateUserExercise() - Updates a user exercise entry in the database
+
+    SYNOPSIS:
+        async updateUserExercise(exercise_id, workout_id, exercise_name, classification, sets, reps, weight);
+
+        exercise_id --> The ID of the exercise entry that will be updated/changed. (integer)
+        workout_id --> The ID of the workout associated with the entry (integer)
+        exercise_name --> The name of the exercise being logged (text)
+        sets --> The amount of sets of the exercise (integer)
+        reps --> The amount of reps of the exercise (integer)
+        weight --> The weight of the exercise (integer)
+
+    DESCRIPTION:
+        This function takes all of the details of a user exercise entry and calls a function to query the database with 
+        an "UPDATE" function with the input information to change the details of the user exercise entry under the given 
+        exercise ID.
+
+    RETURNS:
+        Reports an error to console if unsuccessful.
+
+    */
     async updateUserExercise(exercise_id, workout_id, exercise_name, classification, sets, reps, weight){
         try {
             const id = await this.db.update('userExercises', [
@@ -238,7 +374,24 @@ class UserDB {
         }
     }
 
-    //Deletes a userExercise
+    /*
+
+    NAME:
+        deleteUserExercise() - Deletes a user exercise entry in the database
+
+    SYNOPSIS:
+        async deleteUserExercise(exercise_id);
+
+        exercise_id --> The ID of the exercise to be deleted (integer)
+
+    DESCRIPTION:
+        This function takes an ID of an exercise, then calls a function to query the database with a
+        "DELETE" function to delete the entry with the given ID.
+
+    RETURNS:
+        Reports an error if unsuccessful.
+
+    */
     async deleteUserExercise(exercise_id){
         try {
             await this.db.delete('userExercises', [{ column: 'id', value: exercise_id}])
@@ -247,7 +400,22 @@ class UserDB {
         }
     }
 
-    //Fills exercise Table from JSON
+    /*
+
+    NAME:
+        fillExercisesTable() - Fills the Exercises database table from a JSON file
+
+    SYNOPSIS:
+        async fillExercisesTable();
+
+    DESCRIPTION:
+        This function checks if the 'Exercises' table is empty, and if it is not, it parses the data
+        from the 'exercises.json' file and stores all of it into the 'Exercises' table.
+
+    RETURNS:
+        Reports an error if unsuccessful.
+
+    */
     async fillExercisesTable(){
         //Checks if Exercises is empty, because if it is not empty then we are just re-entering data again unecessarily
         const empty = await this.db.isTableEmpty('Exercises');
@@ -274,7 +442,22 @@ class UserDB {
         }
     }
 
-    //Fills sports Table from JSON
+    /*
+
+    NAME:
+        fillSportsTable() - Fills the Exercises database table from a JSON file
+
+    SYNOPSIS:
+        async fillSportsTable();
+
+    DESCRIPTION:
+        This function checks if the 'Sports' table is empty, and if it is not, it parses the data
+        from the 'sports.json' file and stores all of it into the 'Sports' table.
+
+    RETURNS:
+        Reports an error if unsuccessful.
+
+    */
     async fillSportsTable(){
         //Checks if sports is empty, because if it is not empty then we are just ren-entering data again unecessarily
         const empty = await this.db.isTableEmpty('Sports');
@@ -297,7 +480,28 @@ class UserDB {
         }
     }
 
-    //Creates a user
+    /*
+
+    NAME:
+        createUser() - Creates a user in the database
+
+    SYNOPSIS:
+        async createUser(first, last, username, password);
+
+        first --> The user's first name (text)
+        last --> The user's last name (text)
+        username --> The user's username (text)
+        password --> The user's hashed password (text)
+
+    DESCRIPTION:
+        This function takes all of the details of an new user and calls a function to
+        query the database with an "INSERT" function with the input information to create a user
+        in the 'Users' table.
+
+    RETURNS:
+        The ID of the user created. Reports an error if unsuccessful.
+
+    */
     async createUser(first, last, username, password){
         try{
             const id = await this.db.create('Users', [
@@ -312,7 +516,27 @@ class UserDB {
         }
     }
 
-    //Updates a user
+    /*
+    NAME:
+        updateUser() - Updates a user in the database
+
+    SYNOPSIS:
+        async updateUser(id, first, last, username);
+
+        id --> The ID of the user being updated (integer)
+        first --> The user's first name to be potentially changed (text)
+        last --> The user's last name to be potentially changed (text)
+        username --> The user's username to be potentially changed (text)
+
+    DESCRIPTION:
+        This function takes all of the details of a user and calls a function to query the database with an 
+        "UPDATE" function with the input information to change the details of the user under the given
+        user ID.
+
+    RETURNS:
+        Reports an error to console if unsuccessful.
+
+    */
     async updateUser(id, first, last, username){
         try{
             await this.db.update('Users', [
@@ -325,7 +549,25 @@ class UserDB {
         }
     }
 
-    //Updates a user's password
+    /*
+    NAME:
+        updateUserPassword() - Updates a user's password in the database
+
+    SYNOPSIS:
+        async updateUser(id, password);
+
+        id --> The ID of the user being updated (integer)
+        password --> The new password of the user. 
+
+    DESCRIPTION:
+        This function takes all of the details of a user and calls a function to query the database with an 
+        "UPDATE" function with the input information to change the details of the user under the given
+        user ID.
+
+    RETURNS:
+        Reports an error to console if unsuccessful.
+
+    */
     async updateUserPassword(id, password){
         try{
             await this.db.update('Users', [
@@ -336,7 +578,23 @@ class UserDB {
         }
     }
 
-    //Find a user by their username
+    /*
+    NAME:
+        findUserByUsername() - Finds a user from the database given their username
+
+    SYNOPSIS:
+        async findUserByUsername(username);
+
+        username --> The user's username to be used as a search query (text)
+
+    DESCRIPTION:
+        This function takes the username of a user and calls a function to query the database for the user
+        with the stated username. 
+
+    RETURNS:
+        Returns an object of the user's details. Reports an error to console if unsuccessful.
+
+    */
     async findUserByUsername(username) {
         try {
             const user = await this.db.read('Users', [{ column: 'username', value: username }]);
@@ -347,7 +605,23 @@ class UserDB {
         }
     }
 
-    //Find user by ID
+    /*
+    NAME:
+        findUserById() - Finds a user from the database given their id
+
+    SYNOPSIS:
+        async findUserById(id);
+
+        id --> The user's ID to be used as a search query (text)
+
+    DESCRIPTION:
+        This function takes the ID of a user and calls a function to query the database for the user
+        with the stated user ID. 
+
+    RETURNS:
+        Returns an object of the user's details. Reports an error to console if unsuccessful.
+
+    */
     async findUserById(id) {
         try {
             const user = await this.db.read('Users', [{ column: 'id', value: id }]);
@@ -358,7 +632,23 @@ class UserDB {
         
     }
 
-    //Find the workout by the ID
+    /*
+    NAME:
+        findWorkoutById() - Finds a workout from the database given its ID
+
+    SYNOPSIS:
+        async findWorkoutById(id);
+
+        id --> The workout's ID to be used as a search query (text)
+
+    DESCRIPTION:
+        This function takes the ID of a workout and calls a function to query the database for the workout
+        with the stated ID. 
+
+    RETURNS:
+        Returns an object of the workout's details. Reports an error to console if unsuccessful.
+
+    */
     async findWorkoutById(id) {
         try {
             const workout = await this.db.read('Workouts', [{ column: 'id', value: id }]);
@@ -368,7 +658,23 @@ class UserDB {
         }
     }
 
-    //Finds a userExercise by the ID
+    /*
+    NAME:
+        findUserExerciseById() - Finds a user exercise from the database given its ID.
+
+    SYNOPSIS:
+        async findUserExerciseById(id);
+
+        id --> The user exercises's ID to be used as a search query (text)
+
+    DESCRIPTION:
+        This function takes the ID of a user logged exercise and calls a function to query the database for the user
+        exercise with the stated ID. 
+
+    RETURNS:
+        Returns an object of the user exercise's details. Reports an error to console if unsuccessful.
+
+    */
     async findUserExerciseById(id) {
         try { 
             const exercise = await this.db.read('userExercises', [{ column: 'id', value: id}]);
@@ -378,7 +684,23 @@ class UserDB {
         }
     }
 
-    //Finds a sports activity by the ID
+    /*
+    NAME:
+        findSportsActivityById() - Finds a sports activity from the database given its ID.
+
+    SYNOPSIS:
+        async findSportsActivityById(id);
+
+        id --> The user sport activity's ID to be used as a search query (text)
+
+    DESCRIPTION:
+        This function takes the ID of a user logged sports activity and calls a function to query the database for the user
+        logged sports activity with the stated ID. 
+
+    RETURNS:
+        Returns an object of the sports activity's details. Reports an error to console if unsuccessful.
+
+    */
     async findSportsActivityById(id) {
         try {
             const sportActivity = await this.db.read('SportActivity', [{ column: 'id', value: id }]);
@@ -388,7 +710,20 @@ class UserDB {
         }
     }
 
-    //Returns all users from database
+    /*
+    NAME:
+        getAllUsers() - Gets all of the user's from the 'Users' table.
+
+    SYNOPSIS:
+        async getAllUsers();
+
+    DESCRIPTION:
+        This function calls a function to query the 'Users' table and retreives all of the entries in that table.
+
+    RETURNS:
+        Returns all of the users in the table in the form of an array of objects. Reports an error to console if unsuccessful.
+
+    */
     async getAllUsers(){
         try {
             const users = await this.db.getAll('Users');
@@ -398,13 +733,44 @@ class UserDB {
         }
     }
 
-    //Returns the user's first and last name (searched by their ID)
+
+    /*
+
+    NAME:
+        getUserFirstLast(); - Gets the user's first and last name from database
+
+    SYNOPSIS:
+        async getUserFirstLast(id);
+
+        id --> The ID of the user being searched for (integer)
+
+    DESCRIPTION:
+        This function takes a user's ID and calls a function to find a user by the ID to retrive the
+        user's information.
+
+    RETURNS:
+        Returns the user's first and last name. 
+
+    */
     async getUserFirstLast(id){
         user = this.findUserById(id);
         return user.first + user.last;
     }
 
-    //Returns all of the exercises from the exercises table
+    /*
+    NAME:
+        getExercises() - Gets all of the exercises from the 'Exercises' table.
+
+    SYNOPSIS:
+        async getExercises();
+
+    DESCRIPTION:
+        This function calls a function to query the 'Exercises' table and retrieves all of the entries in that table.
+
+    RETURNS:
+        Returns all of the exercises in the table in the form of an array of objects. Reports an error to console if unsuccessful.
+
+    */
     async getExercises(){
         try{
             let exercises = await this.db.getAll('Exercises');
@@ -415,6 +781,23 @@ class UserDB {
     }
 
     //Finds the exercise from the exercises table by the name
+    /*
+    NAME:
+        findExerciseByName() - Finds an exercise from the 'Exercises' table by the name
+
+    SYNOPSIS:
+        async findExerciseByName(exercise_name);
+
+        exercise_name --> The name of the exercise to be searched for (text)
+
+    DESCRIPTION:
+        This function takes an exercise name, and calls a function to query the 'Exercises' table to retrieve the information
+        of the exercise with that name.
+
+    RETURNS:
+        Returns the exercise information from the table in the form of an object. Reports an error to console if unsuccessful.
+
+    */
     async findExerciseByName(exercise_name){
         try{
             const exercise = await this.db.read('Exercises', [{ column: 'name', value: exercise_name }]);
@@ -424,7 +807,20 @@ class UserDB {
         }
     }
 
-    //Returns all of the sports from the sports table
+    /*
+    NAME:
+        getSports() - Gets all of the sports from the 'Sports' table.
+
+    SYNOPSIS:
+        async getSports();
+
+    DESCRIPTION:
+        This function calls a function to query the 'Sports' table and retrieves all of the entries in that table.
+
+    RETURNS:
+        Returns all of the sports in the table in the form of an array of objects. Reports an error to console if unsuccessful.
+
+    */
     async getSports(){
         try{
             let sports = await this.db.getAll('Sports');
@@ -434,7 +830,22 @@ class UserDB {
         }
     }
 
-    //Returns all of the exercises logged in a specific workout from userExercises
+    /*
+    NAME:
+        getAllWorkoutExercises() - Gets all of the exercises from a workout from database
+
+    SYNOPSIS:
+        async getAllWorkoutExercises(workout_id);
+
+        workout_id --> The ID of the workout the exercises are associated with (integer)
+
+    DESCRIPTION:
+        This function calls a function to query the 'UserExercises' table and retrieves all of the exercises with stated workout ID.
+
+    RETURNS:
+        Returns all of the exercises with the set workout ID in the form of an array of objects. Reports an error to console if unsuccessful.
+
+    */
     async getAllWorkoutExercises(workout_id){
         try {
             let exercises = await this.db.getAllWhere('UserExercises', [{ column: 'workout_id', value: workout_id }]);
@@ -444,7 +855,22 @@ class UserDB {
         }
     }
 
-    //Returns all the workouts from a specified user id
+    /*
+    NAME:
+        getAllWorkouts() - Gets all of the workouts from a specified user from database
+
+    SYNOPSIS:
+        async getAllWorkouts(id);
+
+        id --> The ID of the user (integer)
+
+    DESCRIPTION:
+        This function calls a function to query the 'Workouts' table and retrieves all of the workouts with stated user ID.
+
+    RETURNS:
+        Returns all of the workouts with the set user ID in the form of an array of objects. Reports an error to console if unsuccessful.
+
+    */
     async getAllWorkouts(id){
         const user = this.findUserById(id);
 
@@ -456,7 +882,23 @@ class UserDB {
         }
     }
 
-    //Returns all sports activity logs from a specified user id
+    /*
+    NAME:
+        getAllSportsActivity() - Gets all of the sports activity logs from a specified user from database
+
+    SYNOPSIS:
+        async getAllSportsActivity(id);
+
+        id --> The ID of the user (integer)
+
+    DESCRIPTION:
+        This function calls a function to query the 'SportActivity' table and retrieves all of the sports activity
+        log with the stated workout ID.
+
+    RETURNS:
+        Returns all of the sports activity logs with the set user ID in the form of an array of objects. Reports an error to console if unsuccessful.
+
+    */
     async getAllSportsActivity(id){
         const user = this.findUserById(id);
 
@@ -468,7 +910,25 @@ class UserDB {
         }
     }
 
-    //Returns all of the workouts within a set date range for a set user
+    /*
+    NAME:
+        getAllWorkoutsForWeek() - Gets all of the workouts of a user in set week from database
+
+    SYNOPSIS:
+        async getAllWorkoutsForWeek(id, start_date, end_date);
+
+        id --> The ID of the user (integer)
+        start_date --> The first date of the week being searched (YYYY:MM:DD Format)
+        end_date --> The last date of the week being searched (YYYY:MM:DD Format)
+
+    DESCRIPTION:
+        This function takes the user ID, and the start/end date of the specified week, and calls a function to query the 'workouts' table
+        in the database to return all workouts between the two dates.
+
+    RETURNS:
+        Returns an array of objects containing the workouts in specified week. Reports an error to console if unsuccessful.
+
+    */
     async getAllWorkoutsForWeek(id, start_date, end_date){
         try {
             let workouts = await this.db.getAllInRange('Workouts', id, [
@@ -481,7 +941,25 @@ class UserDB {
         }
     }
 
-    //Returns all of the sports activities logged within a set date range for a set user
+    /*
+    NAME:
+        getAllSportsForWeek() - Gets all of the workouts of a user in set week from database
+
+    SYNOPSIS:
+        async getAllSportsForWeek(id, start_date, end_date);
+
+        id --> The ID of the user (integer)
+        start_date --> The first date of the week being searched (YYYY:MM:DD Format)
+        end_date --> The last date of the week being searched (YYYY:MM:DD Format)
+
+    DESCRIPTION:
+        This function takes the user ID, and the start/end date of the specified week, and calls a function to query the 'SportActivity' table
+        in the database to return all logged sport activities between the two dates.
+
+    RETURNS:
+        Returns an array of objects containing the sports activies in specified week. Reports an error to console if unsuccessful.
+
+    */
     async getAllSportsForWeek(id, start_date, end_date){
         try {
             let sports = await this.db.getAllInRange('SportActivity', id, [
@@ -494,7 +972,23 @@ class UserDB {
         }
     }
 
-    //Queries the database and returns all of one user's friends
+    /*
+    NAME:
+        getAllFriends() - Gets all of the friends of a certain user from database
+
+    SYNOPSIS:
+        async getAllFriends(user_id);
+
+        user_id --> The ID of the user (integer)
+
+    DESCRIPTION:
+        This function takes the user ID, and calls a function to query the 'Friends' table and search for all entries 
+        where the user_id is the same as the specified user_id.
+
+    RETURNS:
+        Returns an array of all the user's friends. Reports an error to console if unsuccessful.
+
+    */
     async getAllFriends(user_id){
         try {
             const friends = await this.db.getAllWhere('Friends', [{ column: 'user_id', value: user_id }]);
@@ -504,7 +998,25 @@ class UserDB {
         }
     }
 
-    //Adds a friend
+    /*
+
+    NAME:
+        addFriend(); - Creates an entry in the 'Friends' table
+
+    SYNOPSIS:
+        async addFriend(user_id, friend_id);
+
+        user_id --> The ID of the user adding a friend (integer)
+        friend_id --> The ID of the user that is being added as a friend (integer)
+
+    DESCRIPTION:
+        This function takes the User ID and the friend's ID and calls a function to query the 'Friends'
+        table with an "INSERT" to create an entry with the user ID and friend ID.
+
+    RETURNS:
+        The ID of the entry created. Reports an error if unsuccessful.
+
+    */
     async addFriend(user_id, friend_id){
         try {
             const id = await this.db.create('Friends', [
@@ -517,7 +1029,25 @@ class UserDB {
         }
     }
 
-    //Removes a friend
+    /*
+
+    NAME:
+        removeFriend(); - Removes an entry from the 'Friends' table
+
+    SYNOPSIS:
+        async removeFriend(user_id, friend_id);
+
+        user_id --> The ID of the user removing a friend (integer)
+        friend_id --> The ID of the user that is being removed as a friend (integer)
+
+    DESCRIPTION:
+        This function takes the User ID and the friend's ID and calls a function to query the 'Friends'
+        table with an "DELETE" to delete the entry with the two IDs to 'remove' them as friends
+
+    RETURNS:
+        Reports an error if unsuccessful.
+
+    */
     async removeFriend(user_id, friend_id){
         try {
             await this.db.delete('Friends', [
@@ -529,7 +1059,25 @@ class UserDB {
         }
     }
 
-    //Checks friend status
+    /*
+
+    NAME:
+        checkFriendStatus(); - Checks the status of two user IDs to see if they are friends.
+
+    SYNOPSIS:
+        async checkFriendStatus(user_id, friend_id);
+
+        user_id --> The ID of the user (integer)
+        friend_id --> The ID of the friend (integer)
+
+    DESCRIPTION:
+        This function takes the User ID and the friend's ID and calls a function to query the 'Friends'
+        table to find the entry with both user_id and friend_id.
+
+    RETURNS:
+        The ID of the table entry found. Reports an error if unsuccessful.
+
+    */
     async checkFriendStatus(user_id, friend_id){
         try {
             const id = await this.db.read('Friends', [
