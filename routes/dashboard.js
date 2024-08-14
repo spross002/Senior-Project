@@ -2,6 +2,28 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 
+/*
+    Sebastian Pross - Dashboard
+
+    DASHBOARD.JS
+
+    This javascript page holds all of the backend functions pertaining to anything related to the dashboard pages.
+        That includes the unauthorized page, and dashboard page.
+
+    In order:
+
+        router.get('/unauthorized')
+            --> This function calls the render function for the unauthorized page.
+
+        router.get('/logout')
+            --> This function is purely for the 'logout' button, and logs the user out of the session, redirecting them to the home page.
+
+        router.get('/dashboard')
+            --> This functions calls the render function for the dashboard page.
+
+
+*/
+
 //This function checks if the user is logged in (for authorization)
 const logged_in = (req, res, next) => {
     if (req.session.user) {

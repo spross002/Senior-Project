@@ -4,6 +4,20 @@ const bcrypt = require('bcryptjs');
 const { formatDate } = require('../services/commonFunctions');
 const { calculateWeeklyBreakdown } = require('../services/weeklyBreakdown'); // Imports the function to generate the recap
 
+/*
+    Sebastian Pross - Recap
+
+    RECAP.JS
+
+    This javascript page holds all of the backend functions pertaining to the recap page
+
+    In order:
+        router.get('/recap')
+            --> This function gathers the necessary information and passes it into the render
+                function for the recap page.
+
+*/
+
 //This function checks if the user is logged in (for authorization)
 const logged_in = (req, res, next) => {
     if (req.session.user) {
@@ -60,16 +74,7 @@ router.get('/recap', logged_in, async (req, res) => {
     //Take all of the information gathered and pass it into the function to generate the weekly recap
     const recap = calculateWeeklyBreakdown(userId, week_workouts, week_exercises, week_sportActivities, exerciseTable);
 
-
-    //If "isSunday" is true, that means the day is sunday and we can store the recap to the database
-    if(isSunday){
-        //Save recap in the database
-        //const recap = await req.db.saveRecap();
-    }
-
     res.render('recap', { user: user, recap: recap })
 })
-
-//This function
 
 module.exports = router;

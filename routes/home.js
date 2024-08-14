@@ -2,6 +2,20 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 
+/*
+    Sebastian Pross - Home
+
+    HOME.JS
+
+    This javascript page holds all of the backend functions pertaining to the home page.
+
+    In order:
+
+        router.get('/')
+            --> This function calls the render function for the home page.
+            
+*/
+
 //This function checks if the user is logged in (for authorization)
 const logged_in = (req, res, next) => {
     if (req.session.user) {

@@ -2,6 +2,26 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 
+/*
+    Sebastian Pross - Friends
+
+    FRIENDS.JS
+
+    This javascript page holds all of the backend functions pertaining to anything related to the friends pages.
+        That includes the friends page, as well as the friend finding page.
+
+    In order:
+
+        router.get('/friends')
+            --> This function gathers the necessary information and 
+                calls the render function for the friends page.
+
+        router.get('/findFriends')
+            --> This function gathers the necessary information and
+                calls the render function for the findFriends page.
+
+*/
+
 //This function checks if the user is logged in, redirecting to the unauthorized page if they are not
 //This is done for security reasons. If a user is not logged in, we don't want them to be able to access certain pages
 const logged_in = (req, res, next) => {

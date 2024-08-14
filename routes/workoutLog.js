@@ -3,6 +3,43 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const { formatDate, calcDuration } = require('../services/commonFunctions');
 
+/*
+    Sebastian Pross - workoutLog
+
+    WORKOUTLOG.JS
+
+    This javascript page has all backend functions pertaining to workout logging.
+        This includes the workout creation page, workout editing page, sports activity log page, 
+        and editting sports activity page.
+
+    In order:
+
+        router.get('/:id/newWorkout')
+            --> This function calls the render function for a new workout page
+        router.post('/:id/newWorkout')
+            --> This function takes all of the information submitted in the new workout page and calls functions
+                to add a workout to the database
+
+        router.get('/workouts/:id')
+            --> This function retrieves all of the workout information and renders a page to edit the workout
+        router.post('/workouts/:id')
+            --> This function takes all of the changed information submitted in the workout editting page
+                and calls functions to update the workout.
+
+        router.get('/:id/newSportsActivity')
+            --> This function calls the render function for a new sports activity log page
+        router.post('/:id/newSportsActivity')
+            --> This function takes all of the information submitted in the new activity page and calls functions
+                to add the activity to the database
+        
+        router.get('/sportsActivities/:id')
+            --> This function retrieves all of the specified activity information and renders a page to edit the activity
+        router.post('/sportsActivities/:id')
+            --> This function takes all of the changed information submitted in the sports activity editting
+                page and calls function to update the activity entry.
+
+*/
+
 //This function checks if the user is logged in (for authorization)
 const logged_in = (req, res, next) => {
     if (req.session.user) {
