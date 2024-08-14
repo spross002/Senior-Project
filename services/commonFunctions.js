@@ -3,9 +3,22 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 
 /*
-    Function: formatDate
-    Paramaters: Date object
-    Returns: Date object reformatted into "YYYY:MM:DD"
+
+    NAME:
+        formatDate() - Formats a date entry to "YYYY:MM:DD" format.
+
+    SYNOPSIS:
+        const formatDate(date);
+
+        date --> The date to be formatted (Ex: "Mon July 4 2024") to "YYYY:MM:DD" (object)
+
+    DESCRIPTION:
+        Takes the date object entered, and gets the year, month, and day, formatting it into 
+        YYYY:MM:DD
+
+    RETURNS:
+        Returns a string of the formatted date.
+
 */
 const formatDate = (date) => {
     const currentDate = date
@@ -22,6 +35,23 @@ const formatDate = (date) => {
     Function: calcDuration
     Parameters: start_time (string), end_time (string)
     Returns: The difference in minutes between two start times.
+
+    NAME:
+        calcDuration() - Calculates the difference in minutes between a start and end time.
+
+    SYNOPSIS:
+        const calcDuration(start_time, end_time);
+
+        start_time --> The start time (string)
+        end_time -->  The end time (string)
+
+    DESCRIPTION:
+        Takes the start time and end time of a workout and calculates the difference between the two
+        in order for the duration of the workout to be saved in the workout entry
+
+    RETURNS:
+        Returns an integer of the difference between the times in minutes.
+
 */
 const calcDuration = (start_time, end_time) => {
 
@@ -52,6 +82,7 @@ const calcDuration = (start_time, end_time) => {
 }
 
 
+//This exports the two functions so they can be used in other files.
 module.exports = { 
     formatDate,
     calcDuration,
