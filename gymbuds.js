@@ -7,6 +7,8 @@ const bcrypt = require('bcryptjs');
 
 const UserDB = require('./userDB');
 const db = new UserDB('./gymbuds.db');
+
+//Initializes the database and makes all of the needed tables in the database.
 db.initialize();
 db.makeUserTable();
 db.makeWorkoutTable();
@@ -17,7 +19,7 @@ db.makeSportsActivityTable();
 db.makeSportsTable();
 db.makeRecapTable();
 
-//Only happens on creation
+//Only happens on creation - fills the necessary tables from the JSON files.
 db.fillExercisesTable();
 db.fillSportsTable();
 
